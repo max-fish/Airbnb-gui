@@ -10,11 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ComboBox;
+import javafx.scene.shape.Rectangle;
 /**
  *
  * @version 0.1.0
@@ -38,6 +40,23 @@ public class MainViewer extends Application
         BorderPane pane = new BorderPane();
         pane.setPadding(new Insets(10, 10, 10, 10));
         pane.setMinSize(300, 300);
+
+        Rectangle welcome = new Rectangle();
+
+        welcome.heightProperty().bind(pane.heightProperty());
+
+        welcome.widthProperty().bind(pane.widthProperty());
+
+
+        welcome.setFill(Color.GREY);
+
+
+        pane.setCenter(welcome);
+
+        pane.getCenter().setScaleX(0.8);
+
+        pane.getCenter().setScaleY(0.75);
+
 
 
         HBox selection = new HBox();
@@ -92,11 +111,8 @@ public class MainViewer extends Application
         pane.setBottom(traverse);
 
 
-
-
-
         // JavaFX must have a Scene (window content) inside a Stage (window)
-        Scene scene = new Scene(pane, 300,100);
+        Scene scene = new Scene(pane, 300,300);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
 
