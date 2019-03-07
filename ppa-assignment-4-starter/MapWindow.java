@@ -1,8 +1,12 @@
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -35,15 +39,18 @@ public class MapWindow extends Application {
     }
 
     public Pane SearchPane(int lower, int higher){
-        Pane tbr = new Pane();
-        for(int height = 0; height < gridHeight; height++){
-            for(int buttons = 0; buttons < gridWidths[height]; buttons++){
+        Pane tbr = new FlowPane();
+        Pane internal = new Pane();
+        ((FlowPane) tbr).setAlignment(Pos.CENTER);
+        tbr.getChildren().add(internal);
+        for(int height = 0; height < gridHeight; height++) {
+            for (int buttons = 0; buttons < gridWidths[height]; buttons++) {
                 Button added = new Button(boroughs[height][buttons]);
-                added.setLayoutY(height*buttonHeight);
-                added.setLayoutX((offset[height]*buttonwidth/2)+buttons*buttonwidth);
+                added.setLayoutY(height * buttonHeight);
+                added.setLayoutX((offset[height] * buttonwidth / 2) + buttons * buttonwidth);
                 added.setMinSize(buttonwidth, buttonHeight);
                 added.setMaxSize(buttonwidth, buttonHeight);
-                tbr.getChildren().add(added);
+                internal.getChildren().add(added);
             }
         }
         return tbr;
