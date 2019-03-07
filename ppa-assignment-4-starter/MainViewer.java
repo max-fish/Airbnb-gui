@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -43,20 +44,21 @@ public class MainViewer extends Application
 
         Rectangle welcome = new Rectangle();
 
-        welcome.heightProperty().bind(pane.heightProperty());
 
         welcome.widthProperty().bind(pane.widthProperty());
 
 
         welcome.setFill(Color.GREY);
 
+        Text welcomeText = new Text();
+
+        welcomeText.setText("Welcome!");
+
+
 
         pane.setCenter(welcome);
 
-        pane.getCenter().setScaleX(0.8);
-
-        pane.getCenter().setScaleY(0.75);
-
+        pane.setCenter(welcomeText);
 
 
         HBox selection = new HBox();
@@ -85,8 +87,11 @@ public class MainViewer extends Application
 
         pricePanel.setHgap(10);
 
+        Button search = new Button("search");
 
-        selection.getChildren().addAll(pricePanel);
+        search.setOnAction(this::searchProperties);
+
+        selection.getChildren().addAll(pricePanel, search);
         selection.setAlignment(Pos.CENTER_RIGHT);
 
 
@@ -95,6 +100,10 @@ public class MainViewer extends Application
 
 
         AnchorPane traverse = new AnchorPane();
+
+        welcome.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(2)));
+
+        welcome.setScaleX(0.8);
 
         Button previous = new Button("Previous");
 
@@ -129,6 +138,10 @@ public class MainViewer extends Application
     private void selectedHighPrice(ActionEvent event){
         userHighPrice = highPrice.getValue();
     }
+
+    private void searchProperties(ActionEvent event)
+    {//do ur thing
+         };
 
     /**
      * This will be executed when the button is clicked
