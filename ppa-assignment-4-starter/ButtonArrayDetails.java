@@ -2,7 +2,6 @@ import java.util.List;
 
 /**
  * Stores details about a single row of buttons.
- * It is exp
  *
  * @version 0.2.0
  */
