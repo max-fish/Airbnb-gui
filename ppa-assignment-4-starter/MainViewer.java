@@ -27,6 +27,7 @@ public class MainViewer extends Application
 
     private int userLowPrice;
     private int userHighPrice;
+    BorderPane pane;
 
     ComboBox<Integer> lowPrice = new ComboBox<Integer>();
 
@@ -38,7 +39,7 @@ public class MainViewer extends Application
 
 
         // Create a new border pane
-        BorderPane pane = new BorderPane();
+        pane = new BorderPane();
         pane.setPadding(new Insets(10, 10, 10, 10));
         pane.setMinSize(300, 300);
 
@@ -140,7 +141,8 @@ public class MainViewer extends Application
     }
 
     private void searchProperties(ActionEvent event)
-    {//do ur thing
+    {
+        pane.setCenter(new MapWindow().SearchPane(0, 0));
          };
 
     /**
