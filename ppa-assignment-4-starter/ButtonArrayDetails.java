@@ -1,50 +1,33 @@
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  *
- * @version 0.1.0
+ * @version 0.2.0
  */
 public class ButtonArrayDetails {
 
-    private List<Integer> rows;
-    private List<Integer> offset;
-    private ArrayList<ArrayList<String>> names;
+    private Integer rows;
+    private Integer offset;
+    private List<String> names;
 
 
-    public ButtonArrayDetails(){
-        rows = new ArrayList<Integer>();
-        offset = new ArrayList<Integer>();
-        names = new ArrayList<ArrayList<String>>();
+    public ButtonArrayDetails(int newRows, int newOffset, List<String> newNames){
+        rows = newRows;
+        offset = newOffset;
+        names = newNames;
     }
 
-    public void addLayer(int newRowInt, int newRowOffset, ArrayList<String> newRowNames){
-        rows.add(newRowInt);
-        offset.add(newRowOffset);
-        names.add(newRowNames);
+    public int getRow(){
+        return rows;
     }
 
-    public int getNumberOfRows(){
-        return rows.size();
+    public int getOffset(){
+        return offset;
     }
 
-    public int getRow(int index){
-        if(getNumberOfRows() > index){
-            return rows.get(index);
-        }
-        return -1;
-    }
-
-    public int getOffset(int index){
-        if(getNumberOfRows() > index){
-            return offset.get(index);
-        }
-        return -1;
-    }
-
-    public String getString(int index, int buttonName){
-        if(getNumberOfRows() > index){
-            return names.get(index).get(buttonName);
+    public String getString(int index){
+        if(names.size() > index){
+            return names.get(index);
         }
         return "";
     }
