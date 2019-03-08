@@ -1,24 +1,24 @@
 import java.util.List;
 
 /**
+ * Stores details about a single row of buttons.
+ * It is exp
  *
  * @version 0.2.0
  */
 public class ButtonArrayDetails {
 
-    private Integer rows;
     private Integer offset;
     private List<String> names;
 
 
-    public ButtonArrayDetails(int newRows, int newOffset, List<String> newNames){
-        rows = newRows;
+    public ButtonArrayDetails(int newOffset, List<String> newNames){
         offset = newOffset;
         names = newNames;
     }
 
     public int getRow(){
-        return rows;
+        return names.size();
     }
 
     public int getOffset(){
@@ -26,7 +26,7 @@ public class ButtonArrayDetails {
     }
 
     public String getString(int index){
-        if(names.size() > index){
+        if(getRow() > index){
             return names.get(index);
         }
         return "";
