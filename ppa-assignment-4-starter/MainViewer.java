@@ -8,16 +8,15 @@ import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Rectangle;
+
+import javax.swing.*;
+
 /**
  *
  * @version 0.1.0
@@ -59,7 +58,7 @@ public class MainViewer extends Application
 
         pane.setCenter(welcome);
 
-        pane.setCenter(welcomeText);
+       // pane.setCenter(welcomeText);
 
 
         HBox selection = new HBox();
@@ -104,7 +103,6 @@ public class MainViewer extends Application
 
         welcome.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(2)));
 
-        welcome.setScaleX(0.8);
 
         Button previous = new Button("Previous");
 
@@ -121,12 +119,27 @@ public class MainViewer extends Application
         pane.setBottom(traverse);
 
 
+        //adds borders under the selection bar and above the traverse bar
+
+        selection.setBorder(new Border(new BorderStroke(Color.GREY,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,0,1,0), new Insets(0,0,-10,0))));
+
+        selection.setPadding(new Insets(0,0,5,0));
+
+
+        traverse.setBorder(new Border(new BorderStroke(Color.GREY,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,0,0,0))));
+
+        traverse.setPadding(new Insets(10,0,0,0));
+
         // JavaFX must have a Scene (window content) inside a Stage (window)
         Scene scene = new Scene(pane, 300,300);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
 
         selection.prefWidthProperty().bind(scene.widthProperty());
+
+
 
         // Show the Stage (window)
         stage.show();

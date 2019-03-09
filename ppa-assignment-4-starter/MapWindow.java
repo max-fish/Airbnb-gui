@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.ArrayList;
+import javafx.scene.shape.Polygon;
 
 /**
  *
@@ -42,6 +43,7 @@ public class MapWindow extends Application {
         createAssociations();
 
         Pane root = SearchPane(0, 0);
+
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
     }
@@ -57,7 +59,6 @@ public class MapWindow extends Application {
                 added.setLayoutY(height * buttonHeight);
                 added.setLayoutX((offset[height] * buttonwidth / 2) + buttons * buttonwidth);
                 added.setMinSize(buttonwidth, buttonHeight);
-                added.setMaxSize(buttonwidth, buttonHeight);
                 internal.getChildren().add(added);
                 //buttonToProperties.put(added, STATS.findPropertiesInBorough(buttonTitleToBorough.get(added.getText())), lower, higher);
             }
