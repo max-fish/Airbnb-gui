@@ -8,10 +8,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-
+import java.util.ArrayList;
 
 /**
  *
@@ -22,9 +20,9 @@ public class MapWindow extends Application {
     "HACK", "REDB", "HAVE"}, {"HILL", "EALI", "KENS", "WSTM", "TOWH", "NEWH", "BARK"}, {"HOUN", "HAMM", "WAND", "CITY",
     "GWCH", "BEXL"}, {"RICH", "MERT", "LAMB", "STHW", "LEWS"}, {"KING", "SUTT", "CROY", "BROM"}};
 
-    private static LinkedHashMap<String, String> buttonTitleToBorough = new LinkedHashMap<>();
+    private static HashMap<String, String> buttonTitleToBorough = new HashMap<>();
 
-
+    private static HashMap<Button, ArrayList<AirbnbListing>> buttonToProperties = new HashMap<>();
 
     private static int gridHeight = 7;
     private static int[] gridWidths = new int[]{1, 3, 7, 7, 6, 5, 4};
@@ -40,6 +38,8 @@ public class MapWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Search Range");
+
+        createAssociations();
 
         Pane root = SearchPane(0, 0);
         primaryStage.setScene(new Scene(root, 300, 250));
@@ -59,8 +59,49 @@ public class MapWindow extends Application {
                 added.setMinSize(buttonwidth, buttonHeight);
                 added.setMaxSize(buttonwidth, buttonHeight);
                 internal.getChildren().add(added);
+                //buttonToProperties.put(added, STATS.findPropertiesInBorough(buttonTitleToBorough.get(added.getText())), lower, higher);
             }
         }
         return tbr;
+    }
+
+    /**
+     * Translates the abbreviation from the buttons to the actual names of the boroughs
+     */
+    private void createAssociations(){
+        buttonTitleToBorough.put("ENFI", "Enfield");
+        buttonTitleToBorough.put("BARN", "Barnet");
+        buttonTitleToBorough.put("HRGY", "Haringey");
+        buttonTitleToBorough.put("WALT", "Waltham forest");
+        buttonTitleToBorough.put("HRRW", "Harrow");
+        buttonTitleToBorough.put("BREN", "Brent");
+        buttonTitleToBorough.put("CAMD", "Camden");
+        buttonTitleToBorough.put("ISLI", "Islington");
+        buttonTitleToBorough.put("HACK", "Hackney");
+        buttonTitleToBorough.put("REDB", "Redbridge");
+        buttonTitleToBorough.put("HAVE", "Havering");
+        buttonTitleToBorough.put("HILL", "Hillington");
+        buttonTitleToBorough.put("EALI", "Ealing");
+        buttonTitleToBorough.put("KENS", "Kensington and Chelsea");
+        buttonTitleToBorough.put("WSTM", "Westminster");
+        buttonTitleToBorough.put("TOWH", "Tower Hamlets");
+        buttonTitleToBorough.put("NEWH", "Newham");
+        buttonTitleToBorough.put("Bark", "Barking and Dagenham");
+        buttonTitleToBorough.put("HOUN", "Hounslow");
+        buttonTitleToBorough.put("HAMM", "Hammersmith and Fulham");
+        buttonTitleToBorough.put("WAND", "Wandsworth");
+        buttonTitleToBorough.put("CITY", "City of London");//not certain about this one
+        buttonTitleToBorough.put("GWCH", "Greenwich");
+        buttonTitleToBorough.put("BEXL", "Bexley");
+        buttonTitleToBorough.put("RICH", "Richmond upon Thames");
+        buttonTitleToBorough.put("MERT", "Merton");
+        buttonTitleToBorough.put("LAMB", "Lambeth");
+        buttonTitleToBorough.put("STHW", "Southwork");
+        buttonTitleToBorough.put("LEWS", "Lewisham");
+        buttonTitleToBorough.put("KING", "Kingston upon Thames");
+        buttonTitleToBorough.put("SUTT", "Sutton");
+        buttonTitleToBorough.put("CROY", "Croydon");
+        buttonTitleToBorough.put("BROM", "Bromley");
+
     }
 }
