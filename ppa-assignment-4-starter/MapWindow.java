@@ -9,6 +9,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+
 /**
  *
  * @version 0.1.0
@@ -17,6 +21,10 @@ public class MapWindow extends Application {
     private static String[][] boroughs = new String[][]{{"ENFI"}, {"BARN", "HRGY", "WALT"}, {"HRRW", "BREN", "CAMD", "ISLI",
     "HACK", "REDB", "HAVE"}, {"HILL", "EALI", "KENS", "WSTM", "TOWH", "NEWH", "BARK"}, {"HOUN", "HAMM", "WAND", "CITY",
     "GWCH", "BEXL"}, {"RICH", "MERT", "LAMB", "STHW", "LEWS"}, {"KING", "SUTT", "CROY", "BROM"}};
+
+    private static LinkedHashMap<String, String> buttonTitleToBorough = new LinkedHashMap<>();
+
+
 
     private static int gridHeight = 7;
     private static int[] gridWidths = new int[]{1, 3, 7, 7, 6, 5, 4};
