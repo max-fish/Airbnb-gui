@@ -109,9 +109,9 @@ public class StatisticsPage extends Application {
     }
 
     //shows the borough with the highest availability
-    public String mostLikelyNight(){
-
-    }
+//    public String mostLikelyNight(){
+//
+//    }
 
     public static void main(String[] args){
         StatisticsPage stats = new StatisticsPage();
