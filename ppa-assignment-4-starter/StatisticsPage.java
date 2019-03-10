@@ -68,7 +68,7 @@ public class StatisticsPage extends Application {
             //Initialize Map with all boroughs(keys) and total cost of all properties(values)
             Map<String, Integer> neighMapCost = new HashMap<String, Integer>();
 
-
+            Map<String, Integer> neighTotal = new HashMap<String, Integer>();
 
             String highestBorough = "";
             double highestAvg = 0;
