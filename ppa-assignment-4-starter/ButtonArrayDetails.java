@@ -8,16 +8,16 @@ import java.util.List;
 public class ButtonArrayDetails {
 
     private Integer offset;
-    private String[] names;
+    private List<String> names;
 
 
-    public ButtonArrayDetails(int newOffset, String[] newNames){
+    public ButtonArrayDetails(int newOffset, List<String> newNames){
         offset = newOffset;
         names = newNames;
     }
 
     public int getRow(){
-        return names.length;
+        return names.size();
     }
 
     public int getOffset(){
@@ -26,7 +26,7 @@ public class ButtonArrayDetails {
 
     public String getString(int index){
         if(getRow() > index){
-            return names[index];
+            return names.get(index);
         }
         return "";
     }

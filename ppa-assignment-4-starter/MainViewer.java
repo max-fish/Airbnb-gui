@@ -142,7 +142,7 @@ public class MainViewer extends Application
 
     private void searchProperties(ActionEvent event)
     {
-        pane.setCenter(MapFactory.getMapWindow(0, 0));
+        pane.setCenter(new MapWindow().SearchPane(0, 0));
          };
 
     /**

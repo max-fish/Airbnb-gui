@@ -1,28 +1,41 @@
 
+import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
  * @version 0.1.0
  */
-public class MapWindow {
-    private List<ButtonArrayDetails> buttonDetails;
+public class MapWindow extends Application {
+    private static String[][] boroughs = new String[][]{{"ENFI"}, {"BARN", "HRGY", "WALT"}, {"HRRW", "BREN", "CAMD", "ISLI",
+    "HACK", "REDB", "HAVE"}, {"HILL", "EALI", "KENS", "WSTM", "TOWH", "NEWH", "BARK"}, {"HOUN", "HAMM", "WAND", "CITY",
+    "GWCH", "BEXL"}, {"RICH", "MERT", "LAMB", "STHW", "LEWS"}, {"KING", "SUTT", "CROY", "BROM"}};
+
+    private static int gridHeight = 7;
+    private static int[] gridWidths = new int[]{1, 3, 7, 7, 6, 5, 4};
+    private static int[] offset = new int[]{7, 4, 1, 0, 1, 2, 3};
 
     private static int buttonHeight = 25;
     private static int buttonwidth = 75;
 
-    public MapWindow(){
-        buttonDetails = new ArrayList<>();
+    public static void main(String[] args) {
+        launch(args);
     }
 
-    public void addButtonRow(int offset, String[] names){
-        buttonDetails.add(new ButtonArrayDetails(offset, names));
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Search Range");
+
+        Pane root = SearchPane(0, 0);
+        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.show();
     }
 
     public Pane SearchPane(int lower, int higher){
@@ -30,12 +43,13 @@ public class MapWindow {
         Pane internal = new Pane();
         ((FlowPane) tbr).setAlignment(Pos.CENTER);
         tbr.getChildren().add(internal);
-        for(int height = 0; height < buttonDetails.size(); height++) {
-            for (int buttons = 0; buttons < buttonDetails.get(height).getRow(); buttons++) {
-                Button added = new Button(buttonDetails.get(height).getString(buttons));
+        for(int height = 0; height < gridHeight; height++) {
+            for (int buttons = 0; buttons < gridWidths[height]; buttons++) {
+                Button added = new Button(boroughs[height][buttons]);
                 added.setLayoutY(height * buttonHeight);
-                added.setLayoutX((buttonDetails.get(height).getOffset() * buttonwidth / 2) + buttons * buttonwidth);
-                added.setMinSize(buttonwidth,   buttonHeight);
+                added.setLayoutX((offset[height] * buttonwidth / 2) + buttons * buttonwidth);
+                added.setMinSize(buttonwidth, buttonHeight);
+                added.setMaxSize(buttonwidth, buttonHeight);
                 internal.getChildren().add(added);
             }
         }
