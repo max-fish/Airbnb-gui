@@ -155,8 +155,8 @@ public class MainViewer extends Application
 
     private void searchProperties(ActionEvent event)
     {
-        pane.setCenter(new MapWindow().SearchPane(0, 0));
-         };
+        pane.setCenter(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+         }
 
     /**
      * This will be executed when the button is clicked
