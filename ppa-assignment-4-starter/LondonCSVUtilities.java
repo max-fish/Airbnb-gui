@@ -1,0 +1,24 @@
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *
+ * @version 0.1.0
+ */
+public class LondonCSVUtilities {
+    private static final Map<String, String> acronymToName = new HashMap<String, String>() {{
+        put("ENFI", "Enfield"); put("BARN", "Barnet"); put("HRGY", "Haringey"); put("WALT", "Waltham Forest");
+        put("HRRW", "Harrow"); put("BREN", "Brent"); put("CAMD", "Camden"); put("ISLI", "Islington"); put("HACK", "Hackney");
+        put("REDB", "Redbridge"); put("HAVE", "Havering"); put("HILL", "Hillingdon"); put("EALI", "Ealing");
+        put("KENS", "Kensington and Chelsea"); put("TOWH", "Tower Hamlets"); put("WSTM", "Westminster");
+        put("NEWH", "Newham"); put("BARK", "Barking and Dagenham"); put("HOUN", "Hounslow");
+        put("HAMM", "Hammersmith and Fulham"); put("WAND", "Wandsworth"); put("CITY", "City of London");
+        put("GWCH", "Greenwich"); put("BEXL", "Bexley"); put("RICH", "Richmond upon Thames"); put("MERT", "Merton");
+        put("LAMB", "Lambeth"); put("STHW", "Southwark"); put("LEWS", "Lewisham"); put("KING", "Kingston upon Thames");
+        put("SUTT", "Sutton"); put("CROY", "Croydon"); put("BROM", "Bromley");
+    }};
+
+    public static String getNameFromAcronym(String acronym){
+        return acronymToName.get(acronym);
+    }
+}

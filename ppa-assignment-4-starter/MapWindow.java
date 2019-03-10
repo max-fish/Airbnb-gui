@@ -9,13 +9,13 @@ import java.util.List;
 
 /**
  *
- * @version 0.1.0
+ * @version 0.1.2
  */
 public class MapWindow {
     private List<ButtonArrayDetails> buttonDetails;
 
-    private static int buttonHeight = 25;
-    private static int buttonwidth = 75;
+    private static int buttonHeight = 35;
+    private static int buttonwidth = 150;
 
     public MapWindow(){
         buttonDetails = new ArrayList<>();
@@ -32,7 +32,7 @@ public class MapWindow {
         tbr.getChildren().add(internal);
         for(int height = 0; height < buttonDetails.size(); height++) {
             for (int buttons = 0; buttons < buttonDetails.get(height).getRow(); buttons++) {
-                Button added = new Button(buttonDetails.get(height).getString(buttons));
+                Button added = new Button(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons)));
                 added.setLayoutY(height * buttonHeight);
                 added.setLayoutX((buttonDetails.get(height).getOffset() * buttonwidth / 2) + buttons * buttonwidth);
                 added.setMinSize(buttonwidth,   buttonHeight);
