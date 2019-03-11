@@ -32,18 +32,18 @@ public class LondonCSVUtilities {
      * if a parameter is null, that means the user does not want to filter using that criteria
      */
 
-    public static LinkedHashSet<AirbnbListing> findPropertiesForUser(String borough, int lowPrice, int highPrice){
+    public static LinkedHashSet<AirbnbListing> findPropertiesForUser(String borough, Integer lowPrice, Integer highPrice){
         LinkedHashSet<AirbnbListing> allProperties = new LinkedHashSet<>();
 
-        if(borough != null && lowPrice != -1 && highPrice != -1 && filterByBorough(borough).isEmpty() && !filterByPrice(lowPrice,highPrice).isEmpty()){
+        if(borough != null && lowPrice != null && highPrice != null){
             allProperties.addAll(filterByBorough(borough));
             allProperties.addAll(filterByPrice(lowPrice, highPrice));
         }
 
-       else if(borough != null && !filterByBorough(borough).isEmpty()){
+       else if(borough != null){
             allProperties.addAll(filterByBorough(borough));
         }
-        else if(lowPrice != -1 && highPrice != -1 && !filterByPrice(lowPrice,highPrice).isEmpty()){
+        else if(lowPrice != null && highPrice != null){
             allProperties.addAll(filterByPrice(lowPrice, highPrice));
         }
         return allProperties;
