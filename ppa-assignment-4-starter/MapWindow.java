@@ -20,8 +20,6 @@ public class MapWindow extends Application {
             "HACK", "REDB", "HAVE"}, {"HILL", "EALI", "KENS", "WSTM", "TOWH", "NEWH", "BARK"}, {"HOUN", "HAMM", "WAND", "CITY",
             "GWCH", "BEXL"}, {"RICH", "MERT", "LAMB", "STHW", "LEWS"}, {"KING", "SUTT", "CROY", "BROM"}};
 
-    private static HashMap<String, String> buttonTitleToBorough = new HashMap<>();
-
     private static HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
 
     private static int gridHeight = 7;
@@ -69,10 +67,15 @@ public class MapWindow extends Application {
                     added.setLayoutX((buttonDetails.get(height).getOffset() * buttonwidth / 2) + buttons * buttonwidth);
                     added.setMinSize(buttonwidth, buttonHeight);
                     internal.getChildren().add(added);
-                    buttonToProperties.put(added, LondonCSVUtilities.findPropertiesForUser(LondonCSVUtilities.getNameFromAcronym(added.getText()), lower, higher));
+                    buttonToProperties.put(added, LondonCSVUtilities.findPropertiesForUser(added.getText(), lower, higher));
                 }
             }
-            System.out.println(buttonToProperties.size());//for testing
+            //for testing
+            for (Button button: buttonToProperties.keySet()){
+                String key = button.toString();
+                int value = buttonToProperties.get(button).size();
+                System.out.println(key + " " + value);
+            }
             return tbr;
         }
 }
