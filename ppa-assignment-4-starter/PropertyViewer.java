@@ -1,17 +1,27 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
 
-import java.util.List;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import java.util.LinkedHashSet;
+
 
 public class PropertyViewer extends Application {
+
+    private LinkedHashSet<AirbnbListing> properties = new LinkedHashSet<>();
+
+    public PropertyViewer(LinkedHashSet<AirbnbListing> properties){
+        this.properties = properties;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -20,20 +30,73 @@ public class PropertyViewer extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
+       /* AirbnbDataLoader loader = new AirbnbDataLoader();
+        Scene scene = new Scene(makePropertyList(), 300,300);
+        primaryStage.setTitle("JavaFX Example");
+        primaryStage.setScene(scene);
+        primaryStage.show();*/
     }
 
-    public static void makePropertyList(List<AirbnbListing> properties){
-        FlowPane propertyList = new FlowPane();
+    public Pane propertyListContainer(){
+        Pane container = new Pane();
+        container.getChildren().add(makePropertyList());
+        return container;
+    }
+
+    public TilePane makePropertyList(){
+        TilePane propertyList = new TilePane();
+        propertyList.setHgap(10);
+        propertyList.setVgap(10);
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
         }
+        return propertyList;
     }
 
-    public static StackPane makeIcon(AirbnbListing property){
+    public StackPane makeIcon(AirbnbListing property){
         StackPane icon = new StackPane();
-        Label label = new Label(property.getName() + property.getPrice() + property.getAvailability365() + property.getLastReview());
-        icon.getChildren().addAll(new Rectangle(), label);
+        Rectangle rect = new Rectangle();
+        DropShadow ds = new DropShadow();
+        ds.setOffsetY(5);
+        ds.setColor(Color.LIGHTGREY);
+
+        rect.setFill(Color.WHITE);
+        rect.setHeight(200);
+        rect.setWidth(200);
+        rect.setArcWidth(20);
+        rect.setArcHeight(20);
+
+
+        GridPane infoLayout = new GridPane();
+        Label picLabel = new Label("Picture here");
+        Label nameLabel = new Label(property.getName());
+        infoLayout.addRow(0, picLabel);
+        infoLayout.addRow(1, nameLabel);
+        GridPane.setHalignment(picLabel, HPos.CENTER);
+        GridPane.setHalignment(nameLabel, HPos.CENTER);
+        infoLayout.setAlignment(Pos.CENTER);
+
+        RowConstraints pictureRow = new RowConstraints();
+        pictureRow.setPercentHeight(66);
+
+        RowConstraints infoRow = new RowConstraints();
+        infoRow.setPercentHeight(34);
+
+
+        infoLayout.getRowConstraints().addAll(pictureRow,infoRow);
+        icon.setMaxHeight(200);
+        icon.setMaxWidth(200);
+        icon.getChildren().add(rect);
+        icon.getChildren().add(infoLayout);
+
+        icon.setOnMouseEntered(
+                (event) -> {rect.setEffect(ds);}
+
+        );
+        icon.setOnMouseExited(
+                (event) -> {rect.setEffect(null);}
+        );
+
         return icon;
 
     }

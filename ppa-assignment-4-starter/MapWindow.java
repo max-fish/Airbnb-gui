@@ -20,7 +20,7 @@ public class MapWindow extends Application {
             "HACK", "REDB", "HAVE"}, {"HILL", "EALI", "KENS", "WSTM", "TOWH", "NEWH", "BARK"}, {"HOUN", "HAMM", "WAND", "CITY",
             "GWCH", "BEXL"}, {"RICH", "MERT", "LAMB", "STHW", "LEWS"}, {"KING", "SUTT", "CROY", "BROM"}};
 
-    private static HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
+    public static final HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
 
     private static int gridHeight = 7;
     private static int[] gridWidths = new int[]{1, 3, 7, 7, 6, 5, 4};
@@ -48,6 +48,10 @@ public class MapWindow extends Application {
 
     }
 
+        public static HashMap getButtonToProperties(){
+        return buttonToProperties;
+        }
+
         public void addButtonRow (int offset, String[] names){
             buttonDetails.add(new ButtonArrayDetails(offset, names));
         }
@@ -71,11 +75,11 @@ public class MapWindow extends Application {
                 }
             }
             //for testing
-            for (Button button: buttonToProperties.keySet()){
+            /*for (Button button: buttonToProperties.keySet()){
                 String key = button.toString();
                 int value = buttonToProperties.get(button).size();
                 System.out.println(key + " " + value);
-            }
+            }*/
             return tbr;
         }
 }

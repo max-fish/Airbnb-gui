@@ -1,6 +1,7 @@
 
 
 import javafx.application.Application;
+import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,12 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Rectangle;
 
 import javax.swing.*;
+import java.nio.file.Files;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 /**
  *
@@ -41,24 +46,28 @@ public class MainViewer extends Application
         pane = new BorderPane();
         pane.setPadding(new Insets(10, 10, 10, 10));
         pane.setMinSize(300, 300);
+        pane.setPrefSize(800,600);
 
         Rectangle welcome = new Rectangle();
+
 
 
         welcome.widthProperty().bind(pane.widthProperty());
 
 
-        welcome.setFill(Color.GREY);
+        welcome.setFill(Color.rgb(189,189,189));
+
+        pane.setStyle("-fx-background-color: #E0E0E0;");
 
         Text welcomeText = new Text();
 
-        welcomeText.setText("Welcome!");
+        welcomeText.setText("Welcome to Airbnb");
 
+        welcomeText.setFont(Font.loadFont(getClass().getResourceAsStream("Raleway/Raleway-Thin.ttf"), 40));
 
+       //pane.setCenter(welcome);
 
-        pane.setCenter(welcome);
-
-       // pane.setCenter(welcomeText);
+       pane.setCenter(welcomeText);
 
 
         HBox selection = new HBox();
@@ -101,7 +110,7 @@ public class MainViewer extends Application
 
         AnchorPane traverse = new AnchorPane();
 
-        welcome.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(2)));
+        welcome.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(1.6)));
 
 
         Button previous = new Button("Previous");
@@ -133,12 +142,11 @@ public class MainViewer extends Application
         traverse.setPadding(new Insets(10,0,0,0));
 
         // JavaFX must have a Scene (window content) inside a Stage (window)
-        Scene scene = new Scene(pane, 300,300);
+        Scene scene = new Scene(pane, 800,600);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
 
         selection.prefWidthProperty().bind(scene.widthProperty());
-
 
 
         // Show the Stage (window)
@@ -156,7 +164,12 @@ public class MainViewer extends Application
     private void searchProperties(ActionEvent event)
     {
         pane.setCenter(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-         }
+        Iterator<LinkedHashSet<AirbnbListing>> propertyIt =  MapWindow.getButtonToProperties().values().iterator();
+        Pane propertyList = new PropertyViewer(propertyIt.next()).propertyListContainer();
+        propertyList.setMaxHeight(Region.USE_PREF_SIZE);
+        propertyList.setMaxWidth(Region.USE_PREF_SIZE);
+        pane.setCenter(propertyList);
+    }
 
     /**
      * This will be executed when the button is clicked
