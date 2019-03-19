@@ -88,28 +88,34 @@ public class MainViewer extends Application
         HBox selection = new HBox();
 
 
-        FlowPane pricePanel = new FlowPane();
+        FlowPane lowPricePanel = new FlowPane();
+
+        FlowPane highPricePanel = new FlowPane();
 
 
         Label lowPriceLabel = new Label("Low Price: ");
 
         Label highPriceLabel = new Label("High Price: ");
 
+        lowPrice.setEditable(true);
         lowPrice.getItems().addAll(100,200,300);
 
+
+        highPrice.setEditable(true);
         highPrice.getItems().addAll(1000,2000,5000);
 
         lowPrice.setOnAction(this::selectedLowPrice);
 
         highPrice.setOnAction(this::selectedHighPrice);
 
-        pricePanel.getChildren().addAll(lowPriceLabel, lowPrice);
+        lowPricePanel.getChildren().addAll(lowPriceLabel, lowPrice);
 
-        pricePanel.getChildren().addAll(highPriceLabel, highPrice);
+        highPricePanel.getChildren().addAll(highPriceLabel, highPrice);
 
         //pricePanel.setAlignment(Pos.CENTER_RIGHT);
 
-        pricePanel.setHgap(10);
+        lowPricePanel.setHgap(10);
+        highPricePanel.setHgap(10);
 
         Button search = new Button("Search");
         search.setTextFill(Color.WHITE);
@@ -140,7 +146,7 @@ public class MainViewer extends Application
 
         search.setOnAction(this::searchProperties);
 
-        selection.getChildren().addAll(pricePanel, search);
+        selection.getChildren().addAll(lowPricePanel, highPricePanel, search);
         selection.setAlignment(Pos.CENTER_RIGHT);
 
 
@@ -189,6 +195,8 @@ public class MainViewer extends Application
         stage.setScene(scene);
 
         selection.prefWidthProperty().bind(scene.widthProperty());
+
+        scene.getStylesheets().add(MainViewer.class.getResource("Styling.css").toExternalForm());
 
 
         // Show the Stage (window)

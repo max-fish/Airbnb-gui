@@ -1,0 +1,27 @@
+.combo-box .arrow-button{
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box .arrow{
+    -fx-background-color: #FFFFFF;
+}
+
+.combo-box{
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box .arrow-button:hover {
+    -fx-background-color: #FD4747;
+}
+
+.combo-box .arrow-button :active {
+    -fx-background-color: #000000;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box .list-cell:active{
+    color: #000000;
+    }
