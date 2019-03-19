@@ -27,8 +27,12 @@ import java.util.LinkedHashSet;
 public class MainViewer extends Application
 {
 
+    private static final Color CORAL = Color.rgb(253,92,99);
+
     private int userLowPrice;
+
     private int userHighPrice;
+
     BorderPane pane;
 
     ComboBox<Integer> lowPrice = new ComboBox<Integer>();
@@ -39,22 +43,14 @@ public class MainViewer extends Application
     public void start(Stage stage) throws Exception
     {
 
-
         // Create a new border pane
         pane = new BorderPane();
         pane.setPadding(new Insets(10, 10, 10, 10));
         pane.setMinSize(300, 300);
         pane.setPrefSize(800,600);
-
-        Rectangle welcome = new Rectangle();
-
+        pane.setStyle("-fx-background-color: #FFFFFF;");
 
 
-        welcome.widthProperty().bind(pane.widthProperty());
-
-
-        //welcome.setFill(Color.rgb(189,189,189));
-        //welcome.setFill(Color.rgb(253,92,99));
 
 
         Text welcomeText = new Text();
@@ -62,25 +58,31 @@ public class MainViewer extends Application
         welcomeText.setText("Welcome to Airbnb");
         welcomeText.setFill(Color.WHITE);
 
-        welcomeText.setFont(Font.loadFont(getClass().getResourceAsStream("Raleway/Raleway-Regular.ttf"), 50));
+        welcomeText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
 
-        Image airbnbLogo = new Image(getClass().getResourceAsStream("AirBNB logo.png"));
+        Image airbnbLogo = new Image(getClass().getResourceAsStream("thin_white_airbnb_logo.png"));
 
 
         StackPane welcomePane = new StackPane();
 
         ImageView airbnbLogoView = new ImageView(airbnbLogo);
-        airbnbLogoView.setFitHeight(150);
-        airbnbLogoView.setFitWidth(150);
+        airbnbLogoView.setFitHeight(100);
         airbnbLogoView.setPreserveRatio(true);
 
-        welcomePane.getChildren().addAll(airbnbLogoView, welcomeText);
+
         welcomePane.setMargin(airbnbLogoView, new Insets(-150,0,0,0));
        //pane.setCenter(welcome);
 
+        Rectangle welcomePaneContainer = new Rectangle();
+        welcomePaneContainer.setFill(CORAL);
+        welcomePaneContainer.setArcHeight(20);
+        welcomePaneContainer.setArcWidth(10);
+
+        welcomePane.getChildren().addAll(welcomePaneContainer, airbnbLogoView, welcomeText);
+
        pane.setCenter(welcomePane);
 
-        pane.getCenter().setStyle("-fx-background-color: #FD5C63;");
+       // pane.getCenter().setStyle("-fx-background-color: #FD5C63;");
 
 
         HBox selection = new HBox();
@@ -109,7 +111,32 @@ public class MainViewer extends Application
 
         pricePanel.setHgap(10);
 
-        Button search = new Button("search");
+        Button search = new Button("Search");
+        search.setTextFill(Color.WHITE);
+        search.setStyle("-fx-background-color: #FD5C63;");
+        search.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Bold.otf"), 12));
+
+        search.setOnMouseEntered(
+                (event) -> {
+                    search.setStyle("-fx-background-color: #FD4747;");
+                });
+
+        search.setOnMouseExited(
+                (event) -> {
+                    search.setStyle("-fx-background-color: #FD5C63;");
+                });
+
+        search.setOnMousePressed(
+                (event) -> {
+                 search.setStyle("-fx-background-color: #000000;");
+                 search.setTextFill(CORAL);
+                });
+        search.setOnMouseReleased(
+                (event) -> {
+                    search.setStyle("-fx-background-color: #FD5C63;");
+                    search.setTextFill(Color.WHITE);
+                });
+
 
         search.setOnAction(this::searchProperties);
 
@@ -122,8 +149,6 @@ public class MainViewer extends Application
 
 
         AnchorPane traverse = new AnchorPane();
-
-        welcome.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(1.6)));
 
 
         Button previous = new Button("Previous");
@@ -140,17 +165,21 @@ public class MainViewer extends Application
 
         pane.setBottom(traverse);
 
+        welcomePaneContainer.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(1.6)));
+
+        welcomePaneContainer.widthProperty().bind(pane.widthProperty().subtract(10));
+
 
         //adds borders under the selection bar and above the traverse bar
 
-        selection.setBorder(new Border(new BorderStroke(Color.GREY,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,0,1,0), new Insets(0,0,-10,0))));
+       // selection.setBorder(new Border(new BorderStroke(Color.GREY,
+         //       BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,0,1,0), new Insets(0,0,-10,0))));
 
         selection.setPadding(new Insets(0,0,5,0));
 
 
-        traverse.setBorder(new Border(new BorderStroke(Color.GREY,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,0,0,0))));
+      //  traverse.setBorder(new Border(new BorderStroke(Color.GREY,
+        //        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,0,0,0))));
 
         traverse.setPadding(new Insets(10,0,0,0));
 
@@ -182,6 +211,10 @@ public class MainViewer extends Application
         propertyList.setMaxHeight(Region.USE_PREF_SIZE);
         propertyList.setMaxWidth(Region.USE_PREF_SIZE);
         pane.setCenter(propertyList);
+    }
+
+    private void welcomeScreenAnimation(){
+
     }
 
     /**
