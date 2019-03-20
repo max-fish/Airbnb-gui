@@ -1,9 +1,11 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -47,6 +49,7 @@ public class PropertyViewer extends Application {
         TilePane propertyList = new TilePane();
         propertyList.setHgap(10);
         propertyList.setVgap(10);
+        propertyList.setPadding(new Insets(10,10,10,10));
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
         }
@@ -61,13 +64,17 @@ public class PropertyViewer extends Application {
         ds.setColor(Color.LIGHTGREY);
 
         rect.setFill(Color.WHITE);
-        rect.setHeight(200);
+        rect.setHeight(215);
         rect.setWidth(200);
         rect.setArcWidth(20);
         rect.setArcHeight(20);
-
+        rect.setFill(MainViewer.CORAL);
 
         GridPane infoLayout = new GridPane();
+        infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
+                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
+        infoLayout.setStyle("-fx-background-color: #FFFFFF;");
+        infoLayout.setMaxHeight(200);
         Label picLabel = new Label("Picture here");
         Label nameLabel = new Label(property.getName());
         infoLayout.addRow(0, picLabel);
@@ -88,6 +95,7 @@ public class PropertyViewer extends Application {
         icon.setMaxWidth(200);
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
+        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
         icon.setOnMouseEntered(
                 (event) -> {rect.setEffect(ds);}

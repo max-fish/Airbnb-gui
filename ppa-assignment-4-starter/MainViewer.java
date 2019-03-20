@@ -1,12 +1,15 @@
 
 
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.geometry.Insets;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,9 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
+import java.awt.*;
+import java.security.Key;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -27,11 +32,14 @@ import java.util.LinkedHashSet;
 public class MainViewer extends Application
 {
 
-    private static final Color CORAL = Color.rgb(253,92,99);
+    public static final Color CORAL = Color.rgb(253,92,99);
 
     private int userLowPrice;
 
     private int userHighPrice;
+
+    TabPane root;
+    Tab welcomeTab;
 
     BorderPane pane;
 
@@ -43,7 +51,8 @@ public class MainViewer extends Application
     public void start(Stage stage) throws Exception
     {
 
-        // Create a new border pane
+        root = new TabPane();
+
         pane = new BorderPane();
         pane.setPadding(new Insets(10, 10, 10, 10));
         pane.setMinSize(300, 300);
@@ -57,6 +66,7 @@ public class MainViewer extends Application
 
         welcomeText.setText("Welcome to Airbnb");
         welcomeText.setFill(Color.WHITE);
+        welcomeText.setOpacity(0);
 
         welcomeText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
 
@@ -68,6 +78,7 @@ public class MainViewer extends Application
         ImageView airbnbLogoView = new ImageView(airbnbLogo);
         airbnbLogoView.setFitHeight(100);
         airbnbLogoView.setPreserveRatio(true);
+        airbnbLogoView.setOpacity(0);
 
 
         welcomePane.setMargin(airbnbLogoView, new Insets(-150,0,0,0));
@@ -81,6 +92,21 @@ public class MainViewer extends Application
         welcomePane.getChildren().addAll(welcomePaneContainer, airbnbLogoView, welcomeText);
 
        pane.setCenter(welcomePane);
+
+       Timeline fadeInTimeline = new Timeline();
+
+       KeyValue seenLogo = new KeyValue(airbnbLogoView.opacityProperty(), 1);
+       KeyValue pause = new KeyValue(welcomeText.opacityProperty(), 0);//do nothing
+       KeyValue seenWelcomeText = new KeyValue(welcomeText.opacityProperty(), 1);
+
+
+        KeyFrame logoFadeIn = new KeyFrame(Duration.millis(2000), seenLogo);
+        KeyFrame delay = new KeyFrame(Duration.millis(500), pause);
+        KeyFrame welcomeTextFadeIn = new KeyFrame(Duration.millis(2000), seenWelcomeText);
+
+        fadeInTimeline.getKeyFrames().addAll(logoFadeIn, delay, welcomeTextFadeIn);
+        fadeInTimeline.setCycleCount(1);
+        fadeInTimeline.play();
 
        // pane.getCenter().setStyle("-fx-background-color: #FD5C63;");
 
@@ -118,30 +144,8 @@ public class MainViewer extends Application
         highPricePanel.setHgap(10);
 
         Button search = new Button("Search");
-        search.setTextFill(Color.WHITE);
-        search.setStyle("-fx-background-color: #FD5C63;");
+        //search.setTextFill(Color.WHITE);
         search.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Bold.otf"), 12));
-
-        search.setOnMouseEntered(
-                (event) -> {
-                    search.setStyle("-fx-background-color: #FD4747;");
-                });
-
-        search.setOnMouseExited(
-                (event) -> {
-                    search.setStyle("-fx-background-color: #FD5C63;");
-                });
-
-        search.setOnMousePressed(
-                (event) -> {
-                 search.setStyle("-fx-background-color: #000000;");
-                 search.setTextFill(CORAL);
-                });
-        search.setOnMouseReleased(
-                (event) -> {
-                    search.setStyle("-fx-background-color: #FD5C63;");
-                    search.setTextFill(Color.WHITE);
-                });
 
 
         search.setOnAction(this::searchProperties);
@@ -189,15 +193,20 @@ public class MainViewer extends Application
 
         traverse.setPadding(new Insets(10,0,0,0));
 
+        welcomeTab = new Tab();
+        welcomeTab.setClosable(false);
+        welcomeTab.setText("Welcome");
+        welcomeTab.setContent(pane);
+        root.getTabs().add(welcomeTab);
+
         // JavaFX must have a Scene (window content) inside a Stage (window)
-        Scene scene = new Scene(pane, 800,600);
+        Scene scene = new Scene(root, 800,600);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
 
         selection.prefWidthProperty().bind(scene.widthProperty());
 
         scene.getStylesheets().add(MainViewer.class.getResource("Styling.css").toExternalForm());
-
 
         // Show the Stage (window)
         stage.show();
@@ -213,16 +222,23 @@ public class MainViewer extends Application
 
     private void searchProperties(ActionEvent event)
     {
-        pane.setCenter(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+        Tab boroughTab = new Tab();
+        boroughTab.setText("Boroughs");
+        boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+        root.getTabs().add(boroughTab);
         Iterator<LinkedHashSet<AirbnbListing>> propertyIt =  MapWindow.getButtonToProperties().values().iterator();
         Pane propertyList = new PropertyViewer(propertyIt.next()).propertyListContainer();
         propertyList.setMaxHeight(Region.USE_PREF_SIZE);
         propertyList.setMaxWidth(Region.USE_PREF_SIZE);
-        pane.setCenter(propertyList);
-    }
+        ScrollPane propertyScrollBar = new ScrollPane();
+        propertyScrollBar.setContent(propertyList);
+        propertyScrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        propertyScrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-    private void welcomeScreenAnimation(){
-
+        Tab propertyTab = new Tab();
+        propertyTab.setText("Properties");
+        propertyTab.setContent(propertyScrollBar);
+        root.getTabs().add(propertyTab);
     }
 
     /**

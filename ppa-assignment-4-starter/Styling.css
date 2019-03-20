@@ -25,3 +25,66 @@
 .combo-box .list-cell:active{
     color: #000000;
     }
+
+@font-face {
+        font-family: 'airbnbButtonFont'; /*a name to be used later*/
+        src: url('Montserrat/MontserratAlternates-Bold.otf') format('otf'); /*URL to font*/
+}
+
+.button {
+    -fx-background-color: #FD5C63;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: 'airbnbButtonFont';
+}
+
+.button:hover{
+-fx-background-color: #FD4747;
+}
+
+.scroll-pane .thumb{
+    -fx-background-color: #FD5C63;
+}
+
+.scroll-pane .thumb:hover {
+    -fx-background-color: #FD4747;
+}
+
+.scroll-pane .thumb:active {
+    -fx-background-color: #000000;
+}
+
+.scroll-pane .track{
+    -fx-background-color: #E0E0E0;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane{
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .button{
+   color: #FD5C63;
+}
+
+
+.tab{
+    -fx-background-color: #FFFFFF;
+}
+
+.tab:selected{
+    -fx-border-color: #FD5C63;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 2px;
+}
+
+.tab:focused{
+    -fx-border-color: transparent;
+}
+
+.tab-header-background{
+    -fx-background-color: transparent;
+}
+
