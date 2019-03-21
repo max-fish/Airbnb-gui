@@ -2,10 +2,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.List;
 
 /**
  *
- * @version 0.1.1
+ * @version 0.1.2
  */
 public class LondonCSVUtilities {
     private static final Map<String, String> acronymToName = new HashMap<String, String>() {{
@@ -79,5 +80,26 @@ public class LondonCSVUtilities {
             }
         }
         return matchingPriceProperties;
+    }
+
+    /**
+     *
+     * @param low
+     * @param high
+     * @return
+     */
+    public static Map<String, List<AirbnbListing>> filteredResults(int low, int high){
+        Map<String, List<AirbnbListing>> tbr = new HashMap<String, List<AirbnbListing>>();
+        for(String value : acronymToName.values()){
+            tbr.put(value, new ArrayList<>());
+        }
+        for(AirbnbListing items : new AirbnbDataLoader().load()){
+            if((items.getPrice() > low) && (items.getPrice() < high)){
+                List<AirbnbListing> current = tbr.get(items.getNeighbourhood());
+                current.add(items);
+                tbr.put(items.getNeighbourhood(), current);
+            }
+        }
+        return tbr;
     }
 }
