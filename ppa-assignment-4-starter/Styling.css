@@ -96,3 +96,7 @@
 .tab-header-background{
     -fx-background-color: transparent;
 }
+
+.tab-content-area{
+    -fx-background-color: #FFFFFF;
+}

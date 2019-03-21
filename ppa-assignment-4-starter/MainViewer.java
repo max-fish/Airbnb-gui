@@ -40,7 +40,7 @@ public class MainViewer extends Application
 
     private int userHighPrice;
 
-    GridPane root;
+    BorderPane root;
 
     TabPane panels;
 
@@ -56,17 +56,10 @@ public class MainViewer extends Application
     public void start(Stage stage) throws Exception
     {
 
-        root = new GridPane();
-        root.setAlignment(Pos.CENTER);
+        root = new BorderPane();
+     //   root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(0,0,0,0));
 
-        RowConstraints tabs = new RowConstraints();
-        tabs.setPercentHeight(95);
-
-        RowConstraints selector = new RowConstraints();
-        selector.setPercentHeight(5);
-
-        root.getRowConstraints().addAll(tabs, selector);
 
         panels = new TabPane();
 
@@ -192,6 +185,8 @@ public class MainViewer extends Application
 
         traverse.setRightAnchor(next, (double) 10);
 
+        traverse.setPadding(new Insets(0,10,10,10));
+
 
         previous.setOnAction(
                 (event) -> {
@@ -229,12 +224,9 @@ public class MainViewer extends Application
         welcomeTab.setContent(pane);
         panels.getTabs().add(welcomeTab);
 
-        root.addRow(0, panels);
-        root.addRow(1, traverse);
+        root.setCenter(panels);
 
-        GridPane.setHalignment(panels, HPos.CENTER);
-        GridPane.setHalignment(traverse, HPos.CENTER);
-        GridPane.setValignment(traverse, VPos.BOTTOM);
+        root.setBottom(traverse);
 
 
         // JavaFX must have a Scene (window content) inside a Stage (window)
@@ -272,12 +264,12 @@ public class MainViewer extends Application
         panels.getTabs().add(boroughTab);
         Iterator<LinkedHashSet<AirbnbListing>> propertyIt =  MapWindow.getButtonToProperties().values().iterator();
         Pane propertyList = new PropertyViewer(propertyIt.next()).getPropertyList();
-        propertyList.setMaxHeight(Region.USE_PREF_SIZE);
-        propertyList.setMaxWidth(Region.USE_PREF_SIZE);
         ScrollPane propertyScrollBar = new ScrollPane();
         propertyScrollBar.setContent(propertyList);
+        propertyScrollBar.setFitToWidth(true);
         propertyScrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         propertyScrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
 
         Tab propertyTab = new Tab();
         propertyTab.setText("Properties");
