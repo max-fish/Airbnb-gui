@@ -3,7 +3,9 @@
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -38,7 +40,10 @@ public class MainViewer extends Application
 
     private int userHighPrice;
 
-    TabPane root;
+    GridPane root;
+
+    TabPane panels;
+
     Tab welcomeTab;
 
     BorderPane pane;
@@ -51,7 +56,19 @@ public class MainViewer extends Application
     public void start(Stage stage) throws Exception
     {
 
-        root = new TabPane();
+        root = new GridPane();
+        root.setAlignment(Pos.CENTER);
+        root.setPadding(new Insets(0,0,0,0));
+
+        RowConstraints tabs = new RowConstraints();
+        tabs.setPercentHeight(95);
+
+        RowConstraints selector = new RowConstraints();
+        selector.setPercentHeight(5);
+
+        root.getRowConstraints().addAll(tabs, selector);
+
+        panels = new TabPane();
 
         pane = new BorderPane();
         pane.setPadding(new Insets(10, 10, 10, 10));
@@ -100,8 +117,8 @@ public class MainViewer extends Application
        KeyValue seenWelcomeText = new KeyValue(welcomeText.opacityProperty(), 1);
 
 
-        KeyFrame logoFadeIn = new KeyFrame(Duration.millis(2000), seenLogo);
-        KeyFrame delay = new KeyFrame(Duration.millis(500), pause);
+        KeyFrame logoFadeIn = new KeyFrame(Duration.millis(2100), seenLogo);
+        KeyFrame delay = new KeyFrame(Duration.millis(1000), pause);
         KeyFrame welcomeTextFadeIn = new KeyFrame(Duration.millis(2000), seenWelcomeText);
 
         fadeInTimeline.getKeyFrames().addAll(logoFadeIn, delay, welcomeTextFadeIn);
@@ -145,7 +162,7 @@ public class MainViewer extends Application
 
         Button search = new Button("Search");
         //search.setTextFill(Color.WHITE);
-        search.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Bold.otf"), 12));
+        //search.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Bold.otf"), 12));
 
 
         search.setOnAction(this::searchProperties);
@@ -159,7 +176,7 @@ public class MainViewer extends Application
 
 
         AnchorPane traverse = new AnchorPane();
-
+        traverse.setId("traverseBar");
 
         Button previous = new Button("Previous");
 
@@ -173,9 +190,19 @@ public class MainViewer extends Application
         traverse.setRightAnchor(next, (double) 10);
 
 
-        pane.setBottom(traverse);
+        previous.setOnAction(
+                (event) -> {
+                    panels.getSelectionModel().selectPrevious();
+                }
+        );
 
-        welcomePaneContainer.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().add(traverse.heightProperty()).multiply(1.6)));
+        next.setOnAction(
+                (event) ->  {panels.getSelectionModel().selectNext();}
+        );
+
+
+
+        welcomePaneContainer.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().multiply(1.7)));
 
         welcomePaneContainer.widthProperty().bind(pane.widthProperty().subtract(10));
 
@@ -185,26 +212,40 @@ public class MainViewer extends Application
        // selection.setBorder(new Border(new BorderStroke(Color.GREY,
          //       BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,0,1,0), new Insets(0,0,-10,0))));
 
-        selection.setPadding(new Insets(0,0,5,0));
+        selection.setPadding(new Insets(0,0,20,0));
 
 
-      //  traverse.setBorder(new Border(new BorderStroke(Color.GREY,
-        //        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,0,0,0))));
+        //traverse.setBorder(new Border(new BorderStroke(Color.GREY,
+          //      BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,10,0,10))));
 
-        traverse.setPadding(new Insets(10,0,0,0));
+        //traverse.setPadding(new Insets(10,0,0,0));
 
         welcomeTab = new Tab();
         welcomeTab.setClosable(false);
         welcomeTab.setText("Welcome");
         welcomeTab.setContent(pane);
-        root.getTabs().add(welcomeTab);
+        panels.getTabs().add(welcomeTab);
+
+        root.addRow(0, panels);
+        root.addRow(1, traverse);
+
+        GridPane.setHalignment(panels, HPos.CENTER);
+        GridPane.setHalignment(traverse, HPos.CENTER);
+        GridPane.setValignment(traverse, VPos.BOTTOM);
+
 
         // JavaFX must have a Scene (window content) inside a Stage (window)
         Scene scene = new Scene(root, 800,600);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
 
-        selection.prefWidthProperty().bind(scene.widthProperty());
+
+        selection.prefWidthProperty().bind(panels.widthProperty());
+
+        panels.minWidthProperty().bind(root.widthProperty());
+
+        root.minHeightProperty().bind(scene.heightProperty());
+        root.minWidthProperty().bind(scene.widthProperty());
 
         scene.getStylesheets().add(MainViewer.class.getResource("Styling.css").toExternalForm());
 
@@ -225,7 +266,7 @@ public class MainViewer extends Application
         Tab boroughTab = new Tab();
         boroughTab.setText("Boroughs");
         boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-        root.getTabs().add(boroughTab);
+        panels.getTabs().add(boroughTab);
         Iterator<LinkedHashSet<AirbnbListing>> propertyIt =  MapWindow.getButtonToProperties().values().iterator();
         Pane propertyList = new PropertyViewer(propertyIt.next()).propertyListContainer();
         propertyList.setMaxHeight(Region.USE_PREF_SIZE);
@@ -238,7 +279,7 @@ public class MainViewer extends Application
         Tab propertyTab = new Tab();
         propertyTab.setText("Properties");
         propertyTab.setContent(propertyScrollBar);
-        root.getTabs().add(propertyTab);
+        panels.getTabs().add(propertyTab);
     }
 
     /**
