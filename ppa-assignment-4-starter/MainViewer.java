@@ -161,6 +161,7 @@ public class MainViewer extends Application
         highPricePanel.setHgap(10);
 
         Button search = new Button("Search");
+        search.setId("MainButtons");
         //search.setTextFill(Color.WHITE);
         //search.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Bold.otf"), 12));
 
@@ -179,8 +180,10 @@ public class MainViewer extends Application
         traverse.setId("traverseBar");
 
         Button previous = new Button("Previous");
+        previous.setId("MainButtons");
 
         Button next = new Button("next");
+        next.setId("MainButtons");
 
 
         traverse.getChildren().addAll(previous,next);
@@ -268,7 +271,7 @@ public class MainViewer extends Application
         boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
         panels.getTabs().add(boroughTab);
         Iterator<LinkedHashSet<AirbnbListing>> propertyIt =  MapWindow.getButtonToProperties().values().iterator();
-        Pane propertyList = new PropertyViewer(propertyIt.next()).propertyListContainer();
+        Pane propertyList = new PropertyViewer(propertyIt.next()).getPropertyList();
         propertyList.setMaxHeight(Region.USE_PREF_SIZE);
         propertyList.setMaxWidth(Region.USE_PREF_SIZE);
         ScrollPane propertyScrollBar = new ScrollPane();

@@ -18,31 +18,38 @@
     -fx-background-color: #FD4747;
 }
 
-.combo-box .arrow-button :active {
+.combo-box .arrow-button:pressed{
     -fx-background-color: #000000;
 }
 
-.combo-box .list-cell:hover {
+
+.combo-box .list-view .list-cell:hover {
     -fx-background-color: #FD5C63;
 }
 
-.combo-box .list-cell:active{
+.combo-box .cell:selected{
     color: #000000;
     }
 
-@font-face {
-        font-family: 'airbnbButtonFont'; /*a name to be used later*/
-        src: url('Montserrat/MontserratAlternates-Bold.otf') format('otf'); /*URL to font*/
+
+@font-face{
+    -fx-font-family: Montserrat Alternates SemiBold;
+    src: url('Montserrat/MontserratAlternates-SemiBold.otf');
 }
 
-.button {
+#MainButtons {
     -fx-background-color: #FD5C63;
     -fx-text-fill: #FFFFFF;
-    -fx-font-family: 'airbnbButtonFont';
+    -fx-font-family: Montserrat Alternates Bold;
 }
 
-.button:hover{
+#MainButtons:hover{
 -fx-background-color: #FD4747;
+}
+
+#MainButtons:pressed{
+-fx-background-color: #000000;
+-fx-text-fill: #FD5C63;
 }
 
 .scroll-pane .thumb{
@@ -66,22 +73,20 @@
 }
 
 .scroll-pane{
-    -fx-background-color: transparent;
-}
-
-.scroll-pane .button{
-   color: #FD5C63;
+    -fx-background-color: #FFFFFF;
 }
 
 
 .tab{
     -fx-background-color: #FFFFFF;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .tab:selected{
     -fx-border-color: #FD5C63;
     -fx-border-style: hidden hidden solid hidden;
-    -fx-border-width: 2px;
+    -fx-border-width: 3px;
 }
 
 .tab:focused{
@@ -91,4 +96,3 @@
 .tab-header-background{
     -fx-background-color: transparent;
 }
-

@@ -9,6 +9,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
 
@@ -39,17 +41,38 @@ public class PropertyViewer extends Application {
         primaryStage.show();*/
     }
 
-    public Pane propertyListContainer(){
+    public GridPane getPropertyList(){
+        GridPane fullWindow = new GridPane();
+        RowConstraints headerRow = new RowConstraints();
+        RowConstraints propertiesRow = new RowConstraints();
+
+        headerRow.setPercentHeight(35);
+        propertiesRow.setPercentHeight(65);
+
+        Text headerText = new Text();
+        headerText.setText("Your Properties");
+        headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
+        headerText.setFill(Color.rgb(72,72,72));
+
+        fullWindow.addRow(0, headerText);
+        fullWindow.addRow(1, makePropertyList());
+
+        return fullWindow;
+
+    }
+
+    /*public Pane propertyListContainer(){
         Pane container = new Pane();
         container.getChildren().add(makePropertyList());
         return container;
-    }
+    }*/
 
     public TilePane makePropertyList(){
         TilePane propertyList = new TilePane();
         propertyList.setHgap(10);
         propertyList.setVgap(10);
         propertyList.setPadding(new Insets(10,10,10,10));
+        propertyList.setAlignment(Pos.CENTER);
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
         }
