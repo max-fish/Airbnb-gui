@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.*;
 import javafx.scene.shape.Polygon;
@@ -12,27 +11,24 @@ import javafx.application.Application;
 import java.util.ArrayList;
 
 /**
- * @version 0.1.3
+ * @version 0.1.4
  */
 
 public class MapWindow extends Application {
-    private static String[][] boroughs = new String[][]{{"ENFI"}, {"BARN", "HRGY", "WALT"}, {"HRRW", "BREN", "CAMD", "ISLI",
-            "HACK", "REDB", "HAVE"}, {"HILL", "EALI", "KENS", "WSTM", "TOWH", "NEWH", "BARK"}, {"HOUN", "HAMM", "WAND", "CITY",
-            "GWCH", "BEXL"}, {"RICH", "MERT", "LAMB", "STHW", "LEWS"}, {"KING", "SUTT", "CROY", "BROM"}};
 
-    private static HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
-
-    private static int gridHeight = 7;
-    private static int[] gridWidths = new int[]{1, 3, 7, 7, 6, 5, 4};
+    private static HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties;
     private static int[] offset = new int[]{7, 4, 1, 0, 1, 2, 3};
 
 
     private List<ButtonArrayDetails> buttonDetails;
 
-    private static int buttonHeight = 35;
-    private static int buttonwidth = 150;
+    private static int maxButtonHeight = 120;
+    private static int maxButtonwidth = 120;
+
+    private static int buttonHeight = maxButtonHeight*3/4;
 
     public MapWindow() {
+        buttonToProperties = new HashMap<>();
         buttonDetails = new ArrayList<>();
     }
 
@@ -61,20 +57,24 @@ public class MapWindow extends Application {
                 for (int buttons = 0; buttons < buttonDetails.get(height).getRow(); buttons++) {
                     Button added = new Button(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons)));
                     added.setLayoutY(height * buttonHeight);
-                    added.setLayoutX((offset[height] * buttonwidth / 2) + buttons * buttonwidth);
-                    added.setMinSize(buttonwidth, buttonHeight);
 
-                    added.setLayoutX((buttonDetails.get(height).getOffset() * buttonwidth / 2) + buttons * buttonwidth);
-                    added.setMinSize(buttonwidth, buttonHeight);
+                    added.setLayoutX((buttonDetails.get(height).getOffset() * maxButtonwidth / 2) + buttons * maxButtonwidth);
+                    added.setShape(new Polygon(new double[]{
+                            // In form X, Y
+                            maxButtonwidth/2, 0,
+                            maxButtonwidth, buttonHeight/4,
+                            maxButtonwidth, 3*buttonHeight/4,
+                            maxButtonwidth/2, buttonHeight,
+                            0, 3*buttonHeight/4,
+                            0, buttonHeight/4
+                    }));
+                    added.setMinSize(maxButtonwidth, maxButtonHeight);
+                    added.setMaxSize(maxButtonwidth, maxButtonHeight);
+                    added.wrapTextProperty();
+
                     internal.getChildren().add(added);
                     buttonToProperties.put(added, LondonCSVUtilities.findPropertiesForUser(added.getText(), lower, higher));
                 }
-            }
-            //for testing
-            for (Button button: buttonToProperties.keySet()){
-                String key = button.toString();
-                int value = buttonToProperties.get(button).size();
-                System.out.println(key + " " + value);
             }
             return tbr;
         }
