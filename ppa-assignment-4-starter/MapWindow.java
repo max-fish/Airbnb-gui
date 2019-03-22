@@ -36,6 +36,10 @@ public class MapWindow {
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
 
+    public static HashMap<Button, LinkedHashSet<AirbnbListing>> getButtonToProperties(){
+        return buttonToProperties;
+    }
+
 
 
      public BorderPane fullBoroughWindow(int lower, int higher){

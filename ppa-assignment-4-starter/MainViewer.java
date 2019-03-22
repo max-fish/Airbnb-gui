@@ -36,28 +36,29 @@ public class MainViewer extends Application
 
     public static final Color CORAL = Color.rgb(253,92,99);
 
-    private int userLowPrice;
+    private Integer userLowPrice;
 
-    private int userHighPrice;
+    private Integer userHighPrice;
 
-    BorderPane root;
+   private BorderPane root;
 
-    TabPane panels;
+    private TabPane panels;
 
-    Tab welcomeTab;
+    private Tab welcomeTab;
 
-    BorderPane pane;
+    private BorderPane pane;
 
-    ComboBox<Integer> lowPrice = new ComboBox<Integer>();
+   private ComboBox<String> lowPrice = new ComboBox<String>();
 
-    ComboBox<Integer> highPrice = new ComboBox<Integer>();
+    private ComboBox<String> highPrice = new ComboBox<String>();
 
     @Override
     public void start(Stage stage) throws Exception
     {
 
         root = new BorderPane();
-     //   root.setAlignment(Pos.CENTER);
+
+
         root.setPadding(new Insets(0,0,0,0));
 
 
@@ -92,31 +93,22 @@ public class MainViewer extends Application
 
 
         welcomePane.setMargin(airbnbLogoView, new Insets(-150,0,0,0));
-       //pane.setCenter(welcome);
+
+        Text instructionText = new Text();
+        welcomePane.setMargin(instructionText, new Insets(0,0,-100,0));
+        instructionText.setText("Please fill out the criteria above with your liking.");
+        instructionText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Light.otf"), 25));
+        instructionText.setFill(Color.WHITE);
+        instructionText.setOpacity(0);
 
         Rectangle welcomePaneContainer = new Rectangle();
         welcomePaneContainer.setFill(CORAL);
         welcomePaneContainer.setArcHeight(20);
         welcomePaneContainer.setArcWidth(10);
 
-        welcomePane.getChildren().addAll(welcomePaneContainer, airbnbLogoView, welcomeText);
+        welcomePane.getChildren().addAll(welcomePaneContainer, airbnbLogoView, welcomeText, instructionText);
 
        pane.setCenter(welcomePane);
-
-       Timeline fadeInTimeline = new Timeline();
-
-       KeyValue seenLogo = new KeyValue(airbnbLogoView.opacityProperty(), 1);
-       KeyValue pause = new KeyValue(welcomeText.opacityProperty(), 0);//do nothing
-       KeyValue seenWelcomeText = new KeyValue(welcomeText.opacityProperty(), 1);
-
-
-        KeyFrame logoFadeIn = new KeyFrame(Duration.millis(2100), seenLogo);
-        KeyFrame delay = new KeyFrame(Duration.millis(1000), pause);
-        KeyFrame welcomeTextFadeIn = new KeyFrame(Duration.millis(2000), seenWelcomeText);
-
-        fadeInTimeline.getKeyFrames().addAll(logoFadeIn, delay, welcomeTextFadeIn);
-        fadeInTimeline.setCycleCount(1);
-        fadeInTimeline.play();
 
        // pane.getCenter().setStyle("-fx-background-color: #FD5C63;");
 
@@ -134,11 +126,11 @@ public class MainViewer extends Application
         Label highPriceLabel = new Label("High Price: ");
 
         lowPrice.setEditable(true);
-        lowPrice.getItems().addAll(100,200,300);
+        lowPrice.getItems().addAll("100","200","300");
 
 
         highPrice.setEditable(true);
-        highPrice.getItems().addAll(1000,2000,5000);
+        highPrice.getItems().addAll("1000","2000","5000");
 
         lowPrice.setOnAction(this::selectedLowPrice);
 
@@ -218,6 +210,67 @@ public class MainViewer extends Application
 
         //traverse.setPadding(new Insets(10,0,0,0));
 
+        Timeline fadeInTimeline = new Timeline();
+        lowPrice.setOpacity(0);
+        lowPriceLabel.setOpacity(0);
+        highPrice.setOpacity(0);
+        highPriceLabel.setOpacity(0);
+        search.setOpacity(0);
+        next.setOpacity(0);
+        previous.setOpacity(0);
+
+
+        KeyValue seenLogo = new KeyValue(airbnbLogoView.opacityProperty(), 1);
+        KeyValue welcomeTextPause = new KeyValue(welcomeText.opacityProperty(), 0);//do nothing
+        KeyValue seenWelcomeText = new KeyValue(welcomeText.opacityProperty(), 1);
+        KeyValue instructionTextPause = new KeyValue(instructionText.opacityProperty(), 0);//do nothing
+        KeyValue seenInstructionText = new KeyValue(instructionText.opacityProperty(), 1);
+
+        KeyValue lowPricePause = new KeyValue(lowPrice.opacityProperty(), 0);//do nothing
+        KeyValue lowPriceLabelPause = new KeyValue(lowPriceLabel.opacityProperty(), 0);//do nothing
+        KeyValue highPricePause = new KeyValue(highPrice.opacityProperty(), 0);//do nothing
+        KeyValue highPriceLabelPause = new KeyValue(highPriceLabel.opacityProperty(), 0);//do nothing
+        KeyValue searchButtonPause = new KeyValue(search.opacityProperty(), 0);//do nothing
+        KeyValue nextButtonPause = new KeyValue(next.opacityProperty(), 0);//do nothing
+        KeyValue previousButtonPause = new KeyValue(previous.opacityProperty(), 0);//do nothing
+
+        KeyValue seenLowPrice = new KeyValue(lowPrice.opacityProperty(), 1);
+        KeyValue seenLowPriceLabel = new KeyValue(lowPriceLabel.opacityProperty(), 1);
+        KeyValue seenHighPrice = new KeyValue(highPrice.opacityProperty(), 1);
+        KeyValue seenHighPriceLabel = new KeyValue(highPriceLabel.opacityProperty(), 1);
+        KeyValue seenSearchButton = new KeyValue(search.opacityProperty(), 1);
+        KeyValue seenNextButton = new KeyValue(next.opacityProperty(), 1);
+        KeyValue seenPreviousButton = new KeyValue(previous.opacityProperty(), 1);
+
+
+        KeyFrame logoFadeIn = new KeyFrame(Duration.millis(2100), seenLogo);
+        KeyFrame welcomeTextDelay = new KeyFrame(Duration.millis(1000), welcomeTextPause);
+        KeyFrame welcomeTextFadeIn = new KeyFrame(Duration.millis(2000), seenWelcomeText);
+        KeyFrame instructionTextDelay = new KeyFrame(Duration.millis(1500), instructionTextPause);
+        KeyFrame instructionTextFadeIn = new KeyFrame(Duration.millis(2500), seenInstructionText);
+
+        KeyFrame lowPriceDelay = new KeyFrame(Duration.millis(2000), lowPricePause);
+        KeyFrame lowPriceLabelDelay = new KeyFrame(Duration.millis(2000), lowPriceLabelPause);
+        KeyFrame highPriceDelay = new KeyFrame(Duration.millis(2000), highPricePause);
+        KeyFrame highPriceLabelDelay = new KeyFrame(Duration.millis(2000), highPriceLabelPause);
+        KeyFrame searchButtonDelay = new KeyFrame(Duration.millis(2000), searchButtonPause);
+        KeyFrame nextButtonDelay = new KeyFrame(Duration.millis(2000), nextButtonPause);
+        KeyFrame previousButtonDelay = new KeyFrame(Duration.millis(2000), previousButtonPause);
+
+        KeyFrame lowPriceFadeIn = new KeyFrame(Duration.millis(2500), seenLowPrice);
+        KeyFrame lowPriceLabelFadeIn = new KeyFrame(Duration.millis(2500), seenLowPriceLabel);
+        KeyFrame highPriceFadeIn = new KeyFrame(Duration.millis(2500), seenHighPrice);
+        KeyFrame highPriceLabelFadeIn = new KeyFrame(Duration.millis(2500), seenHighPriceLabel);
+        KeyFrame searchButtonFadeIn = new KeyFrame(Duration.millis(2500), seenSearchButton);
+        KeyFrame nextButtonFadeIn = new KeyFrame(Duration.millis(2500), seenNextButton);
+        KeyFrame previousButtonFadeIn = new KeyFrame(Duration.millis(2500), seenPreviousButton);
+
+        fadeInTimeline.getKeyFrames().addAll(logoFadeIn, welcomeTextDelay, welcomeTextFadeIn, instructionTextDelay, instructionTextFadeIn,
+                lowPriceDelay, lowPriceLabelDelay, highPriceDelay, highPriceLabelDelay, searchButtonDelay, nextButtonDelay, previousButtonDelay,
+                lowPriceFadeIn, lowPriceLabelFadeIn, highPriceFadeIn, highPriceLabelFadeIn, searchButtonFadeIn, nextButtonFadeIn, previousButtonFadeIn);
+        fadeInTimeline.setCycleCount(1);
+        fadeInTimeline.play();
+
         welcomeTab = new Tab();
         welcomeTab.setClosable(false);
         welcomeTab.setText("Welcome");
@@ -249,11 +302,11 @@ public class MainViewer extends Application
     }
 
     private void selectedLowPrice(ActionEvent event){
-        userLowPrice = lowPrice.getValue();
+         userLowPrice = Integer.parseInt(lowPrice.getValue());
     }
 
     private void selectedHighPrice(ActionEvent event){
-        userHighPrice = highPrice.getValue();
+        userHighPrice = Integer.parseInt(highPrice.getValue());
     }
 
     private void searchProperties(ActionEvent event)
@@ -262,9 +315,8 @@ public class MainViewer extends Application
         boroughTab.setText("Boroughs");
         boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
         panels.getTabs().add(boroughTab);
-        Iterator<LinkedHashSet<AirbnbListing>> propertyIt =  MapWindow.getButtonToProperties().values().iterator();
-        Pane propertyList = new PropertyViewer(propertyIt.next()).getPropertyList();
-        ScrollPane propertyScrollBar = new ScrollPane();
+
+       /* ScrollPane propertyScrollBar = new ScrollPane();
         propertyScrollBar.setContent(propertyList);
         propertyScrollBar.setFitToWidth(true);
         propertyScrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -274,7 +326,7 @@ public class MainViewer extends Application
         Tab propertyTab = new Tab();
         propertyTab.setText("Properties");
         propertyTab.setContent(propertyScrollBar);
-        panels.getTabs().add(propertyTab);
+        panels.getTabs().add(propertyTab);*/
     }
 
     /**

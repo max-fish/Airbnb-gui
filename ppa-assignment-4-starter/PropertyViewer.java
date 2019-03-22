@@ -54,12 +54,6 @@ public class PropertyViewer extends Application {
         return fullWindow;
     }
 
-    /*public Pane propertyListContainer(){
-        Pane container = new Pane();
-        container.getChildren().add(makePropertyList());
-        return container;
-    }*/
-
     public TilePane makePropertyList(){
         TilePane propertyList = new TilePane();
         propertyList.setAlignment(Pos.CENTER);
