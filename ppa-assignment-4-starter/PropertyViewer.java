@@ -17,13 +17,14 @@ import javafx.scene.effect.DropShadow;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 
 public class PropertyViewer extends Application {
 
-    private LinkedHashSet<AirbnbListing> properties = new LinkedHashSet<>();
+    private List<AirbnbListing> properties;
 
-    public PropertyViewer(LinkedHashSet<AirbnbListing> properties){
+    public PropertyViewer(List<AirbnbListing> properties){
         this.properties = properties;
     }
 
@@ -34,14 +35,18 @@ public class PropertyViewer extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-       /* AirbnbDataLoader loader = new AirbnbDataLoader();
-        Scene scene = new Scene(makePropertyList(), 300,300);
-        primaryStage.setTitle("JavaFX Example");
-        primaryStage.setScene(scene);
-        primaryStage.show();*/
     }
 
-    public BorderPane getPropertyList(){
+    public ScrollPane makeFullPropertyWindow(){
+        ScrollPane propertyScroll = new ScrollPane(makePropertyWindow());
+        propertyScroll.setFitToWidth(true);
+        propertyScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        propertyScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        return propertyScroll;
+    }
+
+
+    private BorderPane makePropertyWindow(){
         BorderPane fullWindow = new BorderPane();
         Text headerText = new Text();
         headerText.setText("Your Properties");
@@ -54,7 +59,7 @@ public class PropertyViewer extends Application {
         return fullWindow;
     }
 
-    public TilePane makePropertyList(){
+    private TilePane makePropertyList(){
         TilePane propertyList = new TilePane();
         propertyList.setAlignment(Pos.CENTER);
         propertyList.setHgap(10);
@@ -66,7 +71,7 @@ public class PropertyViewer extends Application {
         return propertyList;
     }
 
-    public StackPane makeIcon(AirbnbListing property){
+    private StackPane makeIcon(AirbnbListing property){
         StackPane icon = new StackPane();
         Rectangle rect = new Rectangle();
         DropShadow ds = new DropShadow();

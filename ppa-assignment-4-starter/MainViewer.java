@@ -42,7 +42,7 @@ public class MainViewer extends Application
 
    private BorderPane root;
 
-    private TabPane panels;
+    private static TabPane panels;
 
     private Tab welcomeTab;
 
@@ -315,6 +315,7 @@ public class MainViewer extends Application
         boroughTab.setText("Boroughs");
         boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
         panels.getTabs().add(boroughTab);
+        panels.getSelectionModel().select(boroughTab);
 
        /* ScrollPane propertyScrollBar = new ScrollPane();
         propertyScrollBar.setContent(propertyList);
@@ -327,6 +328,10 @@ public class MainViewer extends Application
         propertyTab.setText("Properties");
         propertyTab.setContent(propertyScrollBar);
         panels.getTabs().add(propertyTab);*/
+    }
+
+    public static TabPane getPanels(){
+        return panels;
     }
 
     /**
