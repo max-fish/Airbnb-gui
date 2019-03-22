@@ -26,6 +26,6 @@ public class MapFactory {
                 mapWin.addButtonRow(offset[x], boroughs[x]);
             }
         }
-        return mapWin.SearchPane(lower, upper);
+        return mapWin.fullBoroughWindow(lower, upper);
     }
 }

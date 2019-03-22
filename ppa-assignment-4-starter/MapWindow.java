@@ -1,8 +1,13 @@
 
+import com.sun.corba.se.spi.activation.ServerAlreadyRegisteredHelper;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import java.util.*;
 import javafx.scene.shape.Polygon;
 import java.util.ArrayList;
@@ -11,7 +16,12 @@ import java.util.ArrayList;
  * @version 0.1.5
  */
 
+
 public class MapWindow {
+
+    public static final HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
+    
+    private static int[] offset = new int[]{7, 4, 1, 0, 1, 2, 3};
 
     private List<ButtonArrayDetails> buttonDetails;
 
@@ -25,6 +35,21 @@ public class MapWindow {
     public void addButtonRow (int offset, String[] names){
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
+
+
+
+     public BorderPane fullBoroughWindow(int lower, int higher){
+            BorderPane fullWindow = new BorderPane();
+
+            Text headerText = new Text();
+            headerText.setText("Boroughs of London");
+            headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
+            headerText.setFill(Color.rgb(72,72,72));
+
+            fullWindow.setTop(headerText);
+            fullWindow.setCenter(SearchPane(lower,higher));
+            return fullWindow;
+        }
 
     public Pane SearchPane (int lower, int higher){
         Pane tbr = new FlowPane();
@@ -50,6 +75,7 @@ public class MapWindow {
                         0, 3*maxButtonSize/4,
                         0, maxButtonSize/4
                 }));
+              
                 added.setMinSize(maxButtonSize, maxButtonSize);
                 added.setMaxSize(maxButtonSize, maxButtonSize);
 
