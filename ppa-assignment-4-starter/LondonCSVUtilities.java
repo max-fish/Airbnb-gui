@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -47,5 +43,51 @@ public class LondonCSVUtilities {
             }
         }
         return tbr;
+    }
+
+    public enum sortBy {
+        PRICE, REVIEWS, HOST_NAME;
+    }
+    public static void sort(List<AirbnbListing> properties, sortBy sortType){
+        switch(sortType)
+        {
+            case PRICE : properties.sort(new Comparator<AirbnbListing>() {
+                @Override
+                public int compare(AirbnbListing o1, AirbnbListing o2) {
+                    if(o1.getPrice() < o2.getPrice()){
+                        return -1;
+                    }
+                    else if (o1.getPrice() == o2.getPrice()){
+                        return 0;
+                    }
+                    else{
+                        return 1;
+                    }
+                }
+            });
+
+            case REVIEWS: properties.sort(new Comparator<AirbnbListing>() {
+                @Override
+                public int compare(AirbnbListing o1, AirbnbListing o2) {
+                    if(o1.getNumberOfReviews() < o2.getNumberOfReviews()){
+                        return 1;
+                    }
+                    else if (o1.getNumberOfReviews() == o2.getNumberOfReviews()){
+                        return 0;
+                    }
+                    else{
+                        return -1;
+                    }
+                }
+            });
+
+            case HOST_NAME: properties.sort(new Comparator<AirbnbListing>() {
+                @Override
+                public int compare(AirbnbListing o1, AirbnbListing o2) {
+                   return o1.getHost_name().compareTo(o2.getHost_name());
+                }
+            });
+
+        }
     }
 }

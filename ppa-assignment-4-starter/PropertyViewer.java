@@ -1,9 +1,13 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -11,11 +15,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
+import sun.plugin.javascript.navig.Anchor;
+
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -48,12 +56,41 @@ public class PropertyViewer extends Application {
 
     private BorderPane makePropertyWindow(){
         BorderPane fullWindow = new BorderPane();
-        Text headerText = new Text();
+        AnchorPane header = new AnchorPane();
+        Label headerText = new Label();
         headerText.setText("Your Properties");
         headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
-        headerText.setFill(Color.rgb(72,72,72));
+        headerText.setTextFill(Color.rgb(72,72,72));
 
-        fullWindow.setTop(headerText);
+        ComboBox<String> sortBy = new ComboBox<>();
+
+        sortBy.getItems().addAll("Price", "Reviews", "Host Name");
+
+        sortBy.setOnAction(
+
+                (event) -> {
+                    if(sortBy.getValue().equals("Price")){
+                        LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.PRICE);
+                    }
+
+                   else if(sortBy.getValue().equals("Reviews")){
+                        LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.REVIEWS);
+                    }
+
+                   else{
+                        LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.HOST_NAME);
+                    }
+                    fullWindow.setCenter(makePropertyList());
+                }
+        );
+
+        header.getChildren().addAll(headerText, sortBy);
+
+
+        AnchorPane.setLeftAnchor(headerText, 0.0);
+        AnchorPane.setRightAnchor(sortBy, 10.0);
+
+        fullWindow.setTop(header);
         fullWindow.setCenter(makePropertyList());
 
         return fullWindow;

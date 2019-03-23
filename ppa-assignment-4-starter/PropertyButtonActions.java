@@ -26,12 +26,6 @@ public class PropertyButtonActions {
                         MainViewer.getPanels().getTabs().add(propertyTab);
                         MainViewer.getPanels().getSelectionModel().select(propertyTab);
                         });
-            Bounds boundsinParent = button.getBoundsInParent();
-           double centerX = (boundsinParent.getMinX() + boundsinParent.getMaxX())/2;
-           double centerY = (boundsinParent.getMinY() + boundsinParent.getMaxY())/2;
-
-            Path path = new Path();
-            path.getElements().add(button);
 
             ScaleTransition scaleTransition = new ScaleTransition();
             scaleTransition.setFromX(0);
