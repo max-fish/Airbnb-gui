@@ -21,9 +21,6 @@ public class LondonCSVUtilities {
         return acronymToName.get(acronym);
     }
 
-
-
-
     /**
      *
      * @param low
@@ -48,10 +45,12 @@ public class LondonCSVUtilities {
     public enum sortBy {
         PRICE, REVIEWS, HOST_NAME;
     }
+
     public static void sort(List<AirbnbListing> properties, sortBy sortType){
         switch(sortType)
         {
-            case PRICE : properties.sort(new Comparator<AirbnbListing>() {
+            case PRICE :
+                properties.sort(new Comparator<AirbnbListing>() {
                 @Override
                 public int compare(AirbnbListing o1, AirbnbListing o2) {
                     if(o1.getPrice() < o2.getPrice()){
@@ -65,6 +64,7 @@ public class LondonCSVUtilities {
                     }
                 }
             });
+            break;
 
             case REVIEWS: properties.sort(new Comparator<AirbnbListing>() {
                 @Override
@@ -80,6 +80,7 @@ public class LondonCSVUtilities {
                     }
                 }
             });
+            break;
 
             case HOST_NAME: properties.sort(new Comparator<AirbnbListing>() {
                 @Override
@@ -87,7 +88,7 @@ public class LondonCSVUtilities {
                    return o1.getHost_name().compareTo(o2.getHost_name());
                 }
             });
-
+            break;
         }
     }
 }
