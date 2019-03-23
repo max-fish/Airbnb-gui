@@ -1,3 +1,4 @@
+import com.sun.rowset.internal.Row;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -6,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -16,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
 
@@ -100,7 +104,7 @@ public class PropertyViewer extends Application {
         TilePane propertyList = new TilePane();
         propertyList.setAlignment(Pos.CENTER);
         propertyList.setHgap(10);
-        propertyList.setVgap(10);
+        propertyList.setVgap(20);
         propertyList.setPadding(new Insets(10,10,10,10));
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
@@ -110,51 +114,94 @@ public class PropertyViewer extends Application {
 
     private StackPane makeIcon(AirbnbListing property){
         StackPane icon = new StackPane();
+
+        GridPane infoLayout = new GridPane();
+
+        infoLayout.setMinHeight(300);
+        infoLayout.setMaxHeight(300);
+        infoLayout.setMinWidth(500);
+        infoLayout.setMaxWidth(500);
+        RowConstraints pictureRow = new RowConstraints();
+        pictureRow.setPercentHeight(60);
+
+
+
+        infoLayout.getRowConstraints().add(pictureRow);
+
+        infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
+                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
+        infoLayout.setStyle("-fx-background-color: #FFFFFF;");
+
+        Text picText = new Text("Picture here");
+        Text nameText = new Text(property.getName());
+        Text priceText = new Text("Price: £" + property.getPrice());
+        Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
+        Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
+
+        TextFlow picLabelContainer = new TextFlow(picText);
+        picLabelContainer.setTextAlignment(TextAlignment.CENTER);
+        TextFlow nameLabelContainer = new TextFlow(nameText);
+        TextFlow priceLabelContainer = new TextFlow(priceText);
+        TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
+        TextFlow nightsLabelContainer = new TextFlow(nightsText);
+
+        infoLayout.addRow(0, picLabelContainer);
+        infoLayout.addRow(1, nameLabelContainer);
+        infoLayout.addRow(2, priceLabelContainer);
+        infoLayout.addRow(3, reviewsLabelContainer);
+        infoLayout.addRow(4, nightsLabelContainer);
+
+        nameLabelContainer.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0))));
+
+        Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
+        for(Node node : infoLayout.getChildren()){
+            if(node instanceof Pane){
+                TextFlow container = (TextFlow) node;
+                container.setMinWidth(infoLayout.getMinWidth()-3);
+                container.setMaxWidth(infoLayout.getMinWidth()-3);
+                container.setPadding(new Insets(5,0,5,0));
+                Text label = (Text) container.getChildren().get(0);
+                label.setWrappingWidth(infoLayout.getMinWidth()-3);
+                label.setFont(infoFont);
+                label.setFill(Color.rgb(72,72,72));
+            }
+        }
+        infoLayout.setAlignment(Pos.CENTER);
+
+        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
+
+
+
+
         Rectangle rect = new Rectangle();
         DropShadow ds = new DropShadow();
         ds.setOffsetY(5);
         ds.setColor(Color.LIGHTGREY);
 
-        rect.setFill(Color.WHITE);
-        rect.setHeight(215);
-        rect.setWidth(200);
+        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
+        rect.widthProperty().bind(infoLayout.widthProperty());
         rect.setArcWidth(20);
         rect.setArcHeight(20);
         rect.setFill(MainViewer.CORAL);
 
-        GridPane infoLayout = new GridPane();
-        infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
-        infoLayout.setStyle("-fx-background-color: #FFFFFF;");
-        infoLayout.setMaxHeight(200);
-        Label picLabel = new Label("Picture here");
-        Label nameLabel = new Label(property.getName());
-        infoLayout.addRow(0, picLabel);
-        infoLayout.addRow(1, nameLabel);
-        GridPane.setHalignment(picLabel, HPos.CENTER);
-        GridPane.setHalignment(nameLabel, HPos.CENTER);
-        infoLayout.setAlignment(Pos.CENTER);
-
-        RowConstraints pictureRow = new RowConstraints();
-        pictureRow.setPercentHeight(66);
-
-        RowConstraints infoRow = new RowConstraints();
-        infoRow.setPercentHeight(34);
-
-
-        infoLayout.getRowConstraints().addAll(pictureRow,infoRow);
-        icon.setMaxHeight(200);
-        icon.setMaxWidth(200);
-        icon.getChildren().add(rect);
-        icon.getChildren().add(infoLayout);
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
+        icon.maxHeightProperty().bind(rect.heightProperty());
+        icon.maxWidthProperty().bind(rect.widthProperty());
+        icon.getChildren().add(rect);
+        icon.getChildren().add(infoLayout);
+
+
+
+
+
         icon.setOnMouseEntered(
-                (event) -> {rect.setEffect(ds);}
+                (event) -> {icon.setEffect(ds);}
 
         );
         icon.setOnMouseExited(
-                (event) -> {rect.setEffect(null);}
+                (event) -> {icon.setEffect(null);}
         );
 
         return icon;

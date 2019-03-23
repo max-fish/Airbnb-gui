@@ -3,11 +3,9 @@
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Scene;
+import javafx.geometry.*;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -289,8 +287,8 @@ public class MainViewer extends Application
 
 
         selection.prefWidthProperty().bind(panels.widthProperty());
-
         panels.minWidthProperty().bind(root.widthProperty());
+
 
         root.minHeightProperty().bind(scene.heightProperty());
         root.minWidthProperty().bind(scene.widthProperty());
@@ -299,6 +297,10 @@ public class MainViewer extends Application
 
         // Show the Stage (window)
         stage.show();
+    }
+
+    public static TabPane getPanels(){
+        return panels;
     }
 
     private void selectedLowPrice(ActionEvent event){
@@ -316,26 +318,5 @@ public class MainViewer extends Application
         boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
         panels.getTabs().add(boroughTab);
         panels.getSelectionModel().select(boroughTab);
-
-       /* ScrollPane propertyScrollBar = new ScrollPane();
-        propertyScrollBar.setContent(propertyList);
-        propertyScrollBar.setFitToWidth(true);
-        propertyScrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        propertyScrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-
-        Tab propertyTab = new Tab();
-        propertyTab.setText("Properties");
-        propertyTab.setContent(propertyScrollBar);
-        panels.getTabs().add(propertyTab);*/
     }
-
-    public static TabPane getPanels(){
-        return panels;
-    }
-
-    /**
-     * This will be executed when the button is clicked
-     * It increments the count by 1
-     */
 }

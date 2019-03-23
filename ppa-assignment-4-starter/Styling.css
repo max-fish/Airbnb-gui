@@ -82,7 +82,7 @@
 }
 
 .scroll-pane{
-    -fx-background-color: #FFFFFF;
+        -fx-background-color: #FFFFFF;
 }
 
 
@@ -108,4 +108,8 @@
 
 .tab-content-area{
     -fx-background-color: #FFFFFF;
+}
+
+.stack-pane{
+    -fx-background-color: transparent;
 }
