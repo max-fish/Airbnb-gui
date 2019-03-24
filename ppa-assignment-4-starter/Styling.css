@@ -18,18 +18,27 @@
     -fx-background-color: #FD4747;
 }
 
-.combo-box .arrow-button:pressed{
+.combo-box .arrow-button:pressed {
     -fx-background-color: #000000;
 }
-
 
 .combo-box .list-view .list-cell:hover {
     -fx-background-color: #FD5C63;
 }
 
-.combo-box .cell:selected{
-    color: #000000;
-    }
+
+.combo-box .list-view .list-cell{
+    -fx-focus-color: transparent;
+}
+
+.combo-box .list-view. list-cell:focused{
+    -fx-focus-color: transparent;
+}
+
+.combo-box .list-view .list-cell:pressed{
+    -fx-background-color: #000000;
+    -fx-text-fill: #FD5C63;
+}
 
 
 @font-face{
@@ -73,7 +82,7 @@
 }
 
 .scroll-pane{
-    -fx-background-color: #FFFFFF;
+        -fx-background-color: #FFFFFF;
 }
 
 
@@ -99,4 +108,8 @@
 
 .tab-content-area{
     -fx-background-color: #FFFFFF;
+}
+
+.stack-pane{
+    -fx-background-color: transparent;
 }

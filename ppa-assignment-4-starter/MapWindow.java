@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
 import java.util.*;
 import javafx.scene.shape.Polygon;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 /**
@@ -18,7 +20,8 @@ import java.util.ArrayList;
 
 public class MapWindow {
 
-    public static final HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
+    public static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
+
     
     private static int[] offset = new int[]{7, 4, 1, 0, 1, 2, 3};
 
@@ -34,6 +37,7 @@ public class MapWindow {
     public void addButtonRow (int offset, String[] names){
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
+
 
 
 
@@ -97,9 +101,21 @@ public class MapWindow {
                     added.getStyleClass().add("maxBuildings");
                 }
 
+
                 internal.getChildren().add(added);
+
+                buttonToProperties.put(added, housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))));
             }
         }
+        ScaleTransition grow = new ScaleTransition();
+        grow.setFromX(0);
+        grow.setFromY(0);
+        grow.setToX(1);
+        grow.setToY(1);
+        grow.setDuration(Duration.millis(1500));
+        grow.setNode(internal);
+        PropertyButtonActions.setPropertyButtonActions();
+        grow.play();
         return tbr;
     }
 }
