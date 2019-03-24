@@ -1,8 +1,6 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.List;
+import javafx.scene.text.Font;
+
+import java.util.*;
 
 /**
  *
@@ -26,63 +24,6 @@ public class LondonCSVUtilities {
     }
 
     /**
-     * @param borough
-     * @param lowPrice
-     * @param highPrice
-     * @return a linked hashset of airbnb listings that correspond with user specification
-     * if a parameter is null, that means the user does not want to filter using that criteria
-     */
-
-    public static LinkedHashSet<AirbnbListing> findPropertiesForUser(String borough, Integer lowPrice, Integer highPrice){
-        LinkedHashSet<AirbnbListing> allProperties = new LinkedHashSet<>();
-
-        if(borough != null && lowPrice != null && highPrice != null){
-            allProperties.addAll(filterByBorough(borough));
-            allProperties.addAll(filterByPrice(lowPrice, highPrice));
-        }
-
-       else if(borough != null){
-            allProperties.addAll(filterByBorough(borough));
-        }
-        else if(lowPrice != null && highPrice != null){
-            allProperties.addAll(filterByPrice(lowPrice, highPrice));
-        }
-        return allProperties;
-    }
-
-
-    /**
-     * @param borough
-     * @return all aibnb listings that are in a specified borough
-     */
-    private static ArrayList<AirbnbListing> filterByBorough(String borough){
-        ArrayList<AirbnbListing> matchingBoroughProperties = new ArrayList<AirbnbListing>();
-        for(AirbnbListing listing : StatisticsPage.dataLoaded){
-            if(listing.getNeighbourhood().equals(borough)){
-                matchingBoroughProperties.add(listing);
-            }
-        }
-        return matchingBoroughProperties;
-    }
-
-
-    /**
-     *
-     * @param lowPrice
-     * @param highPrice
-     * @return all airbnb listing that are in a specified price range
-     */
-    private static ArrayList<AirbnbListing> filterByPrice(int lowPrice, int highPrice){
-        ArrayList<AirbnbListing> matchingPriceProperties = new ArrayList<AirbnbListing>();
-        for(AirbnbListing listing : StatisticsPage.dataLoaded){
-            if(listing.getPrice() >= lowPrice && listing.getPrice() <= highPrice){
-                matchingPriceProperties.add(listing);
-            }
-        }
-        return matchingPriceProperties;
-    }
-
-    /**
      *
      * @param low
      * @param high
@@ -101,5 +42,55 @@ public class LondonCSVUtilities {
             }
         }
         return tbr;
+    }
+
+    public enum sortBy {
+        PRICE, REVIEWS, HOST_NAME;
+    }
+
+    public static void sort(List<AirbnbListing> properties, sortBy sortType){
+        switch(sortType)
+        {
+            case PRICE :
+                properties.sort(new Comparator<AirbnbListing>() {
+                @Override
+                public int compare(AirbnbListing o1, AirbnbListing o2) {
+                    if(o1.getPrice() < o2.getPrice()){
+                        return -1;
+                    }
+                    else if (o1.getPrice() == o2.getPrice()){
+                        return 0;
+                    }
+                    else{
+                        return 1;
+                    }
+                }
+            });
+            break;
+
+            case REVIEWS: properties.sort(new Comparator<AirbnbListing>() {
+                @Override
+                public int compare(AirbnbListing o1, AirbnbListing o2) {
+                    if(o1.getNumberOfReviews() < o2.getNumberOfReviews()){
+                        return 1;
+                    }
+                    else if (o1.getNumberOfReviews() == o2.getNumberOfReviews()){
+                        return 0;
+                    }
+                    else{
+                        return -1;
+                    }
+                }
+            });
+            break;
+
+            case HOST_NAME: properties.sort(new Comparator<AirbnbListing>() {
+                @Override
+                public int compare(AirbnbListing o1, AirbnbListing o2) {
+                   return o1.getHost_name().compareTo(o2.getHost_name());
+                }
+            });
+            break;
+        }
     }
 }

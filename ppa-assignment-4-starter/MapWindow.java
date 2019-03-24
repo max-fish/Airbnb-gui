@@ -1,5 +1,6 @@
 
 import com.sun.corba.se.spi.activation.ServerAlreadyRegisteredHelper;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
@@ -10,6 +11,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
 import java.util.*;
 import javafx.scene.shape.Polygon;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 /**
@@ -19,7 +22,8 @@ import java.util.ArrayList;
 
 public class MapWindow {
 
-    public static final HashMap<Button, LinkedHashSet<AirbnbListing>> buttonToProperties = new HashMap<>();
+    public static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
+
     
     private static int[] offset = new int[]{7, 4, 1, 0, 1, 2, 3};
 
@@ -35,6 +39,7 @@ public class MapWindow {
     public void addButtonRow (int offset, String[] names){
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
+
 
 
 
@@ -55,7 +60,8 @@ public class MapWindow {
         Pane tbr = new FlowPane();
         // stands for 'To Be Returned'
 
-        Map<String, List<AirbnbListing>> housesInRange = LondonCSVUtilities.filteredResults(lower, higher);
+       Map<String, List<AirbnbListing>> housesInRange = LondonCSVUtilities.filteredResults(lower, higher);
+
 
         Pane internal = new Pane();
         ((FlowPane) tbr).setAlignment(Pos.CENTER);
@@ -79,15 +85,26 @@ public class MapWindow {
                 added.setMinSize(maxButtonSize, maxButtonSize);
                 added.setMaxSize(maxButtonSize, maxButtonSize);
 
-                System.out.println(housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))).size());
 
                 if(housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))).size() == 0){
                     added.setDisable(true);
                 }
 
+
                 internal.getChildren().add(added);
+
+                buttonToProperties.put(added, housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))));
             }
         }
+        ScaleTransition grow = new ScaleTransition();
+        grow.setFromX(0);
+        grow.setFromY(0);
+        grow.setToX(1);
+        grow.setToY(1);
+        grow.setDuration(Duration.millis(1500));
+        grow.setNode(internal);
+        PropertyButtonActions.setPropertyButtonActions();
+        grow.play();
         return tbr;
     }
 }
