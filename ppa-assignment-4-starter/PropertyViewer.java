@@ -104,7 +104,7 @@ public class PropertyViewer extends Application {
         TilePane propertyList = new TilePane();
         propertyList.setAlignment(Pos.CENTER);
         propertyList.setHgap(10);
-        propertyList.setVgap(20);
+        propertyList.setVgap(50);
         propertyList.setPadding(new Insets(10,10,10,10));
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
@@ -115,14 +115,18 @@ public class PropertyViewer extends Application {
     private StackPane makeIcon(AirbnbListing property){
         StackPane icon = new StackPane();
 
+        icon.setBorder(new Border(new BorderStroke(Color.YELLOW,
+                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
         GridPane infoLayout = new GridPane();
 
         infoLayout.setMinHeight(300);
         infoLayout.setMaxHeight(300);
-        infoLayout.setMinWidth(500);
-        infoLayout.setMaxWidth(500);
+        infoLayout.setMinWidth(400);
+        infoLayout.setMaxWidth(400);
+        infoLayout.setGridLinesVisible(true);
         RowConstraints pictureRow = new RowConstraints();
         pictureRow.setPercentHeight(60);
+        pictureRow.setVgrow(Priority.NEVER);
 
 
 
@@ -167,9 +171,7 @@ public class PropertyViewer extends Application {
                 label.setFill(Color.rgb(72,72,72));
             }
         }
-        infoLayout.setAlignment(Pos.CENTER);
 
-        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
 
 
@@ -179,18 +181,22 @@ public class PropertyViewer extends Application {
         ds.setOffsetY(5);
         ds.setColor(Color.LIGHTGREY);
 
-        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
-        rect.widthProperty().bind(infoLayout.widthProperty());
+
+        rect.heightProperty().bind(infoLayout.maxHeightProperty().add(15));
+        rect.widthProperty().bind(infoLayout.maxWidthProperty());
         rect.setArcWidth(20);
         rect.setArcHeight(20);
         rect.setFill(MainViewer.CORAL);
 
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
-        icon.maxHeightProperty().bind(rect.heightProperty());
-        icon.maxWidthProperty().bind(rect.widthProperty());
+
+
+        icon.maxHeightProperty().bind(infoLayout.heightProperty());
+        icon.maxWidthProperty().bind(infoLayout.widthProperty());
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
+
 
 
 
