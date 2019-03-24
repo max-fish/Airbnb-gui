@@ -1,6 +1,4 @@
 
-import com.sun.corba.se.spi.activation.ServerAlreadyRegisteredHelper;
-import javafx.animation.ScaleTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
@@ -60,15 +58,16 @@ public class MapWindow {
         Pane tbr = new FlowPane();
         // stands for 'To Be Returned'
 
-       Map<String, List<AirbnbListing>> housesInRange = LondonCSVUtilities.filteredResults(lower, higher);
-
+        Map<String, List<AirbnbListing>> housesInRange = LondonCSVUtilities.filteredResults(lower, higher);
+        int max = housesInRange.values().stream().max(Comparator.comparing(v -> v.size())).get().size();
 
         Pane internal = new Pane();
         ((FlowPane) tbr).setAlignment(Pos.CENTER);
         tbr.getChildren().add(internal);
         for (int height = 0; height < buttonDetails.size(); height++) {
             for (int buttons = 0; buttons < buttonDetails.get(height).getRow(); buttons++) {
-                Button added = new Button(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons)));
+                String nameOfBorough = LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons));
+                Button added = new Button(nameOfBorough);
                 added.setLayoutY(height * buttonHeight);
 
                 added.setLayoutX((buttonDetails.get(height).getOffset() * maxButtonSize / 2) + buttons * maxButtonSize);
@@ -85,9 +84,21 @@ public class MapWindow {
                 added.setMinSize(maxButtonSize, maxButtonSize);
                 added.setMaxSize(maxButtonSize, maxButtonSize);
 
-
-                if(housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))).size() == 0){
+                if(housesInRange.get(nameOfBorough).size() == 0){
                     added.setDisable(true);
+                }
+                else if(housesInRange.get(nameOfBorough).size()/max <= 0.25){
+                    added.getStyleClass().add("lowBuildings");
+                }
+                else if(housesInRange.get(nameOfBorough).size()/max <= 0.5){
+                    added.getStyleClass().add("midBuildings");
+
+                }
+                else if(housesInRange.get(nameOfBorough).size()/max <= 0.75){
+                    added.getStyleClass().add("highBuildings");
+                }
+                else{
+                    added.getStyleClass().add("maxBuildings");
                 }
 
 
