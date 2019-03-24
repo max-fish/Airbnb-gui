@@ -1,12 +1,13 @@
 
+import javafx.animation.ScaleTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.BorderPane;
+
 import java.util.*;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
@@ -83,6 +84,9 @@ public class MapWindow {
               
                 added.setMinSize(maxButtonSize, maxButtonSize);
                 added.setMaxSize(maxButtonSize, maxButtonSize);
+
+
+                added.setId("boroughButton");
 
                 if(housesInRange.get(nameOfBorough).size() == 0){
                     added.setDisable(true);
