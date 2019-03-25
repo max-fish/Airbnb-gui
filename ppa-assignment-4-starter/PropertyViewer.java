@@ -187,12 +187,13 @@ public class PropertyViewer extends Application {
         rect.setFill(MainViewer.CORAL);
 
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
+        StackPane.setAlignment(rect, Pos.TOP_LEFT);
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
 
-        icon.maxHeightProperty().bind(infoLayout.heightProperty());
-        icon.maxWidthProperty().bind(infoLayout.widthProperty());
+        icon.maxHeightProperty().bind(rect.heightProperty());
+        icon.maxWidthProperty().bind(rect.widthProperty());
 
 
         icon.setOnMouseEntered(
