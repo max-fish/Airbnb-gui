@@ -129,9 +129,12 @@ public class PropertyViewer extends Application {
         pictureRow.setPercentHeight(60);
         pictureRow.setVgrow(Priority.NEVER);
 
+        RowConstraints otherRows = new RowConstraints();
+        otherRows.setVgrow(Priority.ALWAYS);
 
 
-        infoLayout.getRowConstraints().add(pictureRow);
+
+        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
 
         infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
                 BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
@@ -165,7 +168,6 @@ public class PropertyViewer extends Application {
                 TextFlow container = (TextFlow) node;
                 container.setMinWidth(infoLayout.getMinWidth()-3);
                 container.setMaxWidth(infoLayout.getMinWidth()-3);
-                container.setPadding(new Insets(5,0,5,0));
                 Text label = (Text) container.getChildren().get(0);
                 label.setWrappingWidth(infoLayout.getMinWidth()-3);
                 label.setFont(infoFont);
@@ -183,8 +185,8 @@ public class PropertyViewer extends Application {
         ds.setColor(Color.LIGHTGREY);
 
 
-        rect.heightProperty().bind(infoLayout.maxHeightProperty().add(15));
-        rect.widthProperty().bind(infoLayout.maxWidthProperty());
+        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
+        rect.widthProperty().bind(infoLayout.widthProperty());
         rect.setArcWidth(20);
         rect.setArcHeight(20);
         rect.setFill(MainViewer.CORAL);
@@ -193,8 +195,8 @@ public class PropertyViewer extends Application {
 
 
 
-        icon.maxHeightProperty().bind(infoLayout.heightProperty());
-        icon.maxWidthProperty().bind(infoLayout.widthProperty());
+        icon.maxHeightProperty().bind(rect.heightProperty());
+        icon.maxWidthProperty().bind(rect.widthProperty());
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
 
