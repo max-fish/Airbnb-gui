@@ -117,8 +117,8 @@ public class PropertyViewer extends Application {
 
         GridPane infoLayout = new GridPane();
 
-        infoLayout.setMinSize(300, 300);
-        infoLayout.setMaxSize(500, 500);
+        infoLayout.setMinSize(300, 500);
+        infoLayout.setMaxSize(300, 500);
 
         RowConstraints pictureRow = new RowConstraints();
         pictureRow.setPercentHeight(60);
@@ -176,7 +176,7 @@ public class PropertyViewer extends Application {
         ds.setColor(Color.LIGHTGREY);
 
 
-        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
+        rect.heightProperty().bind(infoLayout.heightProperty());
         rect.widthProperty().bind(infoLayout.widthProperty());
 
         rect.setArcWidth(20);
@@ -188,7 +188,7 @@ public class PropertyViewer extends Application {
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
 
-        icon.maxHeightProperty().bind(infoLayout.heightProperty());
+        icon.maxHeightProperty().bind(infoLayout.heightProperty().add(15));
         icon.maxWidthProperty().bind(infoLayout.widthProperty());
 
 
