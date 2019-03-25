@@ -187,6 +187,7 @@ public class PropertyViewer extends Application {
         rect.setFill(MainViewer.CORAL);
 
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
+        StackPane.setAlignment(rect, Pos.TOP_LEFT);
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
