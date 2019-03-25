@@ -117,8 +117,8 @@ public class PropertyViewer extends Application {
 
         GridPane infoLayout = new GridPane();
 
-        infoLayout.setMinSize(300, 300);
-        infoLayout.setMaxSize(500, 500);
+        infoLayout.setMinSize(400, 300);
+        infoLayout.setMaxSize(400, 300);
 
         RowConstraints pictureRow = new RowConstraints();
         pictureRow.setPercentHeight(60);
@@ -133,11 +133,13 @@ public class PropertyViewer extends Application {
                 BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
 
+        Text pictureText = new Text("Picture here");
         Text nameText = new Text(property.getName());
         Text priceText = new Text("Price: £" + property.getPrice());
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
+        TextFlow pictureTextContainer = new TextFlow(pictureText);
         TextFlow nameLabelContainer = new TextFlow(nameText);
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
@@ -147,6 +149,7 @@ public class PropertyViewer extends Application {
             infoLayout,
             new Pane[]{
                     // getImage(),
+                    pictureTextContainer,
                     nameLabelContainer,
                     priceLabelContainer,
                     reviewsLabelContainer,
@@ -161,10 +164,10 @@ public class PropertyViewer extends Application {
         for(Node node : infoLayout.getChildren()){
             if(node instanceof Pane){
                 TextFlow container = (TextFlow) node;
-                container.setMinWidth(infoLayout.getWidth()-3);
-                container.setMaxWidth(infoLayout.getMinWidth()-3);
+                container.setMinWidth(infoLayout.getMaxWidth()-3);
+                container.setMaxWidth(infoLayout.getMaxWidth()-3);
                 Text label = (Text) container.getChildren().get(0);
-                label.setWrappingWidth(infoLayout.getMinWidth()-3);
+                label.setWrappingWidth(infoLayout.getWidth()-3);
                 label.setFont(infoFont);
                 label.setFill(Color.rgb(72,72,72));
             }
