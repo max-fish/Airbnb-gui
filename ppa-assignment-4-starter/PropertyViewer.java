@@ -1,4 +1,3 @@
-import com.sun.rowset.internal.Row;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -117,14 +116,11 @@ public class PropertyViewer extends Application {
 
         GridPane infoLayout = new GridPane();
 
-        infoLayout.setMinHeight(300);
-        infoLayout.setMaxHeight(300);
-        infoLayout.setMinWidth(500);
-        infoLayout.setMaxWidth(500);
+        infoLayout.setMinSize(300, 300);
+        infoLayout.setMaxSize(500, 500);
+
         RowConstraints pictureRow = new RowConstraints();
         pictureRow.setPercentHeight(60);
-
-
 
         infoLayout.getRowConstraints().add(pictureRow);
 
@@ -132,24 +128,26 @@ public class PropertyViewer extends Application {
                 BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
 
-        Text picText = new Text("Picture here");
         Text nameText = new Text(property.getName());
         Text priceText = new Text("Price: £" + property.getPrice());
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
-        TextFlow picLabelContainer = new TextFlow(picText);
-        picLabelContainer.setTextAlignment(TextAlignment.CENTER);
         TextFlow nameLabelContainer = new TextFlow(nameText);
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
         TextFlow nightsLabelContainer = new TextFlow(nightsText);
 
-        infoLayout.addRow(0, picLabelContainer);
-        infoLayout.addRow(1, nameLabelContainer);
-        infoLayout.addRow(2, priceLabelContainer);
-        infoLayout.addRow(3, reviewsLabelContainer);
-        infoLayout.addRow(4, nightsLabelContainer);
+        addRowsToGridpane(
+            infoLayout,
+            new Pane[]{
+                    // getImage(),
+                    nameLabelContainer,
+                    priceLabelContainer,
+                    reviewsLabelContainer,
+                    nightsLabelContainer
+            }
+        );
 
         nameLabelContainer.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0))));
@@ -158,7 +156,7 @@ public class PropertyViewer extends Application {
         for(Node node : infoLayout.getChildren()){
             if(node instanceof Pane){
                 TextFlow container = (TextFlow) node;
-                container.setMinWidth(infoLayout.getMinWidth()-3);
+                container.setMinWidth(infoLayout.getWidth()-3);
                 container.setMaxWidth(infoLayout.getMinWidth()-3);
                 container.setPadding(new Insets(5,0,5,0));
                 Text label = (Text) container.getChildren().get(0);
@@ -169,11 +167,6 @@ public class PropertyViewer extends Application {
         }
         infoLayout.setAlignment(Pos.CENTER);
 
-        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
-
-
-
-
         Rectangle rect = new Rectangle();
         DropShadow ds = new DropShadow();
         ds.setOffsetY(5);
@@ -181,30 +174,38 @@ public class PropertyViewer extends Application {
 
         rect.heightProperty().bind(infoLayout.heightProperty().add(15));
         rect.widthProperty().bind(infoLayout.widthProperty());
+
         rect.setArcWidth(20);
         rect.setArcHeight(20);
         rect.setFill(MainViewer.CORAL);
 
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
-        icon.maxHeightProperty().bind(rect.heightProperty());
-        icon.maxWidthProperty().bind(rect.widthProperty());
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
 
-
-
-
+        icon.maxHeightProperty().bind(infoLayout.heightProperty());
+        icon.maxWidthProperty().bind(infoLayout.widthProperty());
 
         icon.setOnMouseEntered(
                 (event) -> {icon.setEffect(ds);}
-
         );
         icon.setOnMouseExited(
                 (event) -> {icon.setEffect(null);}
         );
 
         return icon;
+    }
 
+    private void addRowsToGridpane(GridPane toBeAddedTo, Pane[] panes){
+        for(int x = 0; x < panes.length; x++){
+            toBeAddedTo.addRow(x, panes[x]);
+        }
+    }
+
+    private Pane getImage(){
+        FlowPane tbr = new FlowPane();
+
+        return tbr;
     }
 }
