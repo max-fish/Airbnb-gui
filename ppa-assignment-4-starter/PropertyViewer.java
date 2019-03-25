@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -208,6 +209,18 @@ public class PropertyViewer extends Application {
         );
         icon.setOnMouseExited(
                 (event) -> {icon.setEffect(null);}
+        );
+
+        icon.setOnMouseClicked(
+                (event) -> {
+                    PropertyDescription propertyDescription = new PropertyDescription(property, icon);
+                    Tab propertyDescriptionTab = new Tab();
+                    propertyDescriptionTab.setText("Property");
+                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                }
+
         );
 
         return icon;
