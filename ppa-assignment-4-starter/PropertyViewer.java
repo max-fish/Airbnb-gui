@@ -179,7 +179,7 @@ public class PropertyViewer extends Application {
         ds.setColor(Color.LIGHTGREY);
 
 
-        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
+        rect.heightProperty().bind(infoLayout.heightProperty());
         rect.widthProperty().bind(infoLayout.widthProperty());
 
         rect.setArcWidth(20);
@@ -192,8 +192,8 @@ public class PropertyViewer extends Application {
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
 
-        icon.maxHeightProperty().bind(rect.heightProperty());
-        icon.maxWidthProperty().bind(rect.widthProperty());
+        icon.maxHeightProperty().bind(infoLayout.heightProperty().add(15));
+        icon.maxWidthProperty().bind(infoLayout.widthProperty());
 
 
         icon.setOnMouseEntered(
