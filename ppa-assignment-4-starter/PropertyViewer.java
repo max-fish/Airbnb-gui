@@ -116,15 +116,13 @@ public class PropertyViewer extends Application {
     private StackPane makeIcon(AirbnbListing property){
         StackPane icon = new StackPane();
 
-        icon.setBorder(new Border(new BorderStroke(Color.YELLOW,
-                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
         GridPane infoLayout = new GridPane();
 
         infoLayout.setMinHeight(300);
         infoLayout.setMaxHeight(300);
         infoLayout.setMinWidth(400);
         infoLayout.setMaxWidth(400);
-        infoLayout.setGridLinesVisible(true);
+
         RowConstraints pictureRow = new RowConstraints();
         pictureRow.setPercentHeight(60);
         pictureRow.setVgrow(Priority.NEVER);
@@ -160,7 +158,7 @@ public class PropertyViewer extends Application {
         infoLayout.addRow(4, nightsLabelContainer);
 
         nameLabelContainer.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0))));
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
 
         Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         for(Node node : infoLayout.getChildren()){

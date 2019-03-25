@@ -19,7 +19,7 @@ public class PropertyDescription {
     public GridPane makeDescriptionWindow(){
         Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         GridPane descriptionGrid = new GridPane();
-        descriptionGrid.setGridLinesVisible(true);
+
         descriptionGrid.minHeightProperty().bind(MainViewer.getPanels().heightProperty());
 
         RowConstraints rows = new RowConstraints();
