@@ -1,4 +1,3 @@
-import java.util.List;
 
 /**
  * Stores details about a single row of buttons.
