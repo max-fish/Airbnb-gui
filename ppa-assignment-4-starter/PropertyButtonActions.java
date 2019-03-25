@@ -1,14 +1,8 @@
 import javafx.animation.ScaleTransition;
-import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
-import javafx.scene.shape.Path;
 import javafx.util.Duration;
-
-import java.awt.event.ActionEvent;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 public class PropertyButtonActions {
 
