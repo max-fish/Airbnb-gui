@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -104,7 +105,7 @@ public class PropertyViewer extends Application {
         TilePane propertyList = new TilePane();
         propertyList.setAlignment(Pos.CENTER);
         propertyList.setHgap(10);
-        propertyList.setVgap(20);
+        propertyList.setVgap(50);
         propertyList.setPadding(new Insets(10,10,10,10));
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
@@ -119,14 +120,19 @@ public class PropertyViewer extends Application {
 
         infoLayout.setMinHeight(300);
         infoLayout.setMaxHeight(300);
-        infoLayout.setMinWidth(500);
-        infoLayout.setMaxWidth(500);
+        infoLayout.setMinWidth(400);
+        infoLayout.setMaxWidth(400);
+
         RowConstraints pictureRow = new RowConstraints();
         pictureRow.setPercentHeight(60);
+        pictureRow.setVgrow(Priority.NEVER);
+
+        RowConstraints otherRows = new RowConstraints();
+        otherRows.setVgrow(Priority.ALWAYS);
 
 
 
-        infoLayout.getRowConstraints().add(pictureRow);
+        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
 
         infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
                 BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
@@ -152,7 +158,7 @@ public class PropertyViewer extends Application {
         infoLayout.addRow(4, nightsLabelContainer);
 
         nameLabelContainer.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0))));
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
 
         Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         for(Node node : infoLayout.getChildren()){
@@ -160,16 +166,13 @@ public class PropertyViewer extends Application {
                 TextFlow container = (TextFlow) node;
                 container.setMinWidth(infoLayout.getMinWidth()-3);
                 container.setMaxWidth(infoLayout.getMinWidth()-3);
-                container.setPadding(new Insets(5,0,5,0));
                 Text label = (Text) container.getChildren().get(0);
                 label.setWrappingWidth(infoLayout.getMinWidth()-3);
                 label.setFont(infoFont);
                 label.setFill(Color.rgb(72,72,72));
             }
         }
-        infoLayout.setAlignment(Pos.CENTER);
 
-        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
 
 
@@ -179,6 +182,7 @@ public class PropertyViewer extends Application {
         ds.setOffsetY(5);
         ds.setColor(Color.LIGHTGREY);
 
+
         rect.heightProperty().bind(infoLayout.heightProperty().add(15));
         rect.widthProperty().bind(infoLayout.widthProperty());
         rect.setArcWidth(20);
@@ -187,10 +191,13 @@ public class PropertyViewer extends Application {
 
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
 
+
+
         icon.maxHeightProperty().bind(rect.heightProperty());
         icon.maxWidthProperty().bind(rect.widthProperty());
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
+
 
 
 
@@ -202,6 +209,18 @@ public class PropertyViewer extends Application {
         );
         icon.setOnMouseExited(
                 (event) -> {icon.setEffect(null);}
+        );
+
+        icon.setOnMouseClicked(
+                (event) -> {
+                    PropertyDescription propertyDescription = new PropertyDescription(property, icon);
+                    Tab propertyDescriptionTab = new Tab();
+                    propertyDescriptionTab.setText("Property");
+                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                }
+
         );
 
         return icon;
