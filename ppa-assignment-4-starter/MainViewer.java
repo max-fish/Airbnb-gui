@@ -469,7 +469,7 @@ public class MainViewer extends Application
     }
 
     private void searchProperties(ActionEvent event) {
-        if((lowPrice.getValue() != null) && (highPrice.getValue() != null)) {
+        if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (getNeighborhoodSearched() != null) && (getHomeTypeSearched() != null)) {
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (getNeighborhoodSearched().equals("All")) {
                     Tab boroughTab = new Tab();
@@ -504,9 +504,12 @@ public class MainViewer extends Application
                     }
                 }
             }
+            else {
+                AlertBox.display("Oh no!", "You seem to have selected\n" + "  an incorrect price range.");
+            }
         }
         else {
-            AlertBox.display("Alert", "You have not selected a correct\n" + "   price range please fix this!");
+            AlertBox.display("Oh no!", "You have not selected all criteria\n" + "   in the top panel above. Please fix this!");
         }
     }
 }
