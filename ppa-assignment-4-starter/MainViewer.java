@@ -477,12 +477,31 @@ public class MainViewer extends Application
                 panels.getTabs().add(boroughTab);
                 panels.getSelectionModel().select(boroughTab);
             } else {
-                PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.boroughListings(userLowPrice, userHighPrice).get(getNeighborhoodSearched()));
-                Tab propertyTab = new Tab();
-                propertyTab.setText("Properties");
-                propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
-                MainViewer.getPanels().getTabs().add(propertyTab);
-                MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                if(getHomeTypeSearched().equals("All")) {
+                    if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()).size() != 0) {
+                        PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()));
+                        Tab propertyTab = new Tab();
+                        propertyTab.setText("Properties");
+                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                        MainViewer.getPanels().getTabs().add(propertyTab);
+                        MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                    }
+                    else {
+                        AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                    }
+                }
+                else {
+                    if (LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()).size() != 0) {
+                        PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()));
+                        Tab propertyTab = new Tab();
+                        propertyTab.setText("Properties");
+                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                        MainViewer.getPanels().getTabs().add(propertyTab);
+                        MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                    } else {
+                        AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                    }
+                }
             }
         }
         else {

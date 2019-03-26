@@ -42,13 +42,13 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
-    public static Map<String, List<AirbnbListing>> boroughListings(int low, int high) {
+    public static Map<String, List<AirbnbListing>> thoroughFilteredResults(int low, int high, String typeOfRoom) {
         Map<String, List<AirbnbListing>> tbr = new HashMap<String, List<AirbnbListing>>();
-        for(int i = 0; i < acronymToName.size(); i++) {
-            tbr.put(acronymToName.get(i), new ArrayList<>());
+        for(String value : acronymToName.values()) {
+            tbr.put(value, new ArrayList<>());
         }
         for(AirbnbListing items : new AirbnbDataLoader().load()) {
-            if((items.getPrice() > low) && (items.getPrice() < high)) {
+            if((items.getPrice() > low) && (items.getPrice() < high) && (typeOfRoom.equals(items.getRoom_type()))) {
                 List<AirbnbListing> current = tbr.get(items.getNeighbourhood());
                 current.add(items);
                 tbr.put(items.getNeighbourhood(), current);
