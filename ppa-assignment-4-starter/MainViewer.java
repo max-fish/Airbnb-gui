@@ -468,12 +468,25 @@ public class MainViewer extends Application
         return reviewedProperties;
     }
 
-    private void searchProperties(ActionEvent event)
-    {
-        Tab boroughTab = new Tab();
-        boroughTab.setText("Boroughs");
-        boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-        panels.getTabs().add(boroughTab);
-        panels.getSelectionModel().select(boroughTab);
+    private void searchProperties(ActionEvent event) {
+        if(userLowPrice >= 0 && userHighPrice >= userLowPrice) {
+            if (getNeighborhoodSearched().equals("All")) {
+                Tab boroughTab = new Tab();
+                boroughTab.setText("Boroughs");
+                boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+                panels.getTabs().add(boroughTab);
+                panels.getSelectionModel().select(boroughTab);
+            } else {
+                PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.boroughListings(userLowPrice, userHighPrice).get(getNeighborhoodSearched()));
+                Tab propertyTab = new Tab();
+                propertyTab.setText("Properties");
+                propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                MainViewer.getPanels().getTabs().add(propertyTab);
+                MainViewer.getPanels().getSelectionModel().select(propertyTab);
+            }
+        }
+        else {
+            AlertBox.display("Alert", "You have selected an incorrect\n" + "   price range please fix this!");
+        }
     }
 }

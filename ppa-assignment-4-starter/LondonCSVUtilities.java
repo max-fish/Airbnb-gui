@@ -42,6 +42,21 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
+    public static Map<String, List<AirbnbListing>> boroughListings(int low, int high) {
+        Map<String, List<AirbnbListing>> tbr = new HashMap<String, List<AirbnbListing>>();
+        for(int i = 0; i < acronymToName.size(); i++) {
+            tbr.put(acronymToName.get(i), new ArrayList<>());
+        }
+        for(AirbnbListing items : new AirbnbDataLoader().load()) {
+            if((items.getPrice() > low) && (items.getPrice() < high)) {
+                List<AirbnbListing> current = tbr.get(items.getNeighbourhood());
+                current.add(items);
+                tbr.put(items.getNeighbourhood(), current);
+            }
+        }
+        return tbr;
+    }
+
     public enum sortBy {
         PRICE, REVIEWS, HOST_NAME;
     }
