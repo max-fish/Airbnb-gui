@@ -52,11 +52,11 @@ public class MainViewer extends Application
 
     private boolean reviewedProperties;
 
-    private static ObservableList<String> neighborhoods = FXCollections.observableArrayList("All", "Barking",
+    private static ObservableList<String> neighborhoods = FXCollections.observableArrayList("All", "Barking and Dagenham",
             "Barnet", "Bexley", "Brent", "Bromley", "Camden", "City of London", "Croydon",
-            "Ealing", "Enfield", "Greenwich", "Hackney", "Hammersmith", "Haringey", "Harrow",
-            "Havering", "Hillingdon", "Hounslow", "Islington", "Kensington", "Kingston", "Lambeth",
-            "Lewisham", "Merton", "Newham", "Redbridge", "Richmond", "Southwark", "Sutton",
+            "Ealing", "Enfield", "Greenwich", "Hackney", "Hammersmith and Fulham", "Haringey", "Harrow",
+            "Havering", "Hillingdon", "Hounslow", "Islington", "Kensington and Chelsea", "Kingston upon Thames", "Lambeth",
+            "Lewisham", "Merton", "Newham", "Redbridge", "Richmond upon Thames", "Southwark", "Sutton",
             "Tower Hamlets", "Waltham Forest", "Wandsworth", "Westminster");
 
     private ComboBox neighborHoodsComboBox = new ComboBox(neighborhoods);
@@ -303,7 +303,10 @@ public class MainViewer extends Application
 
         next.setStyle("-fx-base: #ff5a5f; -fx-text-fill: white; -fx-focus-color: #ffffff; -fx-faint-focus-color: #ffffff; -fx-background-radius: 10, 10, 10, 10");
 
-        traverse.getChildren().addAll(previous,next);
+        Button userInformation = new Button("Help");
+        userInformation.setId("MainButtons");
+
+        traverse.getChildren().addAll(previous, userInformation, next);
 
         traverse.setLeftAnchor(previous, (double) 10);
 
@@ -320,6 +323,8 @@ public class MainViewer extends Application
         next.setOnAction(
                 (event) ->  {panels.getSelectionModel().selectNext();}
         );
+
+        userInformation.setOnAction(e -> AlertBox.display("User Guidelines: !", "There are no properties in this area\n" + "   for the price range you selected."));
 
         welcomePaneContainer.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().multiply(1.7)));
 
@@ -469,7 +474,7 @@ public class MainViewer extends Application
     }
 
     private void searchProperties(ActionEvent event) {
-        if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (getNeighborhoodSearched() != null) && (getHomeTypeSearched() != null)) {
+        if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborHoodsComboBox.getValue() != null) && (homeTypesComboBox.getValue() != null)) {
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (getNeighborhoodSearched().equals("All")) {
                     Tab boroughTab = new Tab();
@@ -488,9 +493,10 @@ public class MainViewer extends Application
                             MainViewer.getPanels().getTabs().add(propertyTab);
                             MainViewer.getPanels().getSelectionModel().select(propertyTab);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
                         }
-                    } else {
+                    }
+                    else {
                         if (LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()).size() != 0) {
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()));
                             Tab propertyTab = new Tab();
@@ -499,17 +505,17 @@ public class MainViewer extends Application
                             MainViewer.getPanels().getTabs().add(propertyTab);
                             MainViewer.getPanels().getSelectionModel().select(propertyTab);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
                         }
                     }
                 }
             }
             else {
-                AlertBox.display("Oh no!", "You seem to have selected\n" + "  an incorrect price range.");
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.");
             }
         }
         else {
-            AlertBox.display("Oh no!", "You have not selected all criteria\n" + "   in the top panel above. Please fix this!");
+            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!");
         }
     }
 }
