@@ -6,6 +6,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.effect.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,7 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.scene.effect.DropShadow;
+
 import java.util.List;
 
 
@@ -125,6 +128,19 @@ public class PropertyViewer extends Application {
                 BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
 
+        Image favouriteIcon = new Image(getClass().getResourceAsStream("favouriteIcon.png"));
+
+        ImageView favouriteIconImageView = new ImageView(favouriteIcon);
+        favouriteIconImageView.setPreserveRatio(true);
+        favouriteIconImageView.setFitHeight(70);
+        favouriteIconImageView.setFitHeight(70);
+        favouriteIconImageView.setOnMouseEntered((e) -> {Lighting redLighting = new Lighting();
+        redLighting.setLight(new Light.Distant(90, 90, Color.CORAL));
+        redLighting.setDiffuseConstant(1.0); redLighting.setSpecularConstant(0.0); redLighting.setSpecularExponent(0.0); redLighting.setSurfaceScale(0.0);
+        favouriteIconImageView.setEffect(redLighting);});
+
+        favouriteIconImageView.setOnMouseExited((e) -> {favouriteIconImageView.setEffect(null);});
+
         Text pictureText = new Text("Picture here");
         Text nameText = new Text(property.getName());
         Text priceText = new Text("Price: £" + property.getPrice());
@@ -180,13 +196,14 @@ public class PropertyViewer extends Application {
 
         StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
         StackPane.setAlignment(rect, Pos.TOP_LEFT);
+        StackPane.setAlignment(favouriteIconImageView, Pos.TOP_RIGHT);
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
+        icon.getChildren().add(favouriteIconImageView);
 
         icon.maxHeightProperty().bind(infoLayout.heightProperty());
         icon.maxWidthProperty().bind(infoLayout.widthProperty());
-
 
         icon.setOnMouseEntered(
                 (event) -> {icon.setEffect(ds);}
@@ -220,5 +237,11 @@ public class PropertyViewer extends Application {
         FlowPane tbr = new FlowPane();
 
         return tbr;
+    }
+
+    private void fillRed() {
+        Lighting redLighting = new Lighting();
+        redLighting.setLight(new Light.Distant(45, 45, Color.RED));
+
     }
 }

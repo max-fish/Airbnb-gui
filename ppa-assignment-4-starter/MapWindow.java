@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.lang.reflect.Array;
@@ -66,7 +67,8 @@ public class MapWindow {
         headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
         headerText.setFill(Color.rgb(72, 72, 72));
 
-        Label propertiesLoaded = new Label("Total properties loaded: " + totalPropertiesLoaded(lower, higher));
+        Label propertiesLoaded = new Label("Total homes found : " + totalPropertiesLoaded(lower, higher));
+        propertiesLoaded.setFont(Font.font("Circular", FontWeight.NORMAL, 16));
 
         boroughMap.getChildren().addAll(propertiesLoaded, SearchPane(lower, higher));
         fullWindow.setTop(headerText);
