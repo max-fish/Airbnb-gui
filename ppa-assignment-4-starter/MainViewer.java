@@ -46,7 +46,7 @@ public class MainViewer extends Application
 
     private ComboBox<String> highPrice = new ComboBox<String>();
 
-    private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire home/apt");
+    private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire home/apt", "Shared room");
 
     private ComboBox homeTypesComboBox = new ComboBox(homeTypes);
 
@@ -477,11 +477,20 @@ public class MainViewer extends Application
         if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborHoodsComboBox.getValue() != null) && (homeTypesComboBox.getValue() != null)) {
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (getNeighborhoodSearched().equals("All")) {
-                    Tab boroughTab = new Tab();
-                    boroughTab.setText("Boroughs");
-                    boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-                    panels.getTabs().add(boroughTab);
-                    panels.getSelectionModel().select(boroughTab);
+                    if(getHomeTypeSearched().equals("All")) {
+                        Tab boroughTab = new Tab();
+                        boroughTab.setText("Boroughs");
+                        boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+                        panels.getTabs().add(boroughTab);
+                        panels.getSelectionModel().select(boroughTab);
+                    }
+                    else {
+                        Tab boroughTab = new Tab();
+                        boroughTab.setText("Boroughs");
+                        boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice, getHomeTypeSearched()));
+                        panels.getTabs().add(boroughTab);
+                        panels.getSelectionModel().select(boroughTab);
+                    }
                 }
                 else {
                     if (getHomeTypeSearched().equals("All")) {
@@ -489,7 +498,7 @@ public class MainViewer extends Application
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()));
                             Tab propertyTab = new Tab();
                             propertyTab.setText("Properties");
-                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow(getNeighborhoodSearched()));
                             MainViewer.getPanels().getTabs().add(propertyTab);
                             MainViewer.getPanels().getSelectionModel().select(propertyTab);
                         } else {
@@ -501,7 +510,7 @@ public class MainViewer extends Application
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()));
                             Tab propertyTab = new Tab();
                             propertyTab.setText("Properties");
-                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow(getNeighborhoodSearched()));
                             MainViewer.getPanels().getTabs().add(propertyTab);
                             MainViewer.getPanels().getSelectionModel().select(propertyTab);
                         } else {

@@ -34,8 +34,8 @@ public class PropertyViewer extends Application {
     public void start(Stage primaryStage) {
     }
 
-    public ScrollPane makeFullPropertyWindow(){
-        ScrollPane propertyScroll = new ScrollPane(makePropertyWindow());
+    public ScrollPane makeFullPropertyWindow(String neighborhoodName){
+        ScrollPane propertyScroll = new ScrollPane(makePropertyWindow(neighborhoodName));
         propertyScroll.setFitToWidth(true);
         propertyScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         propertyScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -43,36 +43,38 @@ public class PropertyViewer extends Application {
     }
 
 
-    private BorderPane makePropertyWindow(){
+    private BorderPane makePropertyWindow(String neighborhoodName){
         BorderPane fullWindow = new BorderPane();
         AnchorPane header = new AnchorPane();
         Label headerText = new Label();
-        headerText.setText("Your Properties");
         headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
         headerText.setTextFill(Color.rgb(72,72,72));
 
         ComboBox<String> sortBy = new ComboBox<>();
-
-        sortBy.getItems().addAll("Price", "Reviews", "Host Name");
+        sortBy.setPromptText("Sort by");
+        sortBy.setStyle("-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-background-radius: 10, 10, 10, 10; -fx-faint-focus-color: #ff5a5f; -fx-border-color: #ff5a5f;");
+        sortBy.getItems().addAll("Price: Low to High", "Price: High to Low", "Reviews", "Host Name");
 
         sortBy.setOnAction(
 
                 (event) -> {
-                    if(sortBy.getValue().equals("Price")){
-                        LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.PRICE);
+                    if(sortBy.getValue().equals("Price: Low to High")){
+                        LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.PRICE_LOW_TO_HIGH);
                     }
-
+                    else if (sortBy.getValue().equals("Price: High to Low")){
+                        LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.PRICE_HIGH_TO_LOW);
+                    }
                    else if(sortBy.getValue().equals("Reviews")){
                         LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.REVIEWS);
                     }
-
-                   else{
+                   else if(sortBy.getValue().equals("Host Name")){
                         LondonCSVUtilities.sort(properties, LondonCSVUtilities.sortBy.HOST_NAME);
                     }
                     fullWindow.setCenter(makePropertyList());
                 }
         );
 
+        headerText.setText(getNumberOfProperties() + " homes found in " + neighborhoodName);
         header.getChildren().addAll(headerText, sortBy);
 
 
@@ -95,6 +97,11 @@ public class PropertyViewer extends Application {
             propertyList.getChildren().add(makeIcon(property));
         }
         return propertyList;
+    }
+
+    private int getNumberOfProperties()
+    {
+        return properties.size();
     }
 
     private StackPane makeIcon(AirbnbListing property){
@@ -164,7 +171,7 @@ public class PropertyViewer extends Application {
         ds.setColor(Color.LIGHTGREY);
 
 
-        rect.heightProperty().bind(infoLayout.heightProperty());
+        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
         rect.widthProperty().bind(infoLayout.widthProperty());
 
         rect.setArcWidth(20);
@@ -177,7 +184,7 @@ public class PropertyViewer extends Application {
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
 
-        icon.maxHeightProperty().bind(infoLayout.heightProperty().add(15));
+        icon.maxHeightProperty().bind(infoLayout.heightProperty());
         icon.maxWidthProperty().bind(infoLayout.widthProperty());
 
 

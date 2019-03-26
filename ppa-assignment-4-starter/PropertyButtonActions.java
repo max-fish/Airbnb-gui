@@ -16,7 +16,7 @@ public class PropertyButtonActions {
                         PropertyViewer propertyViewer = new PropertyViewer(MapWindow.buttonToProperties.get(button));
                         Tab propertyTab = new Tab();
                         propertyTab.setText("Properties");
-                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow(button.getText()));
                         MainViewer.getPanels().getTabs().add(propertyTab);
                         MainViewer.getPanels().getSelectionModel().select(propertyTab);
                         });
