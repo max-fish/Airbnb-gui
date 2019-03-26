@@ -46,7 +46,7 @@ public class MainViewer extends Application
 
     private ComboBox<String> highPrice = new ComboBox<String>();
 
-    private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire Home/apt");
+    private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire home/apt");
 
     private ComboBox homeTypesComboBox = new ComboBox(homeTypes);
 
@@ -469,43 +469,44 @@ public class MainViewer extends Application
     }
 
     private void searchProperties(ActionEvent event) {
-        if(userLowPrice >= 0 && userHighPrice >= userLowPrice) {
-            if (getNeighborhoodSearched().equals("All")) {
-                Tab boroughTab = new Tab();
-                boroughTab.setText("Boroughs");
-                boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-                panels.getTabs().add(boroughTab);
-                panels.getSelectionModel().select(boroughTab);
-            } else {
-                if(getHomeTypeSearched().equals("All")) {
-                    if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()).size() != 0) {
-                        PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()));
-                        Tab propertyTab = new Tab();
-                        propertyTab.setText("Properties");
-                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
-                        MainViewer.getPanels().getTabs().add(propertyTab);
-                        MainViewer.getPanels().getSelectionModel().select(propertyTab);
-                    }
-                    else {
-                        AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
-                    }
+        if((lowPrice.getValue() != null) && (highPrice.getValue() != null)) {
+            if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
+                if (getNeighborhoodSearched().equals("All")) {
+                    Tab boroughTab = new Tab();
+                    boroughTab.setText("Boroughs");
+                    boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+                    panels.getTabs().add(boroughTab);
+                    panels.getSelectionModel().select(boroughTab);
                 }
                 else {
-                    if (LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()).size() != 0) {
-                        PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()));
-                        Tab propertyTab = new Tab();
-                        propertyTab.setText("Properties");
-                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
-                        MainViewer.getPanels().getTabs().add(propertyTab);
-                        MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                    if (getHomeTypeSearched().equals("All")) {
+                        if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()).size() != 0) {
+                            PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(getNeighborhoodSearched()));
+                            Tab propertyTab = new Tab();
+                            propertyTab.setText("Properties");
+                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                            MainViewer.getPanels().getTabs().add(propertyTab);
+                            MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                        } else {
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                        }
                     } else {
-                        AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                        if (LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()).size() != 0) {
+                            PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.thoroughFilteredResults(userLowPrice, userHighPrice, getHomeTypeSearched()).get(getNeighborhoodSearched()));
+                            Tab propertyTab = new Tab();
+                            propertyTab.setText("Properties");
+                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                            MainViewer.getPanels().getTabs().add(propertyTab);
+                            MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                        } else {
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "   for the price range you selected.");
+                        }
                     }
                 }
             }
         }
         else {
-            AlertBox.display("Alert", "You have selected an incorrect\n" + "   price range please fix this!");
+            AlertBox.display("Alert", "You have not selected a correct\n" + "   price range please fix this!");
         }
     }
 }

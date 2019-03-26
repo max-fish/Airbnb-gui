@@ -16,8 +16,8 @@ public class AlertBox {
         Stage alertWindow = new Stage();
         alertWindow.initModality(Modality.APPLICATION_MODAL);
         alertWindow.setTitle(title);
-        alertWindow.setHeight(300);
-        alertWindow.setWidth(300);
+        alertWindow.setHeight(350);
+        alertWindow.setWidth(350);
 
         Text alertText = new Text();
         alertText.setText(message);
