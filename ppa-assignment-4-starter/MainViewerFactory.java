@@ -25,19 +25,18 @@ public class MainViewerFactory {
     public static void styleWelcomeText(Text welcomeText){
         welcomeText.setText("Welcome to Airbnb");
         welcomeText.setFill(Color.WHITE);
-        welcomeText.setOpacity(0);
         welcomeText.setFont(Airbnb.HEADERFONT);
     }
     public static void styleAirbnbLogoView(ImageView airbnbLogoView){
         airbnbLogoView.setFitHeight(100);
         airbnbLogoView.setPreserveRatio(true);
-        airbnbLogoView.setOpacity(0);
+        airbnbLogoView.setSmooth(true);
+
     }
     public static void styleInstructionText(Text instructionText){
         instructionText.setText("Please fill out the criteria above with your liking.");
         instructionText.setFont(Airbnb.INSTRUCTIONFONT);
         instructionText.setFill(Color.WHITE);
-        instructionText.setOpacity(0);
     }
     public static void styleWelcomePane(StackPane welcomePane, ImageView airbnbLogoView, Text instructionText){
         welcomePane.setMargin(airbnbLogoView, new Insets(-150,0,0,0));
@@ -49,10 +48,12 @@ public class MainViewerFactory {
         welcomePaneContainer.setArcWidth(10);
     }
     public static void fadeInProtocol(ImageView airbnbLogoView, Text welcomeText, Text instructionText,
-                                      FlowPane lowPricePanel, FlowPane highPricePanel, Button search, Button next, Button previous){
+                                      FlowPane neighborhoodPanel, FlowPane roomTypePanel, FlowPane lowPricePanel, FlowPane highPricePanel, Button search, Button next, Button previous){
         airbnbLogoView.setOpacity(0);
         welcomeText.setOpacity(0);
         instructionText.setOpacity(0);
+        neighborhoodPanel.setOpacity(0);
+        roomTypePanel.setOpacity(0);
         lowPricePanel.setOpacity(0);
         highPricePanel.setOpacity(0);
         search.setOpacity(0);
@@ -79,6 +80,14 @@ public class MainViewerFactory {
                 (event) -> {instructionTextFadeIn.play();}
         );
 
+        FadeTransition neighborhoodPanelFadeIn = new FadeTransition(Duration.millis(1000), neighborhoodPanel);
+        neighborhoodPanelFadeIn.setFromValue(0);
+        neighborhoodPanelFadeIn.setToValue(1);
+
+        FadeTransition roomTypePanelFadeIn = new FadeTransition(Duration.millis(1000), roomTypePanel);
+        roomTypePanelFadeIn.setFromValue(0);
+        roomTypePanelFadeIn.setToValue(1);
+
         FadeTransition lowPricePanelFadeIn = new FadeTransition(Duration.millis(1500), lowPricePanel);
         lowPricePanelFadeIn.setFromValue(0);
         lowPricePanelFadeIn.setToValue(1);
@@ -100,7 +109,9 @@ public class MainViewerFactory {
         previousButtonFadeIn.setToValue(1);
 
         instructionTextFadeIn.setOnFinished(
-                (event) -> {lowPricePanelFadeIn.play();
+                (event) -> {neighborhoodPanelFadeIn.play();
+                    roomTypePanelFadeIn.play();
+                    lowPricePanelFadeIn.play();
                     highPricePanelFadeIn.play();
                     searchButtonFadeIn.play();
                     nextButtonFadeIn.play();

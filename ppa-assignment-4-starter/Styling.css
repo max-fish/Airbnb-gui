@@ -40,16 +40,18 @@
     -fx-text-fill: #FD5C63;
 }
 
-
-@font-face{
-    -fx-font-family: Montserrat Alternates SemiBold;
-    src: url('Montserrat/MontserratAlternates-SemiBold.otf');
+.non-editable-combo-box{
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #FD5C63;
+    -fx-border-style: solid hidden solid solid;
+    -fx-border-width: 1px 1px 1px 1px;
 }
+
+
 
 #MainButtons {
     -fx-background-color: #FD5C63;
     -fx-text-fill: #FFFFFF;
-    -fx-font-family: Montserrat Alternates Bold;
 }
 
 #MainButtons:hover{
