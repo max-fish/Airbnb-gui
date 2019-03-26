@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
@@ -50,6 +51,8 @@ public class MapWindow {
 
             fullWindow.setTop(headerText);
             fullWindow.setCenter(SearchPane(lower,higher));
+            Text propertiesLoaded = new Text("Total properties loaded: " + totalPropertiesLoaded(lower, higher));
+            fullWindow.setBottom(propertiesLoaded);
             return fullWindow;
         }
 
@@ -119,5 +122,14 @@ public class MapWindow {
         PropertyButtonActions.setPropertyButtonActions();
         grow.play();
         return tbr;
+    }
+
+    private int totalPropertiesLoaded(int low, int high) {
+        int totalPropertiesCount = 0;
+        Map<String, List<AirbnbListing>> results = LondonCSVUtilities.filteredResults(low, high);
+        for(List<AirbnbListing> listings : results.values()) {
+            totalPropertiesCount += listings.size();
+        }
+        return totalPropertiesCount;
     }
 }
