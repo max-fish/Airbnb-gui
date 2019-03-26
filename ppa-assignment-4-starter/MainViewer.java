@@ -333,9 +333,6 @@ public class MainViewer extends Application
 
         //adds borders under the selection bar and above the traverse bar
 
-        traverse.setBorder(new Border(new BorderStroke(Color.GREY,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,10,0,10))));
-
         traverse.setPadding(new Insets(10,0,0,0));
 
         Timeline fadeInTimeline = new Timeline();
@@ -444,13 +441,11 @@ public class MainViewer extends Application
 
     public String getNeighborhoodSearched()
     {
-        System.out.println(neighborHoodsComboBox.getValue());
         return "" + neighborHoodsComboBox.getValue();
     }
 
     public String getHomeTypeSearched()
     {
-        System.out.println(homeTypesComboBox.getValue());
         return "" + homeTypesComboBox.getValue();
     }
 

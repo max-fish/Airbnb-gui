@@ -1,6 +1,7 @@
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -9,6 +10,7 @@ import javafx.scene.text.Text;
 import java.lang.reflect.Array;
 import java.util.*;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -56,15 +58,19 @@ public class MapWindow {
     public BorderPane fullBoroughWindow(int lower, int higher) {
         BorderPane fullWindow = new BorderPane();
 
+        VBox boroughMap= new VBox();
+        boroughMap.setSpacing(30);
+
         Text headerText = new Text();
         headerText.setText("Boroughs of London");
         headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
         headerText.setFill(Color.rgb(72, 72, 72));
 
+        Label propertiesLoaded = new Label("Total properties loaded: " + totalPropertiesLoaded(lower, higher));
+
+        boroughMap.getChildren().addAll(propertiesLoaded, SearchPane(lower, higher));
         fullWindow.setTop(headerText);
-        fullWindow.setCenter(SearchPane(lower, higher));
-        Text propertiesLoaded = new Text("Total properties loaded: " + totalPropertiesLoaded(lower, higher));
-        fullWindow.setBottom(propertiesLoaded);
+        fullWindow.setCenter(boroughMap);
         return fullWindow;
     }
 
