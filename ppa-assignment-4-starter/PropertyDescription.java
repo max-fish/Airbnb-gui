@@ -1,3 +1,5 @@
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -17,16 +19,13 @@ public class PropertyDescription {
     }
     public GridPane makeDescriptionWindow(){
         Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
+        GridPane fullGrid = new GridPane();
+        fullGrid.prefHeightProperty().bind(MainViewer.getPanels().heightProperty().subtract(5));
+        fullGrid.setHgap(10);
+
         GridPane descriptionGrid = new GridPane();
-
-        descriptionGrid.minHeightProperty().bind(MainViewer.getPanels().heightProperty());
-
-        RowConstraints rows = new RowConstraints();
-        rows.setPrefHeight(30);
-
-
-        descriptionGrid.getRowConstraints().addAll(rows, rows, rows, rows, rows, rows, rows);
-
+        descriptionGrid.setVgap(20);
+        descriptionGrid.setAlignment(Pos.CENTER);
         TextFlow id = new TextFlow(new Text("ID: " + property.getId()));
         TextFlow hostID = new TextFlow(new Text("Host ID: " + property.getHost_id()));
         TextFlow neighbourhood = new TextFlow(new Text("Neighbourhood: " + property.getNeighbourhood()));
@@ -34,14 +33,14 @@ public class PropertyDescription {
         TextFlow reviewsPerMonth = new TextFlow(new Text("Reviews per month: " + property.getReviewsPerMonth()));
         TextFlow totalHostListings = new TextFlow(new Text("Total host listings: " + property.getCalculatedHostListingsCount()));
         TextFlow availability = new TextFlow(new Text("Availability: " + property.getAvailability365()));
-        descriptionGrid.addColumn(0, icon);
         descriptionGrid.addRow(0, id);
-        descriptionGrid.add(hostID, 1, 1);
-        descriptionGrid.add(neighbourhood, 1,2);
-        descriptionGrid.add(lastReview, 1,3);
-        descriptionGrid.add(reviewsPerMonth, 1,4);
-        descriptionGrid.add(totalHostListings, 1,5);
-        descriptionGrid.add(availability, 1,6);
+        descriptionGrid.addRow(1, hostID);
+        descriptionGrid.addRow(2, neighbourhood);
+        descriptionGrid.addRow(3, lastReview);
+        descriptionGrid.addRow(4, reviewsPerMonth);
+        descriptionGrid.addRow(5, totalHostListings);
+        descriptionGrid.addRow(6, availability);
+
 
         for(Node node : descriptionGrid.getChildren()){
             if(node instanceof TextFlow) {
@@ -52,7 +51,20 @@ public class PropertyDescription {
             }
         }
 
-        GridPane.setValignment(icon, VPos.TOP);
-        return descriptionGrid;
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setPercentHeight(100);
+        fullGrid.getRowConstraints().addAll(rowConstraints);
+
+        StackPane iconContainer = new StackPane(icon);
+        icon.setAlignment(Pos.CENTER);
+        iconContainer.prefHeightProperty().bind(fullGrid.heightProperty());
+        iconContainer.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,3,0,0))));
+        GridPane.setValignment(icon, VPos.CENTER);
+        iconContainer.setPadding(new Insets(0,10,0,10));
+        fullGrid.addColumn(0, iconContainer);
+        fullGrid.addColumn(1, descriptionGrid);
+
+        return fullGrid;
     }
 }
