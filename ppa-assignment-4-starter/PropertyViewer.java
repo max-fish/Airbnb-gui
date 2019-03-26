@@ -1,8 +1,12 @@
+import com.sun.xml.internal.ws.api.FeatureListValidatorAnnotation;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -133,9 +137,20 @@ public class PropertyViewer extends Application {
         PropertyViewerFactory.styleRectangle(rect, infoLayout);
 
         PropertyViewerFactory.styleStackPane(infoLayout, rect);
+
+        ImageView FAVOURITEICON = new ImageView(new Image(getClass().getResourceAsStream("favouriteIcon.png")));
+
+        FAVOURITEICON.setFitHeight(70);
+        FAVOURITEICON.setPreserveRatio(true);
+        FAVOURITEICON.setSmooth(true);
+
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
+        icon.getChildren().add(FAVOURITEICON);
+
+        StackPane.setAlignment(FAVOURITEICON, Pos.TOP_RIGHT);
+
 
         PropertyViewerFactory.styleIcon(icon, infoLayout);
 

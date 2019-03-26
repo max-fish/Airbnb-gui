@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -214,6 +215,8 @@ public class MainViewer extends Application
         root.setCenter(panels);
 
         root.setBottom(traverse);
+
+
 
 
         // JavaFX must have a Scene (window content) inside a Stage (window)
