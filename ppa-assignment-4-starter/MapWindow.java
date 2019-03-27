@@ -26,9 +26,15 @@ public class MapWindow {
 
     private static int maxButtonSize = 100;
     private static int buttonHeight = maxButtonSize*3/4;
+    private Criteria criteria;
+    private int lower;
+    private int higher;
 
-    public MapWindow() {
+    public MapWindow(int lower, int higher, Criteria criteria) {
         buttonDetails = new ArrayList<ButtonArrayDetails>();
+        this.lower = lower;
+        this.higher = higher;
+        this.criteria = criteria;
     }
 
     public void addButtonRow (int offset, String[] names){
@@ -38,12 +44,11 @@ public class MapWindow {
 
 
 
-     public BorderPane fullBoroughWindow(int lower, int higher){
+     public BorderPane fullBoroughWindow(){
             BorderPane fullWindow = new BorderPane();
-
             Text headerText = new Text();
             headerText.setText("Boroughs of London");
-            headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
+            headerText.setFont(Airbnb.HEADERFONT);
             headerText.setFill(Color.rgb(72,72,72));
 
             fullWindow.setTop(headerText);
@@ -114,7 +119,7 @@ public class MapWindow {
         grow.setToY(1);
         grow.setDuration(Duration.millis(1500));
         grow.setNode(internal);
-        PropertyButtonActions.setPropertyButtonActions();
+        PropertyButtonActions.setPropertyButtonActions(criteria);
         grow.play();
         return tbr;
     }

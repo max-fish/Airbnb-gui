@@ -1,3 +1,5 @@
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.*;
@@ -14,6 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.awt.*;
+import java.util.Stack;
 
 /**
  *
@@ -36,6 +42,8 @@ public class MainViewer extends Application
     private Tab welcomeTab;
 
     private BorderPane pane;
+
+    private static ToolBar myAirbnb = new ToolBar();
 
    private ComboBox<String> lowPrice;
 
@@ -134,6 +142,18 @@ public class MainViewer extends Application
 
         highPrice.setOnAction(this::selectedHighPrice);
 
+
+        Tooltip lowPriceToolTip = new Tooltip();
+        lowPriceToolTip.setText("You must input \n" + "a positive value. \n" + "Lower than the \n" + "high price.");
+        lowPriceToolTip.setFont(Airbnb.TOOLTIPFONT);
+        lowPrice.setTooltip(lowPriceToolTip);
+
+        Tooltip highPriceToolTip = new Tooltip();
+        highPriceToolTip.setText("You must input \n" + "a positive value. \n" + "Higher than the \n" + "minimum price.");
+        highPriceToolTip.setFont(Airbnb.TOOLTIPFONT);
+        highPrice.setTooltip(highPriceToolTip);
+
+
         FlowPane lowPricePanel = new FlowPane();
 
 
@@ -207,16 +227,27 @@ public class MainViewer extends Application
                 search, next, previous);
 
 
-        welcomeTab = new Tab();
-        welcomeTab.setClosable(false);
-        welcomeTab.setText("Welcome");
-        welcomeTab.setGraphic(Airbnb.HOMEGRAPHIC);
-        welcomeTab.setContent(pane);
-        panels.getTabs().add(welcomeTab);
+        TabCreator.createSingularTab(pane, "Welcome", Airbnb.HOMEGRAPHIC, false);
+
+        panels.setTranslateX(-40);
 
         root.setCenter(panels);
 
         root.setBottom(traverse);
+
+
+
+        myAirbnb.setOrientation(Orientation.VERTICAL);
+
+        Button showFavourites = new Button("favourites");
+        showFavourites.setOnAction(
+                (event) -> {FavouriteProperties.showFavoriteProperties();}
+        );
+        myAirbnb.getItems().add(showFavourites);
+
+        myAirbnb.setTranslateX(-100);
+
+        root.setLeft(myAirbnb);
 
 
 
@@ -225,7 +256,6 @@ public class MainViewer extends Application
         Scene scene = new Scene(root, 1700,800);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
-
 
         panels.minWidthProperty().bind(root.widthProperty());
 
@@ -242,6 +272,10 @@ public class MainViewer extends Application
         return panels;
     }
 
+    public static ToolBar getToolBar(){
+        return myAirbnb;
+    }
+
     private void selectedNeighborhood(ActionEvent event){userNeighborhood = neighborhood.getValue();}
 
     private void selectedRoomType(ActionEvent event){userRoomType = roomType.getValue();}
@@ -256,24 +290,16 @@ public class MainViewer extends Application
 
     private void searchProperties(ActionEvent event) {
         if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborhood.getValue() != null) && (roomType.getValue() != null)) {
+            Criteria userCriteria = new Criteria(userNeighborhood, userRoomType, userLowPrice, userHighPrice, null);
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (userNeighborhood.equals("All")) {
-                    Tab boroughTab = new Tab();
-                    boroughTab.setGraphic(Airbnb.BOROUGHGRAPHIC);
-                    boroughTab.setText("Boroughs");
-                    boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-                    panels.getTabs().add(boroughTab);
-                    panels.getSelectionModel().select(boroughTab);
+                    TabCreator.createTab(MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria), MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria).fullBoroughWindow(), "Boroughs", Airbnb.BOROUGHGRAPHIC, true, userCriteria);
                 }
                 else {
                     if (userRoomType.equals("All")) {
                         if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood).size() != 0) {
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood));
-                            Tab propertyTab = new Tab();
-                            propertyTab.setText("Properties");
-                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
-                            MainViewer.getPanels().getTabs().add(propertyTab);
-                            MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                            TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
                         } else {
                             AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
                         }
@@ -281,11 +307,7 @@ public class MainViewer extends Application
                     else {
                         if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood).size() != 0) {
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood));
-                            Tab propertyTab = new Tab();
-                            propertyTab.setText("Properties");
-                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
-                            MainViewer.getPanels().getTabs().add(propertyTab);
-                            MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                            TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
                         } else {
                             AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
                         }

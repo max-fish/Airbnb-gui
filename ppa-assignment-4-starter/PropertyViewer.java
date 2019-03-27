@@ -29,6 +29,8 @@ public class PropertyViewer extends Application {
 
     private List<AirbnbListing> properties;
 
+    private boolean favourite;
+
 
     public PropertyViewer(List<AirbnbListing> properties){
         this.properties = properties;
@@ -151,7 +153,20 @@ public class PropertyViewer extends Application {
 
         ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
-        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon);
+        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
+
+        favouriteIcon.setOnMouseClicked(
+                (event) -> {
+                    if(favourite){
+                        FavouriteProperties.removeFavouriteProperty(icon);
+                        favourite = false;
+                    }
+                    else{
+                        FavouriteProperties.addFavouriteProperty(icon);
+                        favourite = true;
+                    }
+                }
+        );
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
@@ -161,7 +176,18 @@ public class PropertyViewer extends Application {
         PropertyViewerFactory.styleIcon(icon, infoLayout);
 
 
-        icon.setOnMouseClicked(
+        infoLayout.setOnMouseClicked(
+                (event) -> {
+                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
+                    Tab propertyDescriptionTab = new Tab();
+                    propertyDescriptionTab.setText("Property");
+                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                }
+        );
+
+        rect.setOnMouseClicked(
                 (event) -> {
                     PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
                     Tab propertyDescriptionTab = new Tab();
