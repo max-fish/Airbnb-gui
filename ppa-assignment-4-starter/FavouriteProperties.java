@@ -33,7 +33,7 @@ public class FavouriteProperties {
 
     private static Text makeEmptyScreen(){
         Text noFavourites = new Text();
-        noFavourites.setText("You have not selected any properties as your favorite yet");
+        noFavourites.setText("You have not selected any properties as one of your favorites yet");
         noFavourites.setFont(Airbnb.HEADERFONT);
         noFavourites.setFill(Color.BLACK);
         noFavourites.setTextAlignment(TextAlignment.CENTER);

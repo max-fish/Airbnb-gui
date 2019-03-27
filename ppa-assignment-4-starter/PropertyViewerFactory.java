@@ -89,7 +89,7 @@ public class PropertyViewerFactory {
         headerText.setFont(Airbnb.HEADERFONT);
         headerText.setTextFill(Airbnb.GREY);
     }
-    public static void styleFavouriteIcon(ImageView favouriteIcon, Rectangle rect){
+    public static void styleFavouriteIcon(ImageView favouriteIcon, Rectangle rect, GridPane infoLayout){
         favouriteIcon.setFitHeight(40);
         favouriteIcon.setPreserveRatio(true);
         favouriteIcon.setSmooth(true);
@@ -100,6 +100,7 @@ public class PropertyViewerFactory {
         favouriteIcon.setOnMouseEntered(
                 (event) -> {
                     rect.setDisable(true);
+                    infoLayout.setDisable(true);
                     Lighting lighting = new Lighting();
                     lighting.setDiffuseConstant(1.6);
                     lighting.setSpecularConstant(0.0);
@@ -114,6 +115,7 @@ public class PropertyViewerFactory {
         favouriteIcon.setOnMouseExited(
                 (event) -> {
                     rect.setDisable(false);
+                    infoLayout.setDisable(false);
                     favouriteIcon.setEffect(null);
                 }
 

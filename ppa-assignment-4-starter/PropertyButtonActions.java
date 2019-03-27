@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class PropertyButtonActions {
 
-    public static void setPropertyButtonActions(){
+    public static void setPropertyButtonActions(Criteria criteria){
         Iterator<Button> buttonIterator = MapWindow.buttonToProperties.keySet().iterator();
         while(buttonIterator.hasNext()){
 
@@ -14,12 +14,13 @@ public class PropertyButtonActions {
             button.setOnAction(
                     (event) -> {
                         PropertyViewer propertyViewer = new PropertyViewer(MapWindow.buttonToProperties.get(button));
-                        Tab propertyTab = new Tab();
+                        /*Tab propertyTab = new Tab();
                         propertyTab.setGraphic(Airbnb.PROPERTYGRAPHIC);
                         propertyTab.setText("Properties");
                         propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
                         MainViewer.getPanels().getTabs().add(propertyTab);
-                        MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                        MainViewer.getPanels().getSelectionModel().select(propertyTab);*/
+                        TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(), "Properties", Airbnb.PROPERTYGRAPHIC, true, criteria);
                         });
 
             ScaleTransition scaleTransition = new ScaleTransition();

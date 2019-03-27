@@ -1,18 +1,55 @@
+import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class TabCreator {
-    public static void createTab(Node content, String name, ImageView graphic, boolean closable) {
 
-        for (Tab existingTab : MainViewer.getPanels().getTabs()) {
-            if (equals(existingTab.getContent(), content)) {
-                System.out.println("equal");
-                MainViewer.getPanels().getSelectionModel().select(existingTab);
-                return;
+    private static ArrayList<TabInfo> tabInfos = new ArrayList<>();
+
+
+    public static void createSingularTab(Node content, String name, ImageView graphic, boolean closable){
+        Tab newTab = new Tab(name);
+        newTab.setContent(content);
+        newTab.setClosable(closable);
+        if (graphic != null) {
+            newTab.setGraphic(graphic);
+        }
+        newTab.getContent().setOnMouseMoved(
+                (event) -> {
+                    TranslateTransition slideIn = new TranslateTransition(Duration.millis(250), MainViewer.getToolBar());
+                    if(event.getSceneX() > 0 && event.getSceneX() < 30) {
+                        slideIn.setToX(0);
+                        slideIn.setCycleCount(1);
+                        slideIn.play();
+                    }
+                    else{
+                        slideIn.setToX(-100);
+                        slideIn.setCycleCount(1);
+                        slideIn.play();
+                    }
+
+                });
+        MainViewer.getPanels().getTabs().add(newTab);
+        MainViewer.getPanels().getSelectionModel().select(newTab);
+    }
+
+    public static void createTab(Object contentCreator, Node content, String name, ImageView graphic, boolean closable, Criteria criteria) {
+
+        for (TabInfo existingTab : tabInfos) {
+            if (contentCreator.getClass() == existingTab.getContentCreator().getClass()) {
+                if(criteria.equals(existingTab.getCriteria())) {
+                    MainViewer.getPanels().getSelectionModel().select(existingTab.getTab());
+                    return;
+                }
             }
         }
+
         System.out.println("new");
         Tab newTab = new Tab(name);
         newTab.setContent(content);
@@ -20,33 +57,32 @@ public class TabCreator {
         if (graphic != null) {
             newTab.setGraphic(graphic);
         }
+        newTab.getContent().setOnMouseMoved(
+                (event) -> {
+                    TranslateTransition slideIn = new TranslateTransition(Duration.millis(250), MainViewer.getToolBar());
+                    if(event.getSceneX() > 0 && event.getSceneX() < 30) {
+                        slideIn.setToX(0);
+                        slideIn.setCycleCount(1);
+                        slideIn.play();
+                    }
+                    else{
+                        slideIn.setToX(-100);
+                        slideIn.setCycleCount(1);
+                        slideIn.play();
+                    }
+
+                }
+        );
+        TabInfo tabInfo = new TabInfo(contentCreator, criteria, newTab);
+        tabInfos.add(tabInfo);
+        newTab.setOnClosed(
+                (event) -> {
+                    tabInfos.remove(tabInfo);
+                }
+        );
+
         MainViewer.getPanels().getTabs().add(newTab);
         MainViewer.getPanels().getSelectionModel().select(newTab);
     }
 
-    private static boolean equals(Node content1, Node content2) {
-        if (content1 instanceof Pane && content2 instanceof Pane) {
-            Pane content1Pane = (Pane) content1;
-            Pane content2Pane = (Pane) content2;
-
-            if (content1Pane.getClass() == content2.getClass()) {
-                if (!content1Pane.getChildren().isEmpty() && !content2Pane.getChildren().isEmpty()) {
-                    if (content1Pane.getChildren().get(0).getClass() == content2Pane.getChildren().get(0).getClass()) {
-                        return true;
-                    }
-                }
-                if (content1Pane.getChildren().isEmpty() && !content2Pane.getChildren().isEmpty()) {
-                    return false;
-                }
-                if (content1Pane.getChildren().isEmpty() && !content2Pane.getChildren().isEmpty()) {
-                    return false;
-                }
-                if (content1Pane.getChildren().isEmpty() && content2Pane.getChildren().isEmpty()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        return false;
     }
-}

@@ -143,7 +143,7 @@ public class PropertyViewer extends Application {
 
         ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
-        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect);
+        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
 
         favouriteIcon.setOnMouseClicked(
                 (event) -> {
@@ -165,6 +165,17 @@ public class PropertyViewer extends Application {
 
         PropertyViewerFactory.styleIcon(icon, infoLayout);
 
+
+        infoLayout.setOnMouseClicked(
+                (event) -> {
+                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
+                    Tab propertyDescriptionTab = new Tab();
+                    propertyDescriptionTab.setText("Property");
+                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                }
+        );
 
         rect.setOnMouseClicked(
                 (event) -> {
