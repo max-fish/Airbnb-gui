@@ -17,6 +17,10 @@ import javafx.scene.effect.DropShadow;
 import java.util.List;
 
 
+/**
+ *
+ * @version 0.2.0
+ */
 public class PropertyViewer extends Application {
 
     private List<AirbnbListing> properties;
@@ -118,14 +122,11 @@ public class PropertyViewer extends Application {
                 BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
 
-        Text pictureText = new Text("Picture here");
-        Text nameText = new Text(property.getName());
         Text priceText = new Text("Price: £" + property.getPrice());
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
-        TextFlow pictureTextContainer = new TextFlow(pictureText);
-        TextFlow nameLabelContainer = new TextFlow(nameText);
+        Pane internetMapDiaplay = new GetGoogleMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
         TextFlow nightsLabelContainer = new TextFlow(nightsText);
@@ -133,28 +134,28 @@ public class PropertyViewer extends Application {
         addRowsToGridpane(
             infoLayout,
             new Pane[]{
-                    // getImage(),
-                    pictureTextContainer,
-                    nameLabelContainer,
+                    internetMapDiaplay,
                     priceLabelContainer,
                     reviewsLabelContainer,
                     nightsLabelContainer
             }
         );
 
-        nameLabelContainer.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
+        internetMapDiaplay.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
 
         Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         for(Node node : infoLayout.getChildren()){
-            if(node instanceof Pane){
+            if(node instanceof TextFlow){
                 TextFlow container = (TextFlow) node;
                 container.setMinWidth(infoLayout.getMaxWidth()-3);
                 container.setMaxWidth(infoLayout.getMaxWidth()-3);
-                Text label = (Text) container.getChildren().get(0);
-                label.setWrappingWidth(infoLayout.getWidth()-3);
-                label.setFont(infoFont);
-                label.setFill(Color.rgb(72,72,72));
+                if(container.getChildren().get(0) instanceof Text){
+                    Text label = (Text) container.getChildren().get(0);
+                    label.setWrappingWidth(infoLayout.getWidth()-3);
+                    label.setFont(infoFont);
+                    label.setFill(Color.rgb(72,72,72));
+                }
             }
         }
       
