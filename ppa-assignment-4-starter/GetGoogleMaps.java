@@ -6,6 +6,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  *
  * @version 0.3.2
@@ -16,17 +18,20 @@ public class GetGoogleMaps {
 
         WebView main = new WebView();
         WebEngine webEngine = main.getEngine();
-        webEngine.getLoadWorker().stateProperty().addListener(
-                new ChangeListener<Worker.State>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                        if(newValue == Worker.State.SUCCEEDED){
-                            webEngine.executeScript("document.loadFile('" + name + "', "+ latit + ", " + longit + ");");
-                        }
-                    }
-                }
-        );
         webEngine.load(getClass().getResource("maps.html").toExternalForm());
+        webEngine.getLoadWorker().stateProperty().addListener(
+            (ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
+                if (newValue == Worker.State.SUCCEEDED){
+                        try {
+                            webEngine.executeScript("document.loadFile('" + name + "', " + latit + ", " + longit + ");");
+                        }
+                        catch (netscape.javascript.JSException exc){
+                            webEngine.reload();
+                            System.out.println("Error: " + exc);
+                        }
+                }
+            }
+        );
 
         tbr.getChildren().add(main);
 
