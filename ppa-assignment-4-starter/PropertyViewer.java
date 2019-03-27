@@ -1,6 +1,7 @@
 import com.sun.xml.internal.ws.api.FeatureListValidatorAnnotation;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -20,6 +21,10 @@ import javafx.scene.effect.DropShadow;
 import java.util.List;
 
 
+/**
+ *
+ * @version 0.2.0
+ */
 public class PropertyViewer extends Application {
 
     private List<AirbnbListing> properties;
@@ -104,14 +109,11 @@ public class PropertyViewer extends Application {
 
         PropertyViewerFactory.styleInfoGrid(infoLayout);
 
-        Text pictureText = new Text("Picture here");
-        Text nameText = new Text(property.getName());
         Text priceText = new Text("Price: £" + property.getPrice());
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
-        TextFlow pictureTextContainer = new TextFlow(pictureText);
-        TextFlow nameLabelContainer = new TextFlow(nameText);
+        Pane internetMapDiaplay = new GetGoogleMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
         TextFlow nightsLabelContainer = new TextFlow(nightsText);
@@ -119,17 +121,25 @@ public class PropertyViewer extends Application {
         addRowsToGridpane(
             infoLayout,
             new Pane[]{
-                    // getImage(),
-                    pictureTextContainer,
-                    nameLabelContainer,
+                    internetMapDiaplay,
                     priceLabelContainer,
                     reviewsLabelContainer,
                     nightsLabelContainer
             }
         );
 
-        PropertyViewerFactory.styleNameLabelContainer(nameLabelContainer);
-
+        for(Node node : infoLayout.getChildren()){
+            if(node instanceof TextFlow){
+                TextFlow container = (TextFlow) node;
+                container.setMinWidth(infoLayout.getMaxWidth()-3);
+                container.setMaxWidth(infoLayout.getMaxWidth()-3);
+                if(container.getChildren().get(0) instanceof Text){
+                    Text label = (Text) container.getChildren().get(0);
+                    label.setWrappingWidth(infoLayout.getWidth()-3);
+                    label.setFill(Color.rgb(72,72,72));
+                }
+            }
+        }
 
         PropertyViewerFactory.styleGridContent(infoLayout);
       

@@ -15,8 +15,6 @@ import java.util.ArrayList;
 /**
  * @version 0.1.5
  */
-
-
 public class MapWindow {
 
     public static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
