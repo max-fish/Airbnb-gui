@@ -15,6 +15,7 @@ public class PropertyButtonActions {
                     (event) -> {
                         PropertyViewer propertyViewer = new PropertyViewer(MapWindow.buttonToProperties.get(button));
                         Tab propertyTab = new Tab();
+                        propertyTab.setGraphic(Airbnb.PROPERTYGRAPHIC);
                         propertyTab.setText("Properties");
                         propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
                         MainViewer.getPanels().getTabs().add(propertyTab);

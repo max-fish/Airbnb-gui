@@ -1,4 +1,3 @@
-import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.*;
@@ -7,15 +6,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 /**
  *
@@ -23,12 +21,13 @@ import javafx.util.Duration;
  */
 public class MainViewer extends Application
 {
-
-    public static final Color CORAL = Color.rgb(253,92,99);
-
     private Integer userLowPrice;
 
     private Integer userHighPrice;
+
+    private String userNeighborhood;
+
+    private String userRoomType;
 
    private BorderPane root;
 
@@ -38,82 +37,91 @@ public class MainViewer extends Application
 
     private BorderPane pane;
 
-   private ComboBox<String> lowPrice = new ComboBox<String>();
+   private ComboBox<String> lowPrice;
 
-    private ComboBox<String> highPrice = new ComboBox<String>();
+    private ComboBox<String> highPrice;
+
+    private ComboBox<String> neighborhood;
+
+    private ComboBox<String> roomType;
 
     @Override
     public void start(Stage stage) throws Exception
     {
 
+        Airbnb.styleGraphics();
+
         root = new BorderPane();
-
-
-        root.setPadding(new Insets(0,0,0,0));
-
 
         panels = new TabPane();
 
         pane = new BorderPane();
-        pane.setPadding(new Insets(10, 10, 10, 10));
-        pane.setMinSize(300, 300);
-        pane.setPrefSize(800,600);
-        pane.setStyle("-fx-background-color: #FFFFFF;");
 
+        lowPrice = new ComboBox<>();
 
+        highPrice = new ComboBox<>();
+
+        neighborhood = new ComboBox<>();
+
+        roomType = new ComboBox<>();
+
+        MainViewerFactory.stylePane(pane);
 
 
         Text welcomeText = new Text();
 
-        welcomeText.setText("Welcome to Airbnb");
-        welcomeText.setFill(Color.WHITE);
-        welcomeText.setOpacity(0);
+       MainViewerFactory.styleWelcomeText(welcomeText);
 
-        welcomeText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
-
-        Image airbnbLogo = new Image(getClass().getResourceAsStream("thin_white_airbnb_logo.png"));
 
 
         StackPane welcomePane = new StackPane();
 
-        ImageView airbnbLogoView = new ImageView(airbnbLogo);
-        airbnbLogoView.setFitHeight(100);
-        airbnbLogoView.setPreserveRatio(true);
-        airbnbLogoView.setOpacity(0);
 
-
-        welcomePane.setMargin(airbnbLogoView, new Insets(-150,0,0,0));
 
         Text instructionText = new Text();
-        welcomePane.setMargin(instructionText, new Insets(0,0,-100,0));
-        instructionText.setText("Please fill out the criteria above with your liking.");
-        instructionText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Light.otf"), 25));
-        instructionText.setFill(Color.WHITE);
-        instructionText.setOpacity(0);
+
+        MainViewerFactory.styleInstructionText(instructionText);
+
+        MainViewerFactory.styleWelcomePane(welcomePane, Airbnb.AIRBNBLOGO, instructionText);
 
         Rectangle welcomePaneContainer = new Rectangle();
-        welcomePaneContainer.setFill(CORAL);
-        welcomePaneContainer.setArcHeight(20);
-        welcomePaneContainer.setArcWidth(10);
 
-        welcomePane.getChildren().addAll(welcomePaneContainer, airbnbLogoView, welcomeText, instructionText);
+        MainViewerFactory.styleWelcomePaneContainer(welcomePaneContainer);
+
+        welcomePane.getChildren().addAll(welcomePaneContainer, Airbnb.AIRBNBLOGO, welcomeText, instructionText);
 
        pane.setCenter(welcomePane);
-
-       // pane.getCenter().setStyle("-fx-background-color: #FD5C63;");
 
 
         HBox selection = new HBox();
 
 
-        FlowPane lowPricePanel = new FlowPane();
+        Label neighborhoodLabel = new Label("Neighborhood: ");
+        neighborhoodLabel.setFont(Airbnb.COMBOBOXFONT);
 
-        FlowPane highPricePanel = new FlowPane();
+        neighborhood.getItems().addAll(LondonCSVUtilities.getNeighborhoods());
+        neighborhood.setOnAction(this::selectedNeighborhood);
+        neighborhood.getStyleClass().add("non-editable-combo-box");
+
+        FlowPane neighborhoodPanel = new FlowPane();
+        neighborhoodPanel.getChildren().addAll(neighborhoodLabel, neighborhood);
+
+        Label roomTypeLabel = new Label("Room type: ");
+        roomTypeLabel.setFont(Airbnb.COMBOBOXFONT);
+
+        roomType.getItems().addAll("Entire home/apt", "Private room", "Shared room");
+        roomType.setOnAction(this::selectedRoomType);
+        roomType.getStyleClass().add("non-editable-combo-box");
+
+        FlowPane roomTypePanel = new FlowPane();
+        roomTypePanel.getChildren().addAll(roomTypeLabel, roomType);
 
 
         Label lowPriceLabel = new Label("Low Price: ");
+        lowPriceLabel.setFont(Airbnb.COMBOBOXFONT);
 
         Label highPriceLabel = new Label("High Price: ");
+        highPriceLabel.setFont(Airbnb.COMBOBOXFONT);
 
         lowPrice.setEditable(true);
         lowPrice.getItems().addAll("100","200","300");
@@ -126,38 +134,43 @@ public class MainViewer extends Application
 
         highPrice.setOnAction(this::selectedHighPrice);
 
+        FlowPane lowPricePanel = new FlowPane();
+
+
+        FlowPane highPricePanel = new FlowPane();
+
         lowPricePanel.getChildren().addAll(lowPriceLabel, lowPrice);
 
         highPricePanel.getChildren().addAll(highPriceLabel, highPrice);
 
-        //pricePanel.setAlignment(Pos.CENTER_RIGHT);
 
         lowPricePanel.setHgap(10);
         highPricePanel.setHgap(10);
 
         Button search = new Button("Search");
+        search.setFont(Airbnb.BUTTONFONT);
         search.setId("MainButtons");
-        //search.setTextFill(Color.WHITE);
-        //search.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Bold.otf"), 12));
 
 
         search.setOnAction(this::searchProperties);
 
-        selection.getChildren().addAll(lowPricePanel, highPricePanel, search);
-        selection.setAlignment(Pos.CENTER_RIGHT);
+        selection.getChildren().addAll(neighborhoodPanel, roomTypePanel, lowPricePanel, highPricePanel, search);
 
-
+        selection.prefWidthProperty().bind(root.widthProperty());
 
         pane.setTop(selection);
+
 
 
         AnchorPane traverse = new AnchorPane();
         traverse.setId("traverseBar");
 
         Button previous = new Button("Previous");
+        previous.setFont(Airbnb.BUTTONFONT);
         previous.setId("MainButtons");
 
         Button next = new Button("next");
+        next.setFont(Airbnb.BUTTONFONT);
         next.setId("MainButtons");
 
 
@@ -187,83 +200,17 @@ public class MainViewer extends Application
         welcomePaneContainer.widthProperty().bind(pane.widthProperty().subtract(10));
 
 
-        //adds borders under the selection bar and above the traverse bar
-
-       // selection.setBorder(new Border(new BorderStroke(Color.GREY,
-         //       BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,0,1,0), new Insets(0,0,-10,0))));
-
         selection.setPadding(new Insets(0,0,20,0));
 
 
-        //traverse.setBorder(new Border(new BorderStroke(Color.GREY,
-          //      BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,0,0), new Insets(-10,10,0,10))));
+        MainViewerFactory.fadeInProtocol(Airbnb.AIRBNBLOGO, welcomeText, instructionText, neighborhoodPanel, roomTypePanel, lowPricePanel, highPricePanel,
+                search, next, previous);
 
-        //traverse.setPadding(new Insets(10,0,0,0));
-
-        Timeline fadeInTimeline = new Timeline();
-        lowPrice.setOpacity(0);
-        lowPriceLabel.setOpacity(0);
-        highPrice.setOpacity(0);
-        highPriceLabel.setOpacity(0);
-        search.setOpacity(0);
-        next.setOpacity(0);
-        previous.setOpacity(0);
-
-
-        KeyValue seenLogo = new KeyValue(airbnbLogoView.opacityProperty(), 1);
-        KeyValue welcomeTextPause = new KeyValue(welcomeText.opacityProperty(), 0);//do nothing
-        KeyValue seenWelcomeText = new KeyValue(welcomeText.opacityProperty(), 1);
-        KeyValue instructionTextPause = new KeyValue(instructionText.opacityProperty(), 0);//do nothing
-        KeyValue seenInstructionText = new KeyValue(instructionText.opacityProperty(), 1);
-
-        KeyValue lowPricePause = new KeyValue(lowPrice.opacityProperty(), 0);//do nothing
-        KeyValue lowPriceLabelPause = new KeyValue(lowPriceLabel.opacityProperty(), 0);//do nothing
-        KeyValue highPricePause = new KeyValue(highPrice.opacityProperty(), 0);//do nothing
-        KeyValue highPriceLabelPause = new KeyValue(highPriceLabel.opacityProperty(), 0);//do nothing
-        KeyValue searchButtonPause = new KeyValue(search.opacityProperty(), 0);//do nothing
-        KeyValue nextButtonPause = new KeyValue(next.opacityProperty(), 0);//do nothing
-        KeyValue previousButtonPause = new KeyValue(previous.opacityProperty(), 0);//do nothing
-
-        KeyValue seenLowPrice = new KeyValue(lowPrice.opacityProperty(), 1);
-        KeyValue seenLowPriceLabel = new KeyValue(lowPriceLabel.opacityProperty(), 1);
-        KeyValue seenHighPrice = new KeyValue(highPrice.opacityProperty(), 1);
-        KeyValue seenHighPriceLabel = new KeyValue(highPriceLabel.opacityProperty(), 1);
-        KeyValue seenSearchButton = new KeyValue(search.opacityProperty(), 1);
-        KeyValue seenNextButton = new KeyValue(next.opacityProperty(), 1);
-        KeyValue seenPreviousButton = new KeyValue(previous.opacityProperty(), 1);
-
-
-        KeyFrame logoFadeIn = new KeyFrame(Duration.millis(2100), seenLogo);
-        KeyFrame welcomeTextDelay = new KeyFrame(Duration.millis(1000), welcomeTextPause);
-        KeyFrame welcomeTextFadeIn = new KeyFrame(Duration.millis(2000), seenWelcomeText);
-        KeyFrame instructionTextDelay = new KeyFrame(Duration.millis(1500), instructionTextPause);
-        KeyFrame instructionTextFadeIn = new KeyFrame(Duration.millis(2500), seenInstructionText);
-
-        KeyFrame lowPriceDelay = new KeyFrame(Duration.millis(2000), lowPricePause);
-        KeyFrame lowPriceLabelDelay = new KeyFrame(Duration.millis(2000), lowPriceLabelPause);
-        KeyFrame highPriceDelay = new KeyFrame(Duration.millis(2000), highPricePause);
-        KeyFrame highPriceLabelDelay = new KeyFrame(Duration.millis(2000), highPriceLabelPause);
-        KeyFrame searchButtonDelay = new KeyFrame(Duration.millis(2000), searchButtonPause);
-        KeyFrame nextButtonDelay = new KeyFrame(Duration.millis(2000), nextButtonPause);
-        KeyFrame previousButtonDelay = new KeyFrame(Duration.millis(2000), previousButtonPause);
-
-        KeyFrame lowPriceFadeIn = new KeyFrame(Duration.millis(2500), seenLowPrice);
-        KeyFrame lowPriceLabelFadeIn = new KeyFrame(Duration.millis(2500), seenLowPriceLabel);
-        KeyFrame highPriceFadeIn = new KeyFrame(Duration.millis(2500), seenHighPrice);
-        KeyFrame highPriceLabelFadeIn = new KeyFrame(Duration.millis(2500), seenHighPriceLabel);
-        KeyFrame searchButtonFadeIn = new KeyFrame(Duration.millis(2500), seenSearchButton);
-        KeyFrame nextButtonFadeIn = new KeyFrame(Duration.millis(2500), seenNextButton);
-        KeyFrame previousButtonFadeIn = new KeyFrame(Duration.millis(2500), seenPreviousButton);
-
-        fadeInTimeline.getKeyFrames().addAll(logoFadeIn, welcomeTextDelay, welcomeTextFadeIn, instructionTextDelay, instructionTextFadeIn,
-                lowPriceDelay, lowPriceLabelDelay, highPriceDelay, highPriceLabelDelay, searchButtonDelay, nextButtonDelay, previousButtonDelay,
-                lowPriceFadeIn, lowPriceLabelFadeIn, highPriceFadeIn, highPriceLabelFadeIn, searchButtonFadeIn, nextButtonFadeIn, previousButtonFadeIn);
-        fadeInTimeline.setCycleCount(1);
-        fadeInTimeline.play();
 
         welcomeTab = new Tab();
         welcomeTab.setClosable(false);
         welcomeTab.setText("Welcome");
+        welcomeTab.setGraphic(Airbnb.HOMEGRAPHIC);
         welcomeTab.setContent(pane);
         panels.getTabs().add(welcomeTab);
 
@@ -272,28 +219,32 @@ public class MainViewer extends Application
         root.setBottom(traverse);
 
 
+
+
         // JavaFX must have a Scene (window content) inside a Stage (window)
-        Scene scene = new Scene(root, 800,600);
+        Scene scene = new Scene(root, 1700,800);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
 
 
-        selection.prefWidthProperty().bind(panels.widthProperty());
         panels.minWidthProperty().bind(root.widthProperty());
 
-
-        root.minHeightProperty().bind(scene.heightProperty());
-        root.minWidthProperty().bind(scene.widthProperty());
+        MainViewerFactory.styleRoot(root, scene);
 
         scene.getStylesheets().add(MainViewer.class.getResource("Styling.css").toExternalForm());
 
         // Show the Stage (window)
         stage.show();
+
     }
 
     public static TabPane getPanels(){
         return panels;
     }
+
+    private void selectedNeighborhood(ActionEvent event){userNeighborhood = neighborhood.getValue();}
+
+    private void selectedRoomType(ActionEvent event){userRoomType = roomType.getValue();}
 
     private void selectedLowPrice(ActionEvent event){
          userLowPrice = Integer.parseInt(lowPrice.getValue());
@@ -303,12 +254,51 @@ public class MainViewer extends Application
         userHighPrice = Integer.parseInt(highPrice.getValue());
     }
 
-    private void searchProperties(ActionEvent event)
-    {
-        Tab boroughTab = new Tab();
-        boroughTab.setText("Boroughs");
-        boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
-        panels.getTabs().add(boroughTab);
-        panels.getSelectionModel().select(boroughTab);
+    private void searchProperties(ActionEvent event) {
+        if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborhood.getValue() != null) && (roomType.getValue() != null)) {
+            if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
+                if (userNeighborhood.equals("All")) {
+                    Tab boroughTab = new Tab();
+                    boroughTab.setGraphic(Airbnb.BOROUGHGRAPHIC);
+                    boroughTab.setText("Boroughs");
+                    boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
+                    panels.getTabs().add(boroughTab);
+                    panels.getSelectionModel().select(boroughTab);
+                }
+                else {
+                    if (userRoomType.equals("All")) {
+                        if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood).size() != 0) {
+                            PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood));
+                            Tab propertyTab = new Tab();
+                            propertyTab.setText("Properties");
+                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                            MainViewer.getPanels().getTabs().add(propertyTab);
+                            MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                        } else {
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
+                        }
+                    }
+                    else {
+                        if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood).size() != 0) {
+                            PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood));
+                            Tab propertyTab = new Tab();
+                            propertyTab.setText("Properties");
+                            propertyTab.setContent(propertyViewer.makeFullPropertyWindow());
+                            MainViewer.getPanels().getTabs().add(propertyTab);
+                            MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                        } else {
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
+                        }
+                    }
+                }
+            }
+            else {
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.");
+            }
+        }
+        else {
+            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!");
+        }
     }
 }
+

@@ -1,15 +1,18 @@
+import com.sun.xml.internal.ws.api.FeatureListValidatorAnnotation;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -24,6 +27,7 @@ import java.util.List;
 public class PropertyViewer extends Application {
 
     private List<AirbnbListing> properties;
+
 
     public PropertyViewer(List<AirbnbListing> properties){
         this.properties = properties;
@@ -51,9 +55,8 @@ public class PropertyViewer extends Application {
         BorderPane fullWindow = new BorderPane();
         AnchorPane header = new AnchorPane();
         Label headerText = new Label();
-        headerText.setText("Your Properties");
-        headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
-        headerText.setTextFill(Color.rgb(72,72,72));
+
+        PropertyViewerFactory.styleHeaderText(headerText);
 
         ComboBox<String> sortBy = new ComboBox<>();
 
@@ -91,10 +94,7 @@ public class PropertyViewer extends Application {
 
     private TilePane makePropertyList(){
         TilePane propertyList = new TilePane();
-        propertyList.setAlignment(Pos.CENTER);
-        propertyList.setHgap(10);
-        propertyList.setVgap(50);
-        propertyList.setPadding(new Insets(10,10,10,10));
+        PropertyViewerFactory.styleTilePane(propertyList);
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
         }
@@ -106,21 +106,7 @@ public class PropertyViewer extends Application {
 
         GridPane infoLayout = new GridPane();
 
-        infoLayout.setMinSize(400, 300);
-        infoLayout.setMaxSize(400, 300);
-
-        RowConstraints pictureRow = new RowConstraints();
-        pictureRow.setPercentHeight(60);
-        pictureRow.setVgrow(Priority.NEVER);
-
-        RowConstraints otherRows = new RowConstraints();
-        otherRows.setVgrow(Priority.ALWAYS);
-
-        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
-
-        infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
-        infoLayout.setStyle("-fx-background-color: #FFFFFF;");
+        PropertyViewerFactory.styleInfoGrid(infoLayout);
 
         Text priceText = new Text("Price: £" + property.getPrice());
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
@@ -158,40 +144,32 @@ public class PropertyViewer extends Application {
                 }
             }
         }
+        PropertyViewerFactory.styleNameLabelContainer(nameLabelContainer);
+
+
+        PropertyViewerFactory.styleGridContent(infoLayout);
       
         Rectangle rect = new Rectangle();
-        DropShadow ds = new DropShadow();
-        ds.setOffsetY(5);
-        ds.setColor(Color.LIGHTGREY);
 
+        PropertyViewerFactory.styleRectangle(rect, infoLayout);
 
-        rect.heightProperty().bind(infoLayout.heightProperty());
-        rect.widthProperty().bind(infoLayout.widthProperty());
+        PropertyViewerFactory.styleStackPane(infoLayout, rect);
 
-        rect.setArcWidth(20);
-        rect.setArcHeight(20);
-        rect.setFill(MainViewer.CORAL);
+        ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
-        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
-        StackPane.setAlignment(rect, Pos.TOP_LEFT);
+        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon);
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
-
-        icon.maxHeightProperty().bind(infoLayout.heightProperty().add(15));
-        icon.maxWidthProperty().bind(infoLayout.widthProperty());
+        icon.getChildren().add(favouriteIcon);
 
 
-        icon.setOnMouseEntered(
-                (event) -> {icon.setEffect(ds);}
-        );
-        icon.setOnMouseExited(
-                (event) -> {icon.setEffect(null);}
-        );
+        PropertyViewerFactory.styleIcon(icon, infoLayout);
+
 
         icon.setOnMouseClicked(
                 (event) -> {
-                    PropertyDescription propertyDescription = new PropertyDescription(property, icon);
+                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
                     Tab propertyDescriptionTab = new Tab();
                     propertyDescriptionTab.setText("Property");
                     propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
