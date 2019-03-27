@@ -290,7 +290,7 @@ public class MainViewer extends Application
 
     private void searchProperties(ActionEvent event) {
         if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborhood.getValue() != null) && (roomType.getValue() != null)) {
-            Criteria userCriteria = new Criteria(userNeighborhood, userRoomType, userLowPrice, userHighPrice);
+            Criteria userCriteria = new Criteria(userNeighborhood, userRoomType, userLowPrice, userHighPrice, null);
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (userNeighborhood.equals("All")) {
                     TabCreator.createTab(MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria), MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria).fullBoroughWindow(), "Boroughs", Airbnb.BOROUGHGRAPHIC, true, userCriteria);
