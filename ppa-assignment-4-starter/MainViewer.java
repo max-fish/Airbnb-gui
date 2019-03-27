@@ -1,3 +1,5 @@
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.*;
@@ -14,6 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.awt.*;
+import java.util.Stack;
 
 /**
  *
@@ -219,12 +225,9 @@ public class MainViewer extends Application
                 search, next, previous);
 
 
-        welcomeTab = new Tab();
-        welcomeTab.setClosable(false);
-        welcomeTab.setText("Welcome");
-        welcomeTab.setGraphic(Airbnb.HOMEGRAPHIC);
-        welcomeTab.setContent(pane);
-        panels.getTabs().add(welcomeTab);
+        TabCreator.createTab(pane, "Welcome", Airbnb.HOMEGRAPHIC, false);
+
+        panels.setTranslateX(-40);
 
         root.setCenter(panels);
 
@@ -239,15 +242,37 @@ public class MainViewer extends Application
                 (event) -> {FavouriteProperties.showFavoriteProperties();}
         );
         myAirbnb.getItems().add(showFavourites);
+
         myAirbnb.setTranslateX(-100);
 
         root.setLeft(myAirbnb);
+
+
 
 
         // JavaFX must have a Scene (window content) inside a Stage (window)
         Scene scene = new Scene(root, 1700,800);
         stage.setTitle("JavaFX Example");
         stage.setScene(scene);
+
+        for(Tab tab: panels.getTabs())
+        tab.getContent().setOnMouseMoved(
+                (event) -> {
+                    TranslateTransition slideIn = new TranslateTransition(Duration.millis(250), myAirbnb);
+                    if(event.getSceneX() > 0 && event.getSceneX() < 30) {
+                        slideIn.setToX(0);
+                        slideIn.setCycleCount(1);
+                        slideIn.play();
+                    }
+                    else{
+                        slideIn.setToX(-100);
+                        slideIn.setCycleCount(1);
+                        slideIn.play();
+                    }
+
+                }
+        );
+
 
 
         panels.minWidthProperty().bind(root.widthProperty());
@@ -281,12 +306,13 @@ public class MainViewer extends Application
         if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborhood.getValue() != null) && (roomType.getValue() != null)) {
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (userNeighborhood.equals("All")) {
-                    Tab boroughTab = new Tab();
+                   /* Tab boroughTab = new Tab();
                     boroughTab.setGraphic(Airbnb.BOROUGHGRAPHIC);
                     boroughTab.setText("Boroughs");
                     boroughTab.setContent(MapFactory.getMapWindow(userLowPrice, userHighPrice));
                     panels.getTabs().add(boroughTab);
-                    panels.getSelectionModel().select(boroughTab);
+                    panels.getSelectionModel().select(boroughTab);*/
+                    TabCreator.createTab(MapFactory.getMapWindow(userLowPrice, userHighPrice), "Boroughs", Airbnb.BOROUGHGRAPHIC, true);
                 }
                 else {
                     if (userRoomType.equals("All")) {
