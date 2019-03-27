@@ -24,6 +24,8 @@ public class PropertyViewer extends Application {
 
     private List<AirbnbListing> properties;
 
+    private boolean favourite;
+
 
     public PropertyViewer(List<AirbnbListing> properties){
         this.properties = properties;
@@ -141,7 +143,20 @@ public class PropertyViewer extends Application {
 
         ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
-        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon);
+        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect);
+
+        favouriteIcon.setOnMouseClicked(
+                (event) -> {
+                    if(favourite){
+                        FavouriteProperties.removeFavouriteProperty(icon);
+                        favourite = false;
+                    }
+                    else{
+                        FavouriteProperties.addFavouriteProperty(icon);
+                        favourite = true;
+                    }
+                }
+        );
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
@@ -151,7 +166,7 @@ public class PropertyViewer extends Application {
         PropertyViewerFactory.styleIcon(icon, infoLayout);
 
 
-        icon.setOnMouseClicked(
+        rect.setOnMouseClicked(
                 (event) -> {
                     PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
                     Tab propertyDescriptionTab = new Tab();

@@ -134,6 +134,18 @@ public class MainViewer extends Application
 
         highPrice.setOnAction(this::selectedHighPrice);
 
+
+        Tooltip lowPriceToolTip = new Tooltip();
+        lowPriceToolTip.setText("You must input \n" + "a positive value. \n" + "Lower than the \n" + "high price.");
+        lowPriceToolTip.setFont(Airbnb.TOOLTIPFONT);
+        lowPrice.setTooltip(lowPriceToolTip);
+
+        Tooltip highPriceToolTip = new Tooltip();
+        highPriceToolTip.setText("You must input \n" + "a positive value. \n" + "Higher than the \n" + "minimum price.");
+        highPriceToolTip.setFont(Airbnb.TOOLTIPFONT);
+        highPrice.setTooltip(highPriceToolTip);
+
+
         FlowPane lowPricePanel = new FlowPane();
 
 
@@ -218,7 +230,18 @@ public class MainViewer extends Application
 
         root.setBottom(traverse);
 
+        ToolBar myAirbnb = new ToolBar();
 
+        myAirbnb.setOrientation(Orientation.VERTICAL);
+
+        Button showFavourites = new Button("favourites");
+        showFavourites.setOnAction(
+                (event) -> {FavouriteProperties.showFavoriteProperties();}
+        );
+        myAirbnb.getItems().add(showFavourites);
+        myAirbnb.setTranslateX(-100);
+
+        root.setLeft(myAirbnb);
 
 
         // JavaFX must have a Scene (window content) inside a Stage (window)
