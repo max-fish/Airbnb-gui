@@ -7,10 +7,9 @@ import javafx.scene.web.WebView;
 
 /**
  *
- * @version 0.2.0
+ * @version 0.2.1
  */
 public class GetGoogleMaps {
-
     public Pane getMapPane(double latit, double longit){
         Pane tbr = new Pane();
 
@@ -26,7 +25,7 @@ public class GetGoogleMaps {
                     }
                 }
         );
-        webEngine.load(getClass().getResource("demo.html").toExternalForm());
+        webEngine.load(getClass().getResource("maps.html").toExternalForm());
 
         tbr.getChildren().add(main);
 
