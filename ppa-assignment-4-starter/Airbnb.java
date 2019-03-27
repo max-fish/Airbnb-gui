@@ -1,5 +1,9 @@
+import javafx.geometry.Pos;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -20,7 +24,23 @@ public class Airbnb {
 
     public static final ImageView AIRBNBLOGO = new ImageView(new Image(Airbnb.class.getResourceAsStream("thin_white_airbnb_logo.png")));
 
-    public static final ImageView BOROUGHGRAPHIC = new ImageView(new Image(Airbnb.class.getResourceAsStream("airbnb_borough.png")));
+    public static final ImageView BOROUGHGRAPHIC = new ImageView(new Image(Airbnb.class.getResourceAsStream("borough_icon.png")));
 
-    public static final ImageView HOMEGRAPHIC = new ImageView(new Image(Airbnb.class.getResourceAsStream("airbnb_home.png")));
+    public static final ImageView HOMEGRAPHIC = new ImageView(new Image(Airbnb.class.getResourceAsStream("airbnb_heart_icon.png")));
+
+    public static final ImageView PROPERTYGRAPHIC = new ImageView(new Image(Airbnb.class.getResourceAsStream("house_icon.png")));
+
+
+
+    public static void styleGraphics(){
+        AIRBNBLOGO.setFitHeight(100);
+        AIRBNBLOGO.setPreserveRatio(true);
+        AIRBNBLOGO.setSmooth(true);
+        BOROUGHGRAPHIC.setFitHeight(20);
+        BOROUGHGRAPHIC.setPreserveRatio(true);
+        HOMEGRAPHIC.setFitHeight(20);
+        HOMEGRAPHIC.setPreserveRatio(true);
+        PROPERTYGRAPHIC.setFitHeight(20);
+        PROPERTYGRAPHIC.setPreserveRatio(true);
+    }
 }

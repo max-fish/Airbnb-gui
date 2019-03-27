@@ -5,9 +5,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -130,37 +134,22 @@ public class PropertyViewer extends Application {
         PropertyViewerFactory.styleGridContent(infoLayout);
       
         Rectangle rect = new Rectangle();
-        DropShadow ds = new DropShadow();
-
-        PropertyViewerFactory.styleDropShadow(ds);
 
         PropertyViewerFactory.styleRectangle(rect, infoLayout);
 
         PropertyViewerFactory.styleStackPane(infoLayout, rect);
 
-        ImageView FAVOURITEICON = new ImageView(new Image(getClass().getResourceAsStream("favouriteIcon.png")));
+        ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
-        FAVOURITEICON.setFitHeight(70);
-        FAVOURITEICON.setPreserveRatio(true);
-        FAVOURITEICON.setSmooth(true);
-
+        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon);
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
-        icon.getChildren().add(FAVOURITEICON);
-
-        StackPane.setAlignment(FAVOURITEICON, Pos.TOP_RIGHT);
+        icon.getChildren().add(favouriteIcon);
 
 
         PropertyViewerFactory.styleIcon(icon, infoLayout);
 
-
-        icon.setOnMouseEntered(
-                (event) -> {icon.setEffect(ds);}
-        );
-        icon.setOnMouseExited(
-                (event) -> {icon.setEffect(null);}
-        );
 
         icon.setOnMouseClicked(
                 (event) -> {

@@ -27,12 +27,6 @@ public class MainViewerFactory {
         welcomeText.setFill(Color.WHITE);
         welcomeText.setFont(Airbnb.HEADERFONT);
     }
-    public static void styleAirbnbLogoView(ImageView airbnbLogoView){
-        airbnbLogoView.setFitHeight(100);
-        airbnbLogoView.setPreserveRatio(true);
-        airbnbLogoView.setSmooth(true);
-
-    }
     public static void styleInstructionText(Text instructionText){
         instructionText.setText("Please fill out the criteria above with your liking.");
         instructionText.setFont(Airbnb.INSTRUCTIONFONT);

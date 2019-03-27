@@ -3,6 +3,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -68,11 +71,50 @@ public class PropertyViewerFactory {
     public static void styleIcon(StackPane icon, GridPane infoLayout){
         icon.maxHeightProperty().bind(infoLayout.heightProperty());
         icon.maxWidthProperty().bind(infoLayout.widthProperty());
+        DropShadow ds = new DropShadow();
+
+        styleDropShadow(ds);
+
+        icon.setOnMouseEntered(
+                (event) -> {icon.setEffect(ds);}
+        );
+        icon.setOnMouseExited(
+                (event) -> {icon.setEffect(null);}
+        );
+
     }
 
     public static void styleHeaderText(Label headerText){
         headerText.setText("Your Properties");
         headerText.setFont(Airbnb.HEADERFONT);
         headerText.setTextFill(Airbnb.GREY);
+    }
+    public static void styleFavouriteIcon(ImageView favouriteIcon){
+        favouriteIcon.setFitHeight(40);
+        favouriteIcon.setPreserveRatio(true);
+        favouriteIcon.setSmooth(true);
+        favouriteIcon.setTranslateX(-5);
+        favouriteIcon.setTranslateY(5);
+
+
+        favouriteIcon.setOnMouseEntered(
+                (event) -> {
+                    Lighting lighting = new Lighting();
+                    lighting.setDiffuseConstant(1.6);
+                    lighting.setSpecularConstant(0.0);
+                    lighting.setSpecularExponent(0.0);
+                    lighting.setSurfaceScale(0.0);
+                    lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
+                    favouriteIcon.setEffect(lighting);
+                }
+        );
+
+
+        favouriteIcon.setOnMouseExited(
+                (event) -> {favouriteIcon.setEffect(null);}
+
+        );
+
+        StackPane.setAlignment(favouriteIcon, Pos.TOP_RIGHT);
     }
 }

@@ -49,6 +49,8 @@ public class MainViewer extends Application
     public void start(Stage stage) throws Exception
     {
 
+        Airbnb.styleGraphics();
+
         root = new BorderPane();
 
         panels = new TabPane();
@@ -75,7 +77,6 @@ public class MainViewer extends Application
         StackPane welcomePane = new StackPane();
 
 
-        MainViewerFactory.styleAirbnbLogoView(Airbnb.AIRBNBLOGO);
 
         Text instructionText = new Text();
 
@@ -105,7 +106,7 @@ public class MainViewer extends Application
         FlowPane neighborhoodPanel = new FlowPane();
         neighborhoodPanel.getChildren().addAll(neighborhoodLabel, neighborhood);
 
-        Label roomTypeLabel = new Label("Label: ");
+        Label roomTypeLabel = new Label("Room type: ");
         roomTypeLabel.setFont(Airbnb.COMBOBOXFONT);
 
         roomType.getItems().addAll("Entire home/apt", "Private room", "Shared room");
@@ -204,6 +205,7 @@ public class MainViewer extends Application
 
         MainViewerFactory.fadeInProtocol(Airbnb.AIRBNBLOGO, welcomeText, instructionText, neighborhoodPanel, roomTypePanel, lowPricePanel, highPricePanel,
                 search, next, previous);
+
 
         welcomeTab = new Tab();
         welcomeTab.setClosable(false);
