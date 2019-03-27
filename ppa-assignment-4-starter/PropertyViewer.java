@@ -1,6 +1,7 @@
 import com.sun.xml.internal.ws.api.FeatureListValidatorAnnotation;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -127,10 +128,6 @@ public class PropertyViewer extends Application {
             }
         );
 
-        internetMapDiaplay.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
-
-        Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         for(Node node : infoLayout.getChildren()){
             if(node instanceof TextFlow){
                 TextFlow container = (TextFlow) node;
@@ -139,13 +136,10 @@ public class PropertyViewer extends Application {
                 if(container.getChildren().get(0) instanceof Text){
                     Text label = (Text) container.getChildren().get(0);
                     label.setWrappingWidth(infoLayout.getWidth()-3);
-                    label.setFont(infoFont);
                     label.setFill(Color.rgb(72,72,72));
                 }
             }
         }
-        PropertyViewerFactory.styleNameLabelContainer(nameLabelContainer);
-
 
         PropertyViewerFactory.styleGridContent(infoLayout);
       

@@ -57,7 +57,7 @@ public class PropertyViewerFactory {
     }
     public static void styleGridContent(GridPane infoLayout){
         for(Node node : infoLayout.getChildren()){
-            if(node instanceof Pane){
+            if(node instanceof TextFlow){
                 TextFlow container = (TextFlow) node;
                 container.setMinWidth(infoLayout.getMaxWidth()-3);
                 container.setMaxWidth(infoLayout.getMaxWidth()-3);

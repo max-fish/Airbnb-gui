@@ -21,7 +21,6 @@ public class GetGoogleMaps {
                     @Override
                     public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
                         if(newValue == Worker.State.SUCCEEDED){
-                            System.out.println("document.loadFile(" + name + ", "+ latit + ", " + longit + ");");
                             webEngine.executeScript("document.loadFile('" + name + "', "+ latit + ", " + longit + ");");
                         }
                     }
