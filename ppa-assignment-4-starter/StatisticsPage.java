@@ -163,6 +163,8 @@ public class StatisticsPage extends Application {
             double highestAvg = 0;
             double neighAvg;
 
+            //goes through all listings in AirbnbDataListings
+
             for (AirbnbListing listing : dataloaded){
                 //checks if borough is listed in map
                 if (neighMapCost.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
@@ -199,7 +201,44 @@ public class StatisticsPage extends Application {
 
     //shows the borough with the highest availability
     public String mostLikelyNight(){
-        return "placeholder";
+        //Initialize Map with all boroughs(keys) and total number of nights(values)
+        Map<String, Integer> boroughNights = new HashMap<String, Integer>();
+        //Initialize map with all boroughs(keys) and total number of properties(values)
+        Map<String, Integer> neighTotal = new HashMap<String, Integer>();
+
+
+        String highestNights = "";
+        double highestAvg = 0;
+        double neighAvg;
+
+        for (AirbnbListing listing : dataloaded){
+            // if borough not present in neighborhood map, add borough to map with its base value
+            if (boroughNights.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
+                //set the first borough availability 365
+                boroughNights.put(listing.getNeighbourhood(),listing.getAvailability365());
+                // set the first instance of a neighborhood to 1, will be increased later
+                neighTotal.put(listing.getNeighbourhood(),1);
+
+            }
+            // if borough present in neighborhood, add availability365 of current listing to that of the previous available listings
+            else{
+                boroughNights.put(listing.getNeighbourhood(),boroughNights.get(listing.getNeighbourhood()) + listing.getAvailability365());
+
+                //increment neighborhood list
+                neighTotal.put(listing.getNeighbourhood(),neighTotal.get(listing.getNeighbourhood()) + 1);
+            }
+        }
+
+        for (String neigh : boroughNights.keySet()){
+            neighAvg = boroughNights.get(neigh) / (365 * neighTotal.get(neigh));
+
+            if (highestAvg < neighAvg){
+                highestNights = neigh;
+                highestAvg = neighAvg;
+
+            }
+        }
+        return highestNights + " with " + highestAvg + " chance of finding a night";
     }
 
     public static void main(String[] args){
