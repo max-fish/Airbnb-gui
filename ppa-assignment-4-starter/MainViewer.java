@@ -21,10 +21,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-
-import java.awt.*;
-import java.util.Stack;
 
 /**
  *
@@ -110,13 +106,6 @@ public class MainViewer extends Application
        pane.setCenter(welcomePane);
 
         HBox selection = new HBox();
-        selection.setPrefSize(1000, 25);
-
-        BorderPane topPanel = new BorderPane();
-        topPanel.setPadding(new Insets(5));
-        topPanel.setPrefSize(1000, 200);
-
-        neighborhood.setStyle("-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-background-radius: 10, 10, 10, 10;");
 
         neighborhood.setPromptText("Neighborhood");
 
@@ -143,8 +132,6 @@ public class MainViewer extends Application
         roomType.setPromptText("Hometype");
         
         neighborhood.setPromptText("Neighborhood");
-        
-        roomType.setStyle("-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-background-radius: 10, 10, 10, 10;");
 
         Label lowPriceLabel = new Label("Low Price: ");
         lowPriceLabel.setFont(Airbnb.COMBOBOXFONT);
@@ -176,8 +163,8 @@ public class MainViewer extends Application
         ImageView attentionImageView = new ImageView(attentionImage);
         attentionImageView.setFitHeight(40);
         attentionImageView.setFitWidth(40);
-        lowPriceIndicatorToolTip.setGraphic(attentionImageView);
-        highPriceIndicatorToolTip.setGraphic(attentionImageView);
+        lowPriceToolTip.setGraphic(attentionImageView);
+        highPriceToolTip.setGraphic(attentionImageView);
 
         FlowPane lowPricePanel = new FlowPane();
 
@@ -185,19 +172,17 @@ public class MainViewer extends Application
 
         lowPricePanel.getChildren().addAll(lowPriceLabel, lowPrice);
 
+        highPricePanel.getChildren().addAll(highPriceLabel, highPrice);
+
         highPrice.setOnMouseClicked(this::clickedHighPriceComboBox);
         
         lowPrice.setPromptText("Minimum amount per night");
 
         highPrice.setPromptText("Maximum amount per night");
 
-        lowPrice.setPrefWidth(225);
-        highPrice.setPrefWidth(225);
-
         Button search = new Button("Search");
         search.setFont(Airbnb.BUTTONFONT);
         search.setId("MainButtons");
-        search.setFont(Font.font("Circular", FontWeight.EXTRA_BOLD, 22));
 
         search.setOnAction(this::searchProperties);
         
@@ -207,12 +192,7 @@ public class MainViewer extends Application
 
         selection.setAlignment(Pos.CENTER);
 
-        pane.setTop(topPanel);
-
-        topPanel.setBorder(new Border(new BorderStroke(Color.GREY,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,0,1,0), new Insets(0,0,-10,0))));
-
-        topPanel.setPadding(new Insets(0,0,5,0));
+        pane.setTop(selection);
 
         AnchorPane traverse = new AnchorPane();
         traverse.setId("traverseBar");
@@ -221,13 +201,9 @@ public class MainViewer extends Application
         previous.setFont(Airbnb.BUTTONFONT);
         previous.setId("MainButtons");
 
-        previous.setStyle("-fx-base: #ff5a5f; -fx-text-fill: white; -fx-focus-color: #ffffff; -fx-faint-focus-color: #ffffff; -fx-background-radius: 10, 10, 10, 10");
-
         Button next = new Button("next");
         next.setFont(Airbnb.BUTTONFONT);
         next.setId("MainButtons");
-
-        next.setStyle("-fx-base: #ff5a5f; -fx-text-fill: white; -fx-focus-color: #ffffff; -fx-faint-focus-color: #ffffff; -fx-background-radius: 10, 10, 10, 10");
 
         traverse.getChildren().addAll(previous, next);
 
@@ -283,8 +259,6 @@ public class MainViewer extends Application
         root.setLeft(myAirbnb);
 
 
-
-
         // JavaFX must have a Scene (window content) inside a Stage (window)
         Scene scene = new Scene(root, 1700,800);
         stage.setTitle("Airbnb HomeFinder");
@@ -335,13 +309,20 @@ public class MainViewer extends Application
             Criteria userCriteria = new Criteria(userNeighborhood, userRoomType, userLowPrice, userHighPrice, null);
             if (userLowPrice >= 0 && userHighPrice >= userLowPrice) {
                 if (userNeighborhood.equals("All")) {
-                    TabCreator.createTab(MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria), MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria).fullBoroughWindow(), "Boroughs", Airbnb.BOROUGHGRAPHIC, true, userCriteria);
+                    if(userRoomType.equals("All")){
+                        TabCreator.createTab(MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria), MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria).fullBoroughWindow(null), "Boroughs", Airbnb.BOROUGHGRAPHIC, true, userCriteria);
+
+                    }
+                    else {
+                        TabCreator.createTab(MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria), MapFactory.getMapWindow(userLowPrice, userHighPrice, userCriteria).fullBoroughWindow(userRoomType), "Boroughs", Airbnb.BOROUGHGRAPHIC, true, userCriteria);
+                    }
                 }
+
                 else {
                     if (userRoomType.equals("All")) {
                         if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood).size() != 0) {
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood));
-                            TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
+                            TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
                         } else {
                             AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
                         }
@@ -349,7 +330,7 @@ public class MainViewer extends Application
                     else {
                         if (LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood).size() != 0) {
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood));
-                            TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
+                            TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
                         } else {
                             AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
                         }

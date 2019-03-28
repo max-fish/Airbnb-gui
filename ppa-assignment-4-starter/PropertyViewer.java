@@ -63,7 +63,6 @@ public class PropertyViewer extends Application {
 
         ComboBox<String> sortBy = new ComboBox<>();
         sortBy.setPromptText("Sort by");
-        sortBy.setStyle("-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-background-radius: 10, 10, 10, 10; -fx-faint-focus-color: #ff5a5f; -fx-border-color: #ff5a5f;");
         sortBy.getItems().addAll("Price: Low to High", "Price: High to Low", "Reviews", "Host Name");
 
         sortBy.setOnAction(

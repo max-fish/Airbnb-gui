@@ -44,48 +44,47 @@ public class MapWindow {
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
 
+     public BorderPane fullBoroughWindow(String homeType) {
+         BorderPane fullWindow = new BorderPane();
+         Pane internal =  SearchPane(lower, higher, homeType);
+         Text headerText = new Text();
+         headerText.setText("Boroughs of London");
+         headerText.setFont(Airbnb.HEADERFONT);
+         headerText.setFill(Color.rgb(72, 72, 72));
+         GridPane titlePane = new GridPane();
+         titlePane.addRow(0, headerText);
+         Text totalPropertiesLoaded = new Text("Total properties loaded: " + totalPropertiesLoaded(lower, higher, homeType));
+         titlePane.addRow(1, totalPropertiesLoaded);
+         fullWindow.setTop(titlePane);
+         fullWindow.setCenter(internal);
 
-    public BorderPane fullBoroughWindow(int lower, int higher, String homeType) {
-        BorderPane fullWindow = new BorderPane();
+         ScaleTransition grow = new ScaleTransition();
+         grow.setFromX(0);
+         grow.setFromY(0);
+         grow.setToX(1);
+         grow.setToY(1);
+         grow.setDuration(Duration.millis(1500));
+         grow.setNode(internal);
+         PropertyButtonActions.setPropertyButtonActions(criteria);
+         grow.play();
+         return fullWindow;
+     }
 
-        Text headerText = new Text();
-        headerText.setText("Boroughs of London");
-        headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
-        headerText.setFill(Color.rgb(72, 72, 72));
-        fullWindow.setTop(headerText);
-        fullWindow.setCenter(SearchPane(lower, higher, homeType));
-        Text propertiesLoaded = new Text("Total properties loaded: " + totalPropertiesLoaded(lower, higher, homeType));
-        fullWindow.setBottom(propertiesLoaded);
-        return fullWindow;
-    }
-
-     public BorderPane fullBoroughWindow(){
-            BorderPane fullWindow = new BorderPane();
-            Text headerText = new Text();
-            headerText.setText("Boroughs of London");
-            headerText.setFont(Airbnb.HEADERFONT);
-            headerText.setFill(Color.rgb(72,72,72));
-                buttonToProperties.put(added, housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))));
-            }
-        }
-        ScaleTransition grow = new ScaleTransition();
-        grow.setFromX(0);
-        grow.setFromY(0);
-        grow.setToX(1);
-        grow.setToY(1);
-        grow.setDuration(Duration.millis(1500));
-        grow.setNode(internal);
-        PropertyButtonActions.setPropertyButtonActions();
-        grow.play();
-        return tbr;
-    }
-
-    public Pane SearchPane(int lower, int higher) {
+    public Pane SearchPane(int lower, int higher, String roomType) {
         Pane tbr = new FlowPane();
         // stands for 'To Be Returned'
 
-        Map<String, List<AirbnbListing>> housesInRange = LondonCSVUtilities.filteredResults(lower, higher);
-        int max = housesInRange.values().stream().max(Comparator.comparing(v -> v.size())).get().size();
+        Map<String, List<AirbnbListing>> housesInRange;
+        int max = 0;
+
+        if(roomType == null) {
+            housesInRange = LondonCSVUtilities.filteredResults(lower, higher);
+            max = housesInRange.values().stream().max(Comparator.comparing(v -> v.size())).get().size();
+        }
+        else {
+            housesInRange = LondonCSVUtilities.filteredResults(lower, higher, roomType);
+            max = housesInRange.values().stream().max(Comparator.comparing(v -> v.size())).get().size();
+        }
 
         Pane internal = new Pane();
         ((FlowPane) tbr).setAlignment(Pos.CENTER);
@@ -146,16 +145,13 @@ public class MapWindow {
 
     private int totalPropertiesLoaded(int low, int high, String homeType) {
         int totalPropertiesCount = 0;
-        Map<String, List<AirbnbListing>> results = LondonCSVUtilities.thoroughFilteredResults(low, high, homeType);
-        for (List<AirbnbListing> listings : results.values()) {
-            totalPropertiesCount += listings.size();
+        Map<String, List<AirbnbListing>> results;
+        if(homeType == null) {
+            results = LondonCSVUtilities.filteredResults(low, high);
         }
-        return totalPropertiesCount;
-    }
-
-    private int totalPropertiesLoaded(int low, int high) {
-        int totalPropertiesCount = 0;
-        Map<String, List<AirbnbListing>> results = LondonCSVUtilities.filteredResults(low, high);
+        else {
+             results = LondonCSVUtilities.filteredResults(low, high, homeType);
+        }
         for (List<AirbnbListing> listings : results.values()) {
             totalPropertiesCount += listings.size();
         }
