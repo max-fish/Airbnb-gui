@@ -17,6 +17,7 @@ public class MapFactory {
 
     private static MapWindow mapWin;
 
+
     public static MapWindow getMapWindow(int lower, int upper, Criteria criteria){
         if(mapWin == null){
             mapWin = new MapWindow(lower, upper, criteria);

@@ -54,6 +54,7 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
+
     public static Map<String, List<AirbnbListing>> filteredResults(int low, int high, String typeOfRoom) {
         Map<String, List<AirbnbListing>> tbr = new HashMap<String, List<AirbnbListing>>();
         for(String value : acronymToName.values()) {
@@ -69,16 +70,14 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
-
-
     public enum sortBy {
-        PRICE, REVIEWS, HOST_NAME;
+        PRICE_LOW_TO_HIGH, PRICE_HIGH_TO_LOW, REVIEWS, HOST_NAME;
     }
 
     public static void sort(List<AirbnbListing> properties, sortBy sortType){
         switch(sortType)
         {
-            case PRICE :
+            case PRICE_LOW_TO_HIGH:
                 properties.sort(new Comparator<AirbnbListing>() {
                 @Override
                 public int compare(AirbnbListing o1, AirbnbListing o2) {
@@ -94,6 +93,22 @@ public class LondonCSVUtilities {
                 }
             });
             break;
+
+            case PRICE_HIGH_TO_LOW:
+                properties.sort(new Comparator<AirbnbListing>() {
+                    @Override
+                    public int compare(AirbnbListing o1, AirbnbListing o2) {
+                            if (o1.getPrice() < o2.getPrice()) {
+                                return 1;
+                            }
+                            else if (o1.getPrice() == o2.getPrice()) {
+                                return 0;
+                            }
+                            else {
+                                return -1;
+                            }
+                        }
+                    });
 
             case REVIEWS: properties.sort(new Comparator<AirbnbListing>() {
                 @Override

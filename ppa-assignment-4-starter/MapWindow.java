@@ -1,13 +1,17 @@
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -19,7 +23,6 @@ public class MapWindow {
 
     public static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
 
-    
     private static int[] offset = new int[]{7, 4, 1, 0, 1, 2, 3};
 
     private List<ButtonArrayDetails> buttonDetails;
@@ -37,12 +40,24 @@ public class MapWindow {
         this.criteria = criteria;
     }
 
-    public void addButtonRow (int offset, String[] names){
+    public void addButtonRow(int offset, String[] names) {
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
 
 
+    public BorderPane fullBoroughWindow(int lower, int higher, String homeType) {
+        BorderPane fullWindow = new BorderPane();
 
+        Text headerText = new Text();
+        headerText.setText("Boroughs of London");
+        headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
+        headerText.setFill(Color.rgb(72, 72, 72));
+        fullWindow.setTop(headerText);
+        fullWindow.setCenter(SearchPane(lower, higher, homeType));
+        Text propertiesLoaded = new Text("Total properties loaded: " + totalPropertiesLoaded(lower, higher, homeType));
+        fullWindow.setBottom(propertiesLoaded);
+        return fullWindow;
+    }
 
      public BorderPane fullBoroughWindow(){
             BorderPane fullWindow = new BorderPane();
@@ -50,13 +65,22 @@ public class MapWindow {
             headerText.setText("Boroughs of London");
             headerText.setFont(Airbnb.HEADERFONT);
             headerText.setFill(Color.rgb(72,72,72));
-
-            fullWindow.setTop(headerText);
-            fullWindow.setCenter(SearchPane(lower,higher));
-            return fullWindow;
+                buttonToProperties.put(added, housesInRange.get(LondonCSVUtilities.getNameFromAcronym(buttonDetails.get(height).getString(buttons))));
+            }
         }
+        ScaleTransition grow = new ScaleTransition();
+        grow.setFromX(0);
+        grow.setFromY(0);
+        grow.setToX(1);
+        grow.setToY(1);
+        grow.setDuration(Duration.millis(1500));
+        grow.setNode(internal);
+        PropertyButtonActions.setPropertyButtonActions();
+        grow.play();
+        return tbr;
+    }
 
-    public Pane SearchPane (int lower, int higher){
+    public Pane SearchPane(int lower, int higher) {
         Pane tbr = new FlowPane();
         // stands for 'To Be Returned'
 
@@ -75,34 +99,30 @@ public class MapWindow {
                 added.setLayoutX((buttonDetails.get(height).getOffset() * maxButtonSize / 2) + buttons * maxButtonSize);
                 added.setShape(new Polygon(new double[]{
                         // In form X, Y
-                        maxButtonSize/2, 0,
-                        maxButtonSize, maxButtonSize/4,
-                        maxButtonSize, 3*maxButtonSize/4,
-                        maxButtonSize/2, maxButtonSize,
-                        0, 3*maxButtonSize/4,
-                        0, maxButtonSize/4
+                        maxButtonSize / 2, 0,
+                        maxButtonSize, maxButtonSize / 4,
+                        maxButtonSize, 3 * maxButtonSize / 4,
+                        maxButtonSize / 2, maxButtonSize,
+                        0, 3 * maxButtonSize / 4,
+                        0, maxButtonSize / 4
                 }));
-              
+
                 added.setMinSize(maxButtonSize, maxButtonSize);
                 added.setMaxSize(maxButtonSize, maxButtonSize);
 
 
                 added.setId("boroughButton");
 
-                if(housesInRange.get(nameOfBorough).size() == 0){
+                if (housesInRange.get(nameOfBorough).size() == 0) {
                     added.setDisable(true);
-                }
-                else if(housesInRange.get(nameOfBorough).size()/max <= 0.25){
+                } else if (housesInRange.get(nameOfBorough).size() / max <= 0.25) {
                     added.getStyleClass().add("lowBuildings");
-                }
-                else if(housesInRange.get(nameOfBorough).size()/max <= 0.5){
+                } else if (housesInRange.get(nameOfBorough).size() / max <= 0.5) {
                     added.getStyleClass().add("midBuildings");
 
-                }
-                else if(housesInRange.get(nameOfBorough).size()/max <= 0.75){
+                } else if (housesInRange.get(nameOfBorough).size() / max <= 0.75) {
                     added.getStyleClass().add("highBuildings");
-                }
-                else{
+                } else {
                     added.getStyleClass().add("maxBuildings");
                 }
 
@@ -122,5 +142,23 @@ public class MapWindow {
         PropertyButtonActions.setPropertyButtonActions(criteria);
         grow.play();
         return tbr;
+    }
+
+    private int totalPropertiesLoaded(int low, int high, String homeType) {
+        int totalPropertiesCount = 0;
+        Map<String, List<AirbnbListing>> results = LondonCSVUtilities.thoroughFilteredResults(low, high, homeType);
+        for (List<AirbnbListing> listings : results.values()) {
+            totalPropertiesCount += listings.size();
+        }
+        return totalPropertiesCount;
+    }
+
+    private int totalPropertiesLoaded(int low, int high) {
+        int totalPropertiesCount = 0;
+        Map<String, List<AirbnbListing>> results = LondonCSVUtilities.filteredResults(low, high);
+        for (List<AirbnbListing> listings : results.values()) {
+            totalPropertiesCount += listings.size();
+        }
+        return totalPropertiesCount;
     }
 }
