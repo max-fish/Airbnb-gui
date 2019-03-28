@@ -6,19 +6,15 @@ import java.util.Iterator;
 
 public class PropertyButtonActions {
 
-    public static void setPropertyButtonActions(){
+    public static void setPropertyButtonActions(Criteria criteria){
         Iterator<Button> buttonIterator = MapWindow.buttonToProperties.keySet().iterator();
         while(buttonIterator.hasNext()){
-
             Button button = buttonIterator.next();
+            Criteria newCriteria = new Criteria(criteria.getNeighborhood(), criteria.getRoomType(), criteria.getLowPrice(), criteria.getHighPrice(), button);
             button.setOnAction(
                     (event) -> {
                         PropertyViewer propertyViewer = new PropertyViewer(MapWindow.buttonToProperties.get(button));
-                        Tab propertyTab = new Tab();
-                        propertyTab.setText("Properties");
-                        propertyTab.setContent(propertyViewer.makeFullPropertyWindow(button.getText()));
-                        MainViewer.getPanels().getTabs().add(propertyTab);
-                        MainViewer.getPanels().getSelectionModel().select(propertyTab);
+                        TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(), "Properties", Airbnb.PROPERTYGRAPHIC, true, newCriteria);
                         });
 
             ScaleTransition scaleTransition = new ScaleTransition();

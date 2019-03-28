@@ -1,3 +1,6 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.*;
 
 /**
@@ -17,9 +20,18 @@ public class LondonCSVUtilities {
         put("SUTT", "Sutton"); put("CROY", "Croydon"); put("BROM", "Bromley");
     }};
 
+    private static ObservableList<String> neighborhoods = FXCollections.observableArrayList("All", "Barking and Dagenham",
+            "Barnet", "Bexley", "Brent", "Bromley", "Camden", "City of London", "Croydon",
+            "Ealing", "Enfield", "Greenwich", "Hackney", "Hammersmith and Fulham", "Haringey", "Harrow",
+            "Havering", "Hillingdon", "Hounslow", "Islington", "Kensington and Chelsea", "Kingston upon Thames", "Lambeth",
+            "Lewisham", "Merton", "Newham", "Redbridge", "Richmond upon Thames", "Southwark", "Sutton",
+            "Tower Hamlets", "Waltham Forest", "Wandsworth", "Westminster");
+
     public static String getNameFromAcronym(String acronym){
         return acronymToName.get(acronym);
     }
+
+    public static ObservableList<String> getNeighborhoods() {return neighborhoods;}
 
     /**
      *
@@ -42,7 +54,8 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
-    public static Map<String, List<AirbnbListing>> thoroughFilteredResults(int low, int high, String typeOfRoom) {
+
+    public static Map<String, List<AirbnbListing>> filteredResults(int low, int high, String typeOfRoom) {
         Map<String, List<AirbnbListing>> tbr = new HashMap<String, List<AirbnbListing>>();
         for(String value : acronymToName.values()) {
             tbr.put(value, new ArrayList<>());

@@ -1,18 +1,19 @@
+import com.sun.xml.internal.ws.api.FeatureListValidatorAnnotation;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.effect.*;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -20,9 +21,16 @@ import javafx.stage.Stage;
 import java.util.List;
 
 
+/**
+ *
+ * @version 0.2.0
+ */
 public class PropertyViewer extends Application {
 
     private List<AirbnbListing> properties;
+
+    private boolean favourite;
+
 
     public PropertyViewer(List<AirbnbListing> properties){
         this.properties = properties;
@@ -50,8 +58,8 @@ public class PropertyViewer extends Application {
         BorderPane fullWindow = new BorderPane();
         AnchorPane header = new AnchorPane();
         Label headerText = new Label();
-        headerText.setFont(Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Regular.otf"), 50));
-        headerText.setTextFill(Color.rgb(72,72,72));
+
+        PropertyViewerFactory.styleHeaderText(headerText);
 
         ComboBox<String> sortBy = new ComboBox<>();
         sortBy.setPromptText("Sort by");
@@ -92,10 +100,7 @@ public class PropertyViewer extends Application {
 
     private TilePane makePropertyList(){
         TilePane propertyList = new TilePane();
-        propertyList.setAlignment(Pos.CENTER);
-        propertyList.setHgap(10);
-        propertyList.setVgap(50);
-        propertyList.setPadding(new Insets(10,10,10,10));
+        PropertyViewerFactory.styleTilePane(propertyList);
         for(AirbnbListing property : properties){
             propertyList.getChildren().add(makeIcon(property));
         }
@@ -112,43 +117,13 @@ public class PropertyViewer extends Application {
 
         GridPane infoLayout = new GridPane();
 
-        infoLayout.setMinSize(400, 300);
-        infoLayout.setMaxSize(400, 300);
+        PropertyViewerFactory.styleInfoGrid(infoLayout);
 
-        RowConstraints pictureRow = new RowConstraints();
-        pictureRow.setPercentHeight(60);
-        pictureRow.setVgrow(Priority.NEVER);
-
-        RowConstraints otherRows = new RowConstraints();
-        otherRows.setVgrow(Priority.ALWAYS);
-
-        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
-
-        infoLayout.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
-        infoLayout.setStyle("-fx-background-color: #FFFFFF;");
-
-        Image favouriteIcon = new Image(getClass().getResourceAsStream("favouriteIcon.png"));
-
-        ImageView favouriteIconImageView = new ImageView(favouriteIcon);
-        favouriteIconImageView.setPreserveRatio(true);
-        favouriteIconImageView.setFitHeight(70);
-        favouriteIconImageView.setFitHeight(70);
-        favouriteIconImageView.setOnMouseEntered((e) -> {Lighting redLighting = new Lighting();
-        redLighting.setLight(new Light.Distant(90, 90, Color.CORAL));
-        redLighting.setDiffuseConstant(1.0); redLighting.setSpecularConstant(0.0); redLighting.setSpecularExponent(0.0); redLighting.setSurfaceScale(0.0);
-        favouriteIconImageView.setEffect(redLighting);});
-
-        favouriteIconImageView.setOnMouseExited((e) -> {favouriteIconImageView.setEffect(null);});
-
-        Text pictureText = new Text("Picture here");
-        Text nameText = new Text(property.getName());
         Text priceText = new Text("Price: £" + property.getPrice());
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
-        TextFlow pictureTextContainer = new TextFlow(pictureText);
-        TextFlow nameLabelContainer = new TextFlow(nameText);
+        Pane internetMapDiaplay = new GetGoogleMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
         TextFlow nightsLabelContainer = new TextFlow(nightsText);
@@ -156,65 +131,73 @@ public class PropertyViewer extends Application {
         addRowsToGridpane(
             infoLayout,
             new Pane[]{
-                    // getImage(),
-                    pictureTextContainer,
-                    nameLabelContainer,
+                    internetMapDiaplay,
                     priceLabelContainer,
                     reviewsLabelContainer,
                     nightsLabelContainer
             }
         );
 
-        nameLabelContainer.setBorder(new Border(new BorderStroke(MainViewer.CORAL,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
-
-        Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         for(Node node : infoLayout.getChildren()){
-            if(node instanceof Pane){
+            if(node instanceof TextFlow){
                 TextFlow container = (TextFlow) node;
                 container.setMinWidth(infoLayout.getMaxWidth()-3);
                 container.setMaxWidth(infoLayout.getMaxWidth()-3);
-                Text label = (Text) container.getChildren().get(0);
-                label.setWrappingWidth(infoLayout.getWidth()-3);
-                label.setFont(infoFont);
-                label.setFill(Color.rgb(72,72,72));
+                if(container.getChildren().get(0) instanceof Text){
+                    Text label = (Text) container.getChildren().get(0);
+                    label.setWrappingWidth(infoLayout.getWidth()-3);
+                    label.setFill(Color.rgb(72,72,72));
+                }
             }
         }
+
+        PropertyViewerFactory.styleGridContent(infoLayout);
       
         Rectangle rect = new Rectangle();
-        DropShadow ds = new DropShadow();
-        ds.setOffsetY(5);
-        ds.setColor(Color.LIGHTGREY);
 
+        PropertyViewerFactory.styleRectangle(rect, infoLayout);
 
-        rect.heightProperty().bind(infoLayout.heightProperty().add(15));
-        rect.widthProperty().bind(infoLayout.widthProperty());
+        PropertyViewerFactory.styleStackPane(infoLayout, rect);
 
-        rect.setArcWidth(20);
-        rect.setArcHeight(20);
-        rect.setFill(MainViewer.CORAL);
+        ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
-        StackPane.setAlignment(infoLayout, Pos.TOP_CENTER);
-        StackPane.setAlignment(rect, Pos.TOP_LEFT);
-        StackPane.setAlignment(favouriteIconImageView, Pos.TOP_RIGHT);
+        PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
+
+        favouriteIcon.setOnMouseClicked(
+                (event) -> {
+                    if(favourite){
+                        FavouriteProperties.removeFavouriteProperty(icon);
+                        favourite = false;
+                    }
+                    else{
+                        FavouriteProperties.addFavouriteProperty(icon);
+                        favourite = true;
+                    }
+                }
+        );
       
         icon.getChildren().add(rect);
         icon.getChildren().add(infoLayout);
-        icon.getChildren().add(favouriteIconImageView);
+        icon.getChildren().add(favouriteIcon);
 
-        icon.maxHeightProperty().bind(infoLayout.heightProperty());
-        icon.maxWidthProperty().bind(infoLayout.widthProperty());
 
-        icon.setOnMouseEntered(
-                (event) -> {icon.setEffect(ds);}
-        );
-        icon.setOnMouseExited(
-                (event) -> {icon.setEffect(null);}
-        );
+        PropertyViewerFactory.styleIcon(icon, infoLayout);
 
-        icon.setOnMouseClicked(
+
+        infoLayout.setOnMouseClicked(
                 (event) -> {
-                    PropertyDescription propertyDescription = new PropertyDescription(property, icon);
+                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
+                    Tab propertyDescriptionTab = new Tab();
+                    propertyDescriptionTab.setText("Property");
+                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                }
+        );
+
+        rect.setOnMouseClicked(
+                (event) -> {
+                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
                     Tab propertyDescriptionTab = new Tab();
                     propertyDescriptionTab.setText("Property");
                     propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());

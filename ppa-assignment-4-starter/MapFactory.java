@@ -17,23 +17,14 @@ public class MapFactory {
 
     private static MapWindow mapWin;
 
-    public static Pane getMapWindow(int lower, int upper, String homeType){
-        if(mapWin == null){
-            mapWin = new MapWindow();
-            for(int x = 0; x < boroughs.length; x++){
-                mapWin.addButtonRow(offset[x], boroughs[x]);
-            }
-        }
-        return mapWin.fullBoroughWindow(lower, upper, homeType);
-    }
 
-    public static Pane getMapWindow(int lower, int upper){
+    public static MapWindow getMapWindow(int lower, int upper, Criteria criteria){
         if(mapWin == null){
-            mapWin = new MapWindow();
+            mapWin = new MapWindow(lower, upper, criteria);
             for(int x = 0; x < boroughs.length; x++){
                 mapWin.addButtonRow(offset[x], boroughs[x]);
             }
         }
-        return mapWin.fullBoroughWindow(lower, upper);
+        return mapWin;
     }
 }
