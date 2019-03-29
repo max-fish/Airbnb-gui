@@ -1,7 +1,6 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -9,10 +8,15 @@ import java.util.HashMap;
 import javafx.scene.text.*;
 import javafx.scene.chart.PieChart;
 
+/**
+ * @version 0.0.1
+ */
+
 public class StatisticsPage extends Application {
     public ArrayList<AirbnbListing> dataloaded;
     public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
     public ArrayList<Integer> currentShown = new ArrayList<>(4);
+
 
     public void start (Stage stage){
 
@@ -163,13 +167,14 @@ public class StatisticsPage extends Application {
 
         //load the airbnb data in
         dataloaded = new AirbnbDataLoader().load();
+
     }
 
         //calculates average number of reviews over the whole data set
         public double calcAvgRevNum(){
             int totalReviews = 0;
             int totalListings = 0;
-            for(AirbnbListing listing : dataloaded){
+            for(AirbnbListing listing : dataLoaded){
                 totalReviews += listing.getNumberOfReviews();
                 totalListings += 1;
             }
@@ -180,7 +185,7 @@ public class StatisticsPage extends Application {
         //calculate total available properties
         public int availableProp(){
             int totalListings = 0;
-            for(AirbnbListing listing : dataloaded){
+            for(AirbnbListing listing : dataLoaded){
                 totalListings += 1;
             }
             return totalListings;
@@ -189,8 +194,10 @@ public class StatisticsPage extends Application {
         //runs through all listings and returns number of Homes or Apts
         public int homeApt(){
             int homeApts = 0;
+
             for(AirbnbListing listing : dataloaded){
                 if (listing.getRoom_type().equals("Entire home/apt")){
+
                     homeApts += 1;
                 }
             }
@@ -212,6 +219,7 @@ public class StatisticsPage extends Application {
             //goes through all listings in AirbnbDataListings
 
             for (AirbnbListing listing : dataloaded){
+
                 //checks if borough is listed in map
                 if (neighMapCost.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
 
@@ -247,6 +255,7 @@ public class StatisticsPage extends Application {
 
     //shows the borough with the highest availability
     public String mostLikelyNight(){
+
         //Initialize Map with all boroughs(keys) and total number of nights(values)
         Map<String, Integer> boroughNights = new HashMap<String, Integer>();
         //Initialize map with all boroughs(keys) and total number of properties(values)
@@ -354,6 +363,7 @@ public class StatisticsPage extends Application {
             }
         }
         return highestRev;
+
     }
 
     public static void main(String[] args){
