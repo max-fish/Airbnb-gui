@@ -1,13 +1,13 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 
 public class StatisticsPage extends Application {
     public ArrayList<AirbnbListing> dataloaded;
@@ -108,52 +108,6 @@ public class StatisticsPage extends Application {
         stage.show();
     }
 
-/*
-    public void showSelectedPane(int whichButton){
-        //when button pressed
-
-        while(currentShown.get(whichButton) < displayedMethods.size() - 1){
-            if current
-        }
-    }
-*/
-
-    /*
-    public String methodSelector(int whichmethod){
-        if (!displayedMethods.get(whichmethod)){
-            displayedMethods.set(whichmethod, true);
-            if (whichmethod == 0){
-                return "average number of reviews \n" + calcAvgRevNum();
-            }
-            else if (whichmethod == 1){
-                return "total available properties \n" + availableProp();
-            }
-            else if (whichmethod == 2){
-                return "Available homes/apts \n" + homeApt();
-            }
-            else if (whichmethod == 3){
-                //return "most expensive neighborhood \n" + expNeigh();
-                return neighDistribution();
-            }
-            else if (whichmethod == 4){
-                return "4";
-            }
-            else if (whichmethod == 5){
-                return "5";
-            }
-            else if (whichmethod == 6){
-                return "6";
-            }
-            else if (whichmethod == 7){
-                return "7";
-            }
-        }
-        else{
-            methodSelector(whichmethod + 1);
-        }
-        return "not working";
-    }
-*/
 
     public StatisticsPage() {
         int avgRevNum; //average number of reviews
