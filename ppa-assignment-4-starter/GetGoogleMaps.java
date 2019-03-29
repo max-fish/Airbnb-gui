@@ -23,7 +23,7 @@ public class GetGoogleMaps {
             (ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
                 if (newValue == Worker.State.SUCCEEDED){
                         try {
-                            webEngine.executeScript("document.loadFile('" + name + "', " + latit + ", " + longit + ");");
+                            webEngine.executeScript("document.loadFile('" + name.replace("'", "") + "', " + latit + ", " + longit + ");");
                         }
                         catch (netscape.javascript.JSException exc){
                             webEngine.reload();
