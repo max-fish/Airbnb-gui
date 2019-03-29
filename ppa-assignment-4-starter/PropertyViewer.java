@@ -1,12 +1,9 @@
-import com.sun.xml.internal.ws.api.FeatureListValidatorAnnotation;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
@@ -122,7 +119,7 @@ public class PropertyViewer extends Application {
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
-        Pane internetMapDiaplay = new GetGoogleMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
+        Pane internetMapDiaplay = new GetBingMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
         TextFlow nightsLabelContainer = new TextFlow(nightsText);
