@@ -18,13 +18,16 @@ import java.util.ArrayList;
  */
 public class MapWindow {
 
-    // Assigns each button a
+    // Assigns each button a list of buildings that they reference
     private static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
 
     private List<ButtonArrayDetails> buttonDetails;
 
+    // Integer attributes
     private static int maxButtonSize = 100;
     private static int buttonHeight = maxButtonSize*3/4;
+
+    // Non-static fields
     private Criteria criteria;
     private int lower;
     private int higher;
@@ -44,10 +47,22 @@ public class MapWindow {
         grow.setDuration(Duration.millis(1500));
     }
 
+    /**
+     * Adds a row of buttons to the main pane.
+     *
+     * @param offset the offset of the row.
+     * @param names array of the name of each button in the row
+     */
     public void addButtonRow(int offset, String[] names) {
         buttonDetails.add(new ButtonArrayDetails(offset, names));
     }
 
+    /**
+     * Create a pane that has all the boroughs with
+     *
+     * @param homeType the type of home being searched for
+     * @return a pane with buttons for each borough
+     */
      public Pane fullBoroughWindow(String homeType) {
          BorderPane fullWindow = new BorderPane();
          Pane internal =  SearchPane(lower, higher, homeType);
@@ -68,6 +83,14 @@ public class MapWindow {
          return fullWindow;
      }
 
+    /**
+     * Create a pane row of boroughs.
+     *
+     * @param lower the lower bound for the value of one night
+     * @param higher the upper bound for the value of one night
+     * @param roomType the type of house being searched for
+     * @return a pane of buttons
+     */
     private Pane SearchPane(int lower, int higher, String roomType) {
         FlowPane tbr = new FlowPane();
         // stands for 'To Be Returned'
@@ -141,6 +164,14 @@ public class MapWindow {
         return tbr;
     }
 
+    /**
+     * Counts all the proprties that fit in the parameters given.
+     *
+     * @param low the lower bound for the value of one night
+     * @param high the upper bound for the value of one night
+     * @param homeType the type of house being searched for
+     * @return a count of all the properties found
+     */
     private int totalPropertiesLoaded(int low, int high, String homeType) {
         int totalPropertiesCount = 0;
         Map<String, List<AirbnbListing>> results;
@@ -156,6 +187,11 @@ public class MapWindow {
         return totalPropertiesCount;
     }
 
+    /**
+     * Gets the hashmap for all the buttons to houses.
+     *
+     * @return a map of buttons to listings
+     */
     public static HashMap<Button, List<AirbnbListing>> getButtonToProperties(){
         return buttonToProperties;
     }
