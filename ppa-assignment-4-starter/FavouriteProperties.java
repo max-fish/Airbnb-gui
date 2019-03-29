@@ -5,6 +5,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 public class FavouriteProperties {
 
@@ -12,32 +13,33 @@ public class FavouriteProperties {
 
 
 
-    public static void addFavouriteProperty(StackPane favouriteProperty){
-        favouriteProperties.getChildren().add(favouriteProperty);
+    public static void addFavouriteProperty(AirbnbListing favouriteProperty){
+
+        PropertyViewer favouritePropertyIconCopy = new PropertyViewer(null);
+        favouritePropertyIconCopy.favourite();
+        favouriteProperties.getChildren().add(favouritePropertyIconCopy.makeIcon(favouriteProperty));
     }
 
-    public static void removeFavouriteProperty(StackPane favouriteProperty){
+    public static void removeFavouriteProperty(AirbnbListing favouriteProperty){
         favouriteProperties.getChildren().remove(favouriteProperty);
     }
 
     public static void showFavoriteProperties(){
-        Tab favouritesTab = new Tab();
         if(favouriteProperties.getChildren().isEmpty()){
-            favouritesTab.setContent(makeEmptyScreen());
+            TabCreator.createSingularTab(makeEmptyScreen(), "Favourites", null, true);
         }
         else{
-            favouritesTab.setContent(favouriteProperties);
+            TabCreator.createSingularTab(favouriteProperties, "Favourites", null, true);
         }
-        MainViewer.getPanels().getTabs().add(favouritesTab);
     }
 
-    private static Text makeEmptyScreen(){
-        Text noFavourites = new Text();
-        noFavourites.setText("You have not selected any properties as one of your favorites yet");
+    private static TextFlow makeEmptyScreen(){
+        Text noFavourites = new Text("You have not selected any properties as one of your favorites yet");
         noFavourites.setFont(Airbnb.HEADERFONT);
         noFavourites.setFill(Color.BLACK);
         noFavourites.setTextAlignment(TextAlignment.CENTER);
-        return noFavourites;
+        TextFlow noFavouritesContainer = new TextFlow(noFavourites);
+        return noFavouritesContainer;
     }
 
 }

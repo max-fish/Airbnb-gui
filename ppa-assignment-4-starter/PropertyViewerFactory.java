@@ -1,5 +1,6 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -30,7 +31,7 @@ public class PropertyViewerFactory {
         RowConstraints otherRows = new RowConstraints();
         otherRows.setVgrow(Priority.ALWAYS);
 
-        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
+        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows);
 
         infoLayout.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2,2,0,2))));
@@ -55,22 +56,6 @@ public class PropertyViewerFactory {
         nameLabelContainer.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
     }
-
-    public static void styleMap(Pane internetMapDisplay, GridPane infoLayout, Rectangle rect){
-        internetMapDisplay.setOnMouseEntered(
-                (event) -> {
-                    infoLayout.setDisable(true);
-                    rect.setDisable(true);
-                }
-        );
-        internetMapDisplay.setOnMouseExited(
-                (event) -> {
-                    infoLayout.setDisable(false);
-                    rect.setDisable(false);
-
-                }
-        );
-    }
     public static void styleGridContent(GridPane infoLayout){
         for(Node node : infoLayout.getChildren()){
             if(node instanceof TextFlow){
@@ -81,6 +66,7 @@ public class PropertyViewerFactory {
                 label.setWrappingWidth(infoLayout.getWidth()-3);
                 label.setFont(Airbnb.PROPERTYINFOFONT);
                 label.setFill(Airbnb.GREY);
+                GridPane.setValignment(container, VPos.CENTER);
             }
         }
     }

@@ -106,6 +106,7 @@ public class MainViewer extends Application
        pane.setCenter(welcomePane);
 
         HBox selection = new HBox();
+        selection.setFillHeight(false);
 
         neighborhood.setPromptText("Neighborhood");
 
@@ -182,6 +183,7 @@ public class MainViewer extends Application
 
         Button search = new Button("Search");
         search.setFont(Airbnb.BUTTONFONT);
+        search.setMinSize(75,29);
         search.setId("MainButtons");
 
         search.setOnAction(this::searchProperties);
@@ -246,7 +248,7 @@ public class MainViewer extends Application
 
         TabCreator.createSingularTab(pane, "Welcome", Airbnb.HOMEGRAPHIC, false);
 
-        panels.setTranslateX(-40);
+        panels.setTranslateX(-60);
 
         root.setCenter(panels);
 
@@ -285,7 +287,7 @@ public class MainViewer extends Application
 
         myAirbnb.getItems().addAll(myAribnbText, showFavourites, showHelp);
 
-        myAirbnb.setTranslateX(-100);
+        myAirbnb.setTranslateX(-150);
 
         root.setLeft(myAirbnb);
 

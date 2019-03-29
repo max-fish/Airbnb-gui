@@ -27,12 +27,10 @@ public class GetGoogleMaps {
                         }
                         catch (netscape.javascript.JSException exc){
                             webEngine.reload();
-                            System.out.println("Error: " + exc);
                         }
                 }
             }
         );
-        main.setStyle("-fx-border-color: red;-fx-border-width: 1px;-fx-border-style:solid");
         tbr.getChildren().add(main);
 
         return tbr;

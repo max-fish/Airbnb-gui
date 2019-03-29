@@ -113,7 +113,7 @@ public class PropertyViewer extends Application {
         return properties.size();
     }
 
-    private StackPane makeIcon(AirbnbListing property){
+    public StackPane makeIcon(AirbnbListing property){
         StackPane icon = new StackPane();
 
         GridPane infoLayout = new GridPane();
@@ -151,6 +151,7 @@ public class PropertyViewer extends Application {
                     Text label = (Text) container.getChildren().get(0);
                     label.setWrappingWidth(infoLayout.getWidth()-3);
                     label.setFill(Color.rgb(72,72,72));
+                    container.setMaxHeight(label.getFont().getSize());
                 }
             }
         }
@@ -163,8 +164,6 @@ public class PropertyViewer extends Application {
 
         PropertyViewerFactory.styleStackPane(infoLayout, rect);
 
-        PropertyViewerFactory.styleMap(internetMapDiaplay, infoLayout, rect);
-
         ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
         PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
@@ -172,12 +171,10 @@ public class PropertyViewer extends Application {
         favouriteIcon.setOnMouseClicked(
                 (event) -> {
                     if(favourite){
-                        FavouriteProperties.removeFavouriteProperty(icon);
-                        favourite = false;
+                        FavouriteProperties.removeFavouriteProperty(property);
                     }
                     else{
-                        FavouriteProperties.addFavouriteProperty(icon);
-                        favourite = true;
+                        FavouriteProperties.addFavouriteProperty(property);
                     }
                 }
         );
@@ -240,5 +237,11 @@ public class PropertyViewer extends Application {
         Lighting redLighting = new Lighting();
         redLighting.setLight(new Light.Distant(45, 45, Color.RED));
 
+    }
+    public void favourite(){
+        favourite = true;
+    }
+    public void unfavourite(){
+        favourite = false;
     }
 }
