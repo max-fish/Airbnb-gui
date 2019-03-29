@@ -7,46 +7,43 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
+import javafx.scene.chart.PieChart;
 
 public class StatisticsPage extends Application {
     public ArrayList<AirbnbListing> dataloaded;
     public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
+    public ArrayList<Integer> currentShown = new ArrayList<>(4);
 
     public void start (Stage stage){
 
-        displayedMethods.add(0, false);
-        displayedMethods.add(1, false);
-        displayedMethods.add(2, false);
-        displayedMethods.add(3, false);
+        displayedMethods.add(0, true);
+        displayedMethods.add(1, true);
+        displayedMethods.add(2, true);
+        displayedMethods.add(3, true);
         displayedMethods.add(4, false);
         displayedMethods.add(5, false);
         displayedMethods.add(6, false);
         displayedMethods.add(7, false);
+
+        currentShown.add(0,0);
+        currentShown.add(1,1);
+        currentShown.add(2,2);
+        currentShown.add(3,3);
 
         GridPane gridpane = new GridPane();
 
         //adding buttons
         Button button00 = new Button("<");
         Button button01 = new Button(">");
+
         Button button10 = new Button("<");
         Button button11 = new Button(">");
+
         Button button20 = new Button("<");
         Button button21 = new Button(">");
+
         Button button30 = new Button("<");
         Button button31 = new Button(">");
-
-        //adding text
-        Text textPane0 = new Text();
-        Text textPane1 = new Text();
-        Text textPane2 = new Text();
-        Text textPane3 = new Text();
-
-        //set text
-
-        textPane0.setText(methodSelector(0));
-        textPane1.setText(methodSelector(1));
-        textPane2.setText(methodSelector(2));
-        textPane3.setText(methodSelector(3));
 
         gridpane.add(button00,0,0);
         gridpane.add(button01,2,0);
@@ -57,10 +54,34 @@ public class StatisticsPage extends Application {
         gridpane.add(button30,3,1);
         gridpane.add(button31,5,1);
 
-        gridpane.add(textPane0,1,0);
-        gridpane.add(textPane1,4,0);
-        gridpane.add(textPane2,1,1);
-        gridpane.add(textPane3,4,1);
+        Pane container0 = new Pane();
+        container0.getChildren().add(new TextFlow(new Text("Average Number of Reviews \n" + calcAvgRevNum())));
+
+        Pane container1 = new Pane();
+        container1.getChildren().add(new TextFlow(new Text("Total Available properties: \n" + availableProp())));
+
+        Pane container2 = new Pane();
+        container2.getChildren().add(new TextFlow(new Text("Available homes/apts: \n" + homeApt())));
+
+        Pane container3 = new Pane();
+        container3.getChildren().add(new TextFlow(new Text("Most Expensive Neighborhood: \n" + expNeigh())));
+
+        Pane container4 = new Pane();
+        container4.getChildren().add(new TextFlow(new Text("Neighborhood with highest probability night: \n" + mostLikelyNight())));
+
+
+        Pane container5 = new Pane(neighDistribution());
+
+        Pane container6 = new Pane();
+        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())))
+
+        Pane container7 = new Pane();
+        container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())))
+
+        gridpane.add(container0,1,0);
+        gridpane.add(container1,4,0);
+        gridpane.add(container2,1,1);
+        gridpane.add(container5,4,1);
 
 
 
@@ -68,12 +89,36 @@ public class StatisticsPage extends Application {
 
 
         Scene scene = new Scene(gridpane, 700,500);
+        gridpane.minHeightProperty().bind(scene.heightProperty());
+        gridpane.minWidthProperty().bind(scene.widthProperty());
+        gridpane.setGridLinesVisible(true);
+
+        RowConstraints rowconstraints = new RowConstraints();
+        rowconstraints.setVgrow(Priority.ALWAYS);
+
+        ColumnConstraints columnconstraints = new ColumnConstraints();
+        columnconstraints.setHgrow(Priority.ALWAYS);
+
+        gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
+        gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
+
 
 
         stage.setScene(scene);
         stage.show();
     }
 
+/*
+    public void showSelectedPane(int whichButton){
+        //when button pressed
+
+        while(currentShown.get(whichButton) < displayedMethods.size() - 1){
+            if current
+        }
+    }
+*/
+
+    /*
     public String methodSelector(int whichmethod){
         if (!displayedMethods.get(whichmethod)){
             displayedMethods.set(whichmethod, true);
@@ -87,7 +132,8 @@ public class StatisticsPage extends Application {
                 return "Available homes/apts \n" + homeApt();
             }
             else if (whichmethod == 3){
-                return "most expensive neighborhood \n" + expNeigh();
+                //return "most expensive neighborhood \n" + expNeigh();
+                return neighDistribution();
             }
             else if (whichmethod == 4){
                 return "4";
@@ -107,7 +153,7 @@ public class StatisticsPage extends Application {
         }
         return "not working";
     }
-
+*/
 
     public StatisticsPage() {
         int avgRevNum; //average number of reviews
@@ -239,6 +285,75 @@ public class StatisticsPage extends Application {
             }
         }
         return highestNights + " with " + highestAvg + " chance of finding a night";
+    }
+
+    public PieChart neighDistribution(){
+
+        //Initialize map with all boroughs(keys) and total number of properties(values)
+        Map<String, Integer> neighTotal = new HashMap<String, Integer>();
+
+        for (AirbnbListing listing : dataloaded){
+            if (neighTotal.get(listing.getNeighbourhood()) == null){
+                neighTotal.put(listing.getNeighbourhood(),1);
+            }
+            else{
+                neighTotal.put(listing.getNeighbourhood(),neighTotal.get(listing.getNeighbourhood()) + 1);
+            }
+        }
+
+        PieChart piechart = new PieChart();
+
+        for (String name : neighTotal.keySet()){
+            PieChart.Data slice = new PieChart.Data(name, neighTotal.get(name));
+            piechart.getData().add(slice);
+        }
+
+        return piechart;
+    }
+
+    //returns the average lat,long of the dataset
+
+    public String avgLatLong(){
+        int lat= 0;
+        int lon= 0;
+        int total = 0;
+        for (AirbnbListing listing : dataloaded){
+            lat += listing.getLatitude();
+            lon += listing.getLongitude();
+            total += 1;
+        }
+        return "" + (lat/total) + ", " + (lon/total);
+    }
+
+    //return the borough with the most average reviews
+
+    public String mostAvgReviewed(){
+        Map<String,Double> reviewTotal = new HashMap<String,Integer>;
+        Map<String,Integer> neighTotal = new HashMap<String,Integer>;
+
+        for (AirbnbListing listing : dataloaded){
+            if (reviewTotal.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
+                reviewTotal.put(listing.getNeighbourhood(),listing.getReviewsPerMonth());
+                neighTotal.put(listing.getNeighbourhood(),1);
+            }
+            else{
+                reviewTotal.put(listing.getNeighbourhood(),reviewTotal.get(listing.getNeighbourhood()) + listing.getReviewsPerMonth());
+                neighTotal.put(listing.getNeighbourhood(),neighTotal.get(listing.getNeighbourhood()) + 1);
+            }
+        }
+
+        String highestRev = "";
+        double highestAvg = 0;
+        double currAvg = 0;
+
+        for (String borough : reviewTotal.keySet()){
+            currAvg = (reviewTotal.get(borough) / neighTotal.get(borough));
+            if (currAvg > highestAvg){
+                highestAvg = currAvg;
+                highestRev = borough;
+            }
+        }
+        return highestRev;
     }
 
     public static void main(String[] args){
