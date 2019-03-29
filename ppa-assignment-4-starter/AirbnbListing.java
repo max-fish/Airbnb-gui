@@ -165,4 +165,17 @@ public class AirbnbListing {
                 ", availability365=" + availability365 +
                 '}';
     }
+
+    public boolean equals(AirbnbListing other){
+        if(id == other.getId() && name.equals(other.getName()) && host_name.equals(other.host_name) &&
+                neighbourhood.equals(other.getNeighbourhood()) && latitude == other.getLatitude() &&
+        longitude == other.getLongitude() && room_type.equals(other.getRoom_type()) && minimumNights == other.getMinimumNights() &&
+        numberOfReviews == other.getNumberOfReviews() && lastReview.equals(other.getLastReview()) && reviewsPerMonth == other.getReviewsPerMonth() &&
+        calculatedHostListingsCount == other.getCalculatedHostListingsCount() && availability365 == other.getAvailability365()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

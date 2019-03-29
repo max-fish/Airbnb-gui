@@ -8,8 +8,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import java.util.Stack;
-
 public class PropertyDescription {
 
     AirbnbListing property;
@@ -38,7 +36,7 @@ public class PropertyDescription {
         TextFlow totalHostListings = new TextFlow(new Text("Total host listings: " + property.getCalculatedHostListingsCount()));
         TextFlow availability = new TextFlow(new Text("Availability: " + property.getAvailability365()));
 
-        Pane map = new GetGoogleMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
+        Pane map = new GetGoogleMaps().getMapPaneBirdsEye(property.getName(), property.getLatitude(), property.getLongitude());
         map.setPrefHeight(300);
         map.setPrefWidth(500);
         descriptionGrid.addRow(0, map);

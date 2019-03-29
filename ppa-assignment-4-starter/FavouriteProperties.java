@@ -1,35 +1,44 @@
-import javafx.scene.control.Tab;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import java.util.HashMap;
 
 public class FavouriteProperties {
 
-    private static TilePane favouriteProperties = new TilePane();
+    private static TilePane favouritePropertiesContainer = new TilePane();
+
+    private static HashMap<Icon, StackPane> favouriteIconToView = new HashMap<>();
+
+    private static HashMap<Icon, Icon> copyToOrigIcon = new HashMap<>();
 
 
-
-    public static void addFavouriteProperty(AirbnbListing favouriteProperty){
-
-        PropertyViewer favouritePropertyIconCopy = new PropertyViewer(null);
-        favouritePropertyIconCopy.favourite();
-        favouriteProperties.getChildren().add(favouritePropertyIconCopy.makeIcon(favouriteProperty));
+    public static void addFavouriteProperty(Icon favouriteProperty){
+        Icon favouritePropertyCopy = favouriteProperty.clone(true);
+        copyToOrigIcon.put(favouritePropertyCopy, favouriteProperty);
+        StackPane favouritePropertyCopyIcon = favouritePropertyCopy.makeIcon();
+        favouriteIconToView.put(favouritePropertyCopy, favouritePropertyCopyIcon);
+        favouritePropertiesContainer.getChildren().add(favouritePropertyCopyIcon);
     }
 
-    public static void removeFavouriteProperty(AirbnbListing favouriteProperty){
-        favouriteProperties.getChildren().remove(favouriteProperty);
+    public static void removeFavouriteProperty(Icon favouriteProperty){
+        for(Icon favouriteIcon : favouriteIconToView.keySet()){
+            if(favouriteIcon.getAirbnbListing().equals(favouriteProperty.getAirbnbListing())){
+                copyToOrigIcon.remove(favouriteIcon).setFavourite(false);
+                favouritePropertiesContainer.getChildren().remove(favouriteIconToView.get(favouriteIcon));
+                favouriteIconToView.remove(favouriteIcon);
+            }
+        }
+
     }
 
     public static void showFavoriteProperties(){
-        if(favouriteProperties.getChildren().isEmpty()){
+        if(favouritePropertiesContainer.getChildren().isEmpty()){
             TabCreator.createSingularTab(makeEmptyScreen(), "Favourites", null, true);
         }
         else{
-            TabCreator.createSingularTab(favouriteProperties, "Favourites", null, true);
+            TabCreator.createSingularTab(favouritePropertiesContainer, "Favourites", null, true);
         }
     }
 

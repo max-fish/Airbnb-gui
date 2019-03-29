@@ -32,7 +32,6 @@ public class PropertyViewerFactory {
         otherRows.setVgrow(Priority.ALWAYS);
 
         infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows);
-
         infoLayout.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
