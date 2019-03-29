@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
 import javafx.scene.chart.PieChart;
+
 
 /**
  * @version 0.0.1
@@ -77,20 +79,15 @@ public class StatisticsPage extends Application {
         Pane container5 = new Pane(neighDistribution());
 
         Pane container6 = new Pane();
-        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())))
+        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())));
 
         Pane container7 = new Pane();
-        container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())))
+        container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
 
         gridpane.add(container0,1,0);
         gridpane.add(container1,4,0);
         gridpane.add(container2,1,1);
         gridpane.add(container5,4,1);
-
-
-
-
-
 
         Scene scene = new Scene(gridpane, 700,500);
         gridpane.minHeightProperty().bind(scene.heightProperty());
@@ -105,8 +102,6 @@ public class StatisticsPage extends Application {
 
         gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
         gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
-
-
 
         stage.setScene(scene);
         stage.show();
@@ -174,20 +169,23 @@ public class StatisticsPage extends Application {
         public double calcAvgRevNum(){
             int totalReviews = 0;
             int totalListings = 0;
-            for(AirbnbListing listing : dataLoaded){
+            for(AirbnbListing listing : dataloaded){
                 totalReviews += listing.getNumberOfReviews();
                 totalListings += 1;
             }
-
+            System.out.println(totalReviews);
+            System.out.println(totalListings);
+            System.out.println(totalReviews/totalListings);
             return (totalReviews/totalListings);
         }
 
         //calculate total available properties
         public int availableProp(){
             int totalListings = 0;
-            for(AirbnbListing listing : dataLoaded){
+            for(AirbnbListing listing : dataloaded){
                 totalListings += 1;
             }
+            System.out.println(totalListings);
             return totalListings;
         }
 
@@ -201,7 +199,7 @@ public class StatisticsPage extends Application {
                     homeApts += 1;
                 }
             }
-
+            System.out.println(homeApts);
             return homeApts;
         }
 
@@ -250,6 +248,7 @@ public class StatisticsPage extends Application {
                     highestAvg = neighAvg;
                 }
             }
+            System.out.println(highestBorough);
             return highestBorough;
     }
 
@@ -293,6 +292,7 @@ public class StatisticsPage extends Application {
 
             }
         }
+        System.out.println(highestNights + " with " + highestAvg + " chance of finding a night");
         return highestNights + " with " + highestAvg + " chance of finding a night";
     }
 
@@ -331,14 +331,15 @@ public class StatisticsPage extends Application {
             lon += listing.getLongitude();
             total += 1;
         }
+        System.out.println("" + (lat/total) + ", " + (lon/total));
         return "" + (lat/total) + ", " + (lon/total);
     }
 
     //return the borough with the most average reviews
 
     public String mostAvgReviewed(){
-        Map<String,Double> reviewTotal = new HashMap<String,Integer>;
-        Map<String,Integer> neighTotal = new HashMap<String,Integer>;
+        Map<String,Double> reviewTotal = new HashMap<String,Double>();
+        Map<String,Integer> neighTotal = new HashMap<String,Integer>();
 
         for (AirbnbListing listing : dataloaded){
             if (reviewTotal.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
@@ -362,6 +363,7 @@ public class StatisticsPage extends Application {
                 highestRev = borough;
             }
         }
+        System.out.println(highestRev);
         return highestRev;
 
     }
