@@ -73,10 +73,10 @@ public class StatisticsPage extends Application {
         Pane container5 = new Pane(neighDistribution());
 
         Pane container6 = new Pane();
-        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())))
+        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())));
 
         Pane container7 = new Pane();
-        container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())))
+        container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
 
         gridpane.add(container0,1,0);
         gridpane.add(container1,4,0);
@@ -328,8 +328,8 @@ public class StatisticsPage extends Application {
     //return the borough with the most average reviews
 
     public String mostAvgReviewed(){
-        Map<String,Double> reviewTotal = new HashMap<String,Integer>;
-        Map<String,Integer> neighTotal = new HashMap<String,Integer>;
+        Map<String,Double> reviewTotal = new HashMap<String,Double>();
+        Map<String,Integer> neighTotal = new HashMap<String,Integer>();
 
         for (AirbnbListing listing : dataloaded){
             if (reviewTotal.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
