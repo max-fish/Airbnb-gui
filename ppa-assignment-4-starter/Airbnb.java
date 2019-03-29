@@ -20,6 +20,8 @@ public class Airbnb {
 
     public static final Font TOOLTIPFONT = Font.loadFont(Airbnb.class.getResource("Montserrat/MontserratAlternates-Light.otf").toExternalForm(), 10);
 
+    public static final Font TOOLBARFONT = Font.loadFont(Airbnb.class.getResource("Montserrat/MontserratAlternates-BoldItalic.otf").toExternalForm(),15);
+
     public static final Color CORAL = Color.rgb(253,92,99);
 
     public static final Color GREY = Color.rgb(72,72,72);

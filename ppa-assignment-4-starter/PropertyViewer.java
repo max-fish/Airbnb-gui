@@ -11,8 +11,10 @@ import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -123,6 +125,9 @@ public class PropertyViewer extends Application {
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
         Pane internetMapDiaplay = new GetGoogleMaps().getMapPane(property.getName(), property.getLatitude(), property.getLongitude());
+
+
+
         TextFlow priceLabelContainer = new TextFlow(priceText);
         TextFlow reviewsLabelContainer = new TextFlow(reviewsText);
         TextFlow nightsLabelContainer = new TextFlow(nightsText);
@@ -158,6 +163,8 @@ public class PropertyViewer extends Application {
 
         PropertyViewerFactory.styleStackPane(infoLayout, rect);
 
+        PropertyViewerFactory.styleMap(internetMapDiaplay, infoLayout, rect);
+
         ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
 
         PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
@@ -185,23 +192,31 @@ public class PropertyViewer extends Application {
 
         infoLayout.setOnMouseClicked(
                 (event) -> {
-                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
-                    Tab propertyDescriptionTab = new Tab();
-                    propertyDescriptionTab.setText("Property");
-                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
-                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
-                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                    if(event.getButton().equals(MouseButton.PRIMARY)){
+                        if(event.getClickCount() == 2) {
+                            PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
+                            Tab propertyDescriptionTab = new Tab();
+                            propertyDescriptionTab.setText("Property");
+                            propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                            MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                            MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                        }
+                    }
                 }
         );
 
         rect.setOnMouseClicked(
                 (event) -> {
-                    PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
-                    Tab propertyDescriptionTab = new Tab();
-                    propertyDescriptionTab.setText("Property");
-                    propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
-                    MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
-                    MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                    if(event.getButton().equals(MouseButton.PRIMARY)) {
+                        if(event.getClickCount() == 2) {
+                            PropertyDescription propertyDescription = new PropertyDescription(property, makeIcon(property));
+                            Tab propertyDescriptionTab = new Tab();
+                            propertyDescriptionTab.setText("Property");
+                            propertyDescriptionTab.setContent(propertyDescription.makeDescriptionWindow());
+                            MainViewer.getPanels().getTabs().add(propertyDescriptionTab);
+                            MainViewer.getPanels().getSelectionModel().select(propertyDescriptionTab);
+                        }
+                    }
                 }
 
         );

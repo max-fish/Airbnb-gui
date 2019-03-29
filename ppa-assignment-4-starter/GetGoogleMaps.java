@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 public class GetGoogleMaps {
     public Pane getMapPane(String name, double latit, double longit){
         StackPane tbr = new StackPane();
-
         WebView main = new WebView();
         WebEngine webEngine = main.getEngine();
         webEngine.load(getClass().getResource("maps.html").toExternalForm());
@@ -32,7 +32,7 @@ public class GetGoogleMaps {
                 }
             }
         );
-
+        main.setStyle("-fx-border-color: red;-fx-border-width: 1px;-fx-border-style:solid");
         tbr.getChildren().add(main);
 
         return tbr;

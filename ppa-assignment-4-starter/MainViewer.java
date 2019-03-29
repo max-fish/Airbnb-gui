@@ -215,12 +215,24 @@ public class MainViewer extends Application
 
         previous.setOnAction(
                 (event) -> {
-                    panels.getSelectionModel().selectPrevious();
+                    if(panels.getSelectionModel().getSelectedIndex() == 0){
+                        panels.getSelectionModel().selectLast();
+                    }
+                    else {
+                        panels.getSelectionModel().selectPrevious();
+                    }
                 }
         );
 
         next.setOnAction(
-                (event) ->  {panels.getSelectionModel().selectNext();}
+                (event) ->  {
+                    if(panels.getSelectionModel().getSelectedIndex() == (panels.getTabs().size()-1)){
+                        panels.getSelectionModel().selectFirst();
+                    }
+                    else {
+                        panels.getSelectionModel().selectNext();
+                    }
+                }
         );
 
         welcomePaneContainer.heightProperty().bind(pane.heightProperty().subtract(selection.heightProperty().multiply(1.7)));
@@ -242,7 +254,26 @@ public class MainViewer extends Application
         
         myAirbnb.setOrientation(Orientation.VERTICAL);
 
+        myAirbnb.setStyle("-fx-background-color: rgba(0,0,0,0.5)");
+
+        Rectangle toolBarContainer = new Rectangle();
+        toolBarContainer.heightProperty().bind(myAirbnb.heightProperty());
+        toolBarContainer.widthProperty().bind(myAirbnb.widthProperty());
+        toolBarContainer.setArcWidth(18);
+        toolBarContainer.setArcHeight(18);
+
+        myAirbnb.setShape(toolBarContainer);
+
+        Text myAribnbText = new Text("My Airbnb");
+        myAribnbText.setFont(Airbnb.TOOLBARFONT);
+        myAribnbText.setFill(Airbnb.CORAL);
+        myAribnbText.setUnderline(true);
+
+
         Button showFavourites = new Button("Favourites");
+        showFavourites.setStyle("-fx-background-color: #FD5C63");
+        showFavourites.setFont(Airbnb.BUTTONFONT);
+        showFavourites.setTextFill(Color.WHITE);
         Button showHelp = new Button("Help");
         showFavourites.setOnAction(
                 (event) -> {FavouriteProperties.showFavoriteProperties();}
@@ -252,7 +283,7 @@ public class MainViewer extends Application
                 "a user to personalize\n their home-finding process. Once a user presses search this will bring up \na map of all the boroughs in London. It is designed as a heat map, so darker colours\n indicate more homes found, given the search criteria" +
                 ", while lighter\n colours indicate fewer homes found. You can then press on the borough buttons to\n show all the properties in that borough. As always have fun finding your next unique home or experience.\n Happy HomeFinding - Airbnb"));
 
-        myAirbnb.getItems().addAll(showFavourites, showHelp);
+        myAirbnb.getItems().addAll(myAribnbText, showFavourites, showHelp);
 
         myAirbnb.setTranslateX(-100);
 

@@ -33,7 +33,7 @@ public class PropertyViewerFactory {
         infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
 
         infoLayout.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
-                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
     }
     public static void styleRectangle(Rectangle rect, GridPane infoLayout){
@@ -54,6 +54,22 @@ public class PropertyViewerFactory {
     public static void styleNameLabelContainer(TextFlow nameLabelContainer){
         nameLabelContainer.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,0,1,0))));
+    }
+
+    public static void styleMap(Pane internetMapDisplay, GridPane infoLayout, Rectangle rect){
+        internetMapDisplay.setOnMouseEntered(
+                (event) -> {
+                    infoLayout.setDisable(true);
+                    rect.setDisable(true);
+                }
+        );
+        internetMapDisplay.setOnMouseExited(
+                (event) -> {
+                    infoLayout.setDisable(false);
+                    rect.setDisable(false);
+
+                }
+        );
     }
     public static void styleGridContent(GridPane infoLayout){
         for(Node node : infoLayout.getChildren()){
