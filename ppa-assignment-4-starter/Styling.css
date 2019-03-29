@@ -1,0 +1,147 @@
+#traverseBar{
+    -fx-background-color: #FFFFFF;
+}
+
+.combo-box .arrow-button{
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box .arrow{
+    -fx-background-color: #FFFFFF;
+}
+
+.combo-box{
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box .arrow-button:hover {
+    -fx-background-color: #FD4747;
+}
+
+.combo-box .arrow-button:pressed {
+    -fx-background-color: #000000;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #FD5C63;
+}
+
+
+.combo-box .list-view .list-cell{
+    -fx-focus-color: transparent;
+}
+
+.combo-box .list-view. list-cell:focused{
+    -fx-focus-color: transparent;
+}
+
+.combo-box .list-view .list-cell:pressed{
+    -fx-background-color: #000000;
+    -fx-text-fill: #FD5C63;
+}
+
+.non-editable-combo-box{
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #FD5C63;
+    -fx-border-style: solid hidden solid solid;
+    -fx-border-width: 1px 1px 1px 1px;
+}
+
+
+
+#MainButtons {
+    -fx-background-color: #FD5C63;
+    -fx-text-fill: #FFFFFF;
+}
+
+#MainButtons:hover{
+-fx-background-color: #FD4747;
+}
+
+#MainButtons:pressed{
+-fx-background-color: #000000;
+-fx-text-fill: #FD5C63;
+}
+
+.scroll-pane .thumb{
+    -fx-background-color: #FD5C63;
+}
+
+.scroll-pane .thumb:hover {
+    -fx-background-color: #FD4747;
+}
+
+.scroll-pane .thumb:active {
+    -fx-background-color: #000000;
+}
+
+.scroll-pane .track{
+    -fx-background-color: #E0E0E0;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane{
+        -fx-background-color: #FFFFFF;
+}
+
+
+.tab{
+    -fx-background-color: #FFFFFF;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab:selected{
+    -fx-border-color: #FD5C63;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 3px;
+}
+
+.tab:focused{
+    -fx-border-color: transparent;
+}
+
+.tab-header-background{
+    -fx-background-color: transparent;
+}
+
+.tab-content-area{
+    -fx-background-color: #FFFFFF;
+}
+
+.stack-pane{
+    -fx-background-color: transparent;
+}
+
+.lowBuildings{
+    -fx-background-color: #FEB3B7;
+}
+
+.midBuildings{
+    -fx-background-color: #FE8187;
+}
+
+.highBuildings{
+    -fx-background-color: #FD5C63;
+}
+
+.maxBuildings{
+    -fx-background-color: #FD353F;
+}
+
+#boroughButton{
+    -fx-background-insets: 2px 2px 2px 2px;
+}
+
+#boroughButton:hover{
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#boroughButton:pressed{
+    -fx-background-color: #000000;
+    -fx-text-fill: #FD5C63;
+}
