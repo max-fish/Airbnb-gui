@@ -12,13 +12,14 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 
 /**
+ * Creates a pane which contains a list of clickable buttons. Each button refers to a different borough in London.
  *
  * @version 0.1.6
  */
 public class MapWindow {
 
-    // Assigns each button
-    public static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
+    // Assigns each button a
+    private static final HashMap<Button, List<AirbnbListing>> buttonToProperties = new HashMap<>();
 
     private List<ButtonArrayDetails> buttonDetails;
 
@@ -153,5 +154,9 @@ public class MapWindow {
             totalPropertiesCount += listings.size();
         }
         return totalPropertiesCount;
+    }
+
+    public static HashMap<Button, List<AirbnbListing>> getButtonToProperties(){
+        return buttonToProperties;
     }
 }
