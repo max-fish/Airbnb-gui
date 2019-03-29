@@ -287,14 +287,24 @@ public class MainViewer extends Application
 
     private void selectedRoomType(ActionEvent event){userRoomType = roomType.getValue();}
 
+    /**
+     * This method assigns the selected price inside the lowPrice combo-box to the userLowPrice variable
+     * when a user clicks on the highPrice combo-box.
+     * @param event
+     */
     private void selectedLowPrice(ActionEvent event){
          userLowPrice = Integer.parseInt(lowPrice.getValue());
     }
 
+    /**
+     * This method assigns the selected price inside the highPrice combo-box to the userHighPrice variable
+     * when a user clicks on the highPrice combo-box.
+     * @param event
+     */
     private void selectedHighPrice(ActionEvent event){
         userHighPrice = Integer.parseInt(highPrice.getValue());
     }
-    
+
     private void clickedLowPriceCombBox(MouseEvent event) {
         lowPrice.setStyle("-fx-faint-focus-color: #ff5a5f");
     }
@@ -303,7 +313,14 @@ public class MainViewer extends Application
         highPrice.setStyle("-fx-faint-focus-color: #ff5a5f");
     }
 
-
+/**
+This is a method that searches for properties that match the given inputted user criteria. A user can search
+ for a given type of property in a given borough, but they can also make their search as general as searching
+ all property types in all boroughs within a given price range. If for any reason a user inputs wrong criteria
+ or if the system cannot find any properties a message will displayed to the user indicating what went wrong
+ when searching for properties.
+ @param event When the user clicks the search button on the first panel.
+ */
     private void searchProperties(ActionEvent event) {
         if((lowPrice.getValue() != null) && (highPrice.getValue() != null) && (neighborhood.getValue() != null) && (roomType.getValue() != null)) {
             Criteria userCriteria = new Criteria(userNeighborhood, userRoomType, userLowPrice, userHighPrice, null);
