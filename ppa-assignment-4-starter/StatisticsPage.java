@@ -173,9 +173,6 @@ public class StatisticsPage extends Application {
                 totalReviews += listing.getNumberOfReviews();
                 totalListings += 1;
             }
-            System.out.println(totalReviews);
-            System.out.println(totalListings);
-            System.out.println(totalReviews/totalListings);
             return (totalReviews/totalListings);
         }
 
@@ -185,7 +182,6 @@ public class StatisticsPage extends Application {
             for(AirbnbListing listing : dataloaded){
                 totalListings += 1;
             }
-            System.out.println(totalListings);
             return totalListings;
         }
 
@@ -199,7 +195,6 @@ public class StatisticsPage extends Application {
                     homeApts += 1;
                 }
             }
-            System.out.println(homeApts);
             return homeApts;
         }
 
@@ -248,7 +243,6 @@ public class StatisticsPage extends Application {
                     highestAvg = neighAvg;
                 }
             }
-            System.out.println(highestBorough);
             return highestBorough;
     }
 
@@ -292,7 +286,6 @@ public class StatisticsPage extends Application {
 
             }
         }
-        System.out.println(highestNights + " with " + highestAvg + " chance of finding a night");
         return highestNights + " with " + highestAvg + " chance of finding a night";
     }
 
@@ -316,7 +309,6 @@ public class StatisticsPage extends Application {
             PieChart.Data slice = new PieChart.Data(name, neighTotal.get(name));
             piechart.getData().add(slice);
         }
-
         return piechart;
     }
 
@@ -331,7 +323,6 @@ public class StatisticsPage extends Application {
             lon += listing.getLongitude();
             total += 1;
         }
-        System.out.println("" + (lat/total) + ", " + (lon/total));
         return "" + (lat/total) + ", " + (lon/total);
     }
 
@@ -363,7 +354,6 @@ public class StatisticsPage extends Application {
                 highestRev = borough;
             }
         }
-        System.out.println(highestRev);
         return highestRev;
 
     }
