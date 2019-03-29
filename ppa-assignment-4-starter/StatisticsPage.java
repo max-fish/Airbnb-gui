@@ -73,7 +73,7 @@ public class StatisticsPage extends Application {
         Pane container5 = new Pane(neighDistribution());
 
         Pane container6 = new Pane();
-        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())));
+        container6.getChildren().add(new TextFlow(new Text("Neighborhood with highest probability night: \n" + avgLatLong())));
 
         Pane container7 = new Pane();
         container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
