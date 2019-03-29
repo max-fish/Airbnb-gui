@@ -25,7 +25,7 @@ public StatisticsPageTest() {}
 
 /**
  * Sets up the test fixture.
- *
+ * Creates a new StatisticsPage object.
  * Called before every test case method.
  */
 @Before
@@ -36,7 +36,7 @@ public void setUp()
 
 /**
  * Tears down the test fixture.
- *
+ * Sets the StatisticsPage object to null.
  * Called after every test case method.
  */
 @After
