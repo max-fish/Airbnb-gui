@@ -89,6 +89,8 @@ public class GetBingMaps {
                         }
                         try {
                             for ( AirbnbListing listing : buildings) {
+                                System.out.println("Things:"+ listing.getLatitude() +
+                                        ", " + listing.getLongitude());
                                 webEngine.executeScript(
                                         "document.addPin('" + listing.getName().replace("'", "") +
                                                 "', " + listing.getLatitude() +
