@@ -6,33 +6,18 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
 import javafx.scene.chart.PieChart;
-
-
 /**
  * @version 0.0.1
  */
 
-public class StatisticsPage {
-    private static ArrayList<AirbnbListing> dataloaded = new AirbnbDataLoader().load();;
-    public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
-    public ArrayList<Integer> currentShown = new ArrayList<>(4);
 
+public class StatisticsPage extends Application {
+    public ArrayList<AirbnbListing> dataloaded;
+
+    public ArrayList<Pane> paneArray = new ArrayList<>(8);
+    public ArrayList<Boolean> shownArray = new ArrayList<>(8);
 
     public void showStats(){
-
-        displayedMethods.add(0, true);
-        displayedMethods.add(1, true);
-        displayedMethods.add(2, true);
-        displayedMethods.add(3, true);
-        displayedMethods.add(4, false);
-        displayedMethods.add(5, false);
-        displayedMethods.add(6, false);
-        displayedMethods.add(7, false);
-
-        currentShown.add(0,0);
-        currentShown.add(1,1);
-        currentShown.add(2,2);
-        currentShown.add(3,3);
 
         GridPane gridpane = new GridPane();
 
@@ -77,15 +62,45 @@ public class StatisticsPage {
         Pane container5 = new Pane(neighDistribution());
 
         Pane container6 = new Pane();
-        container6.getChildren().add(new TextFlow(new Text("Neighborgood with highest probability night: \n" + avgLatLong())));
+        container6.getChildren().add(avgLatLong());
 
         Pane container7 = new Pane();
         container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
 
-        gridpane.add(container0,1,0);
-        gridpane.add(container1,4,0);
-        gridpane.add(container2,1,1);
-        gridpane.add(container5,4,1);
+        paneArray.add(container0);
+        paneArray.add(container1);
+        paneArray.add(container2);
+        paneArray.add(container3);
+        paneArray.add(container4);
+        paneArray.add(container5);
+        paneArray.add(container6);
+        paneArray.add(container7);
+
+        shownArray.add(true);
+        shownArray.add(true);
+        shownArray.add(true);
+        shownArray.add(true);
+        shownArray.add(false);
+        shownArray.add(false);
+        shownArray.add(false);
+        shownArray.add(false);
+
+        StatsPane Pane0 = new StatsPane(0);
+        Pane0.getChildren().add(container0);
+
+        StatsPane Pane1 = new StatsPane(1);
+        Pane1.getChildren().add(container1);
+
+        StatsPane Pane2 = new StatsPane(2);
+        Pane2.getChildren().add(container2);
+
+        StatsPane Pane3 = new StatsPane(3);
+        Pane3.getChildren().add(container3);
+
+        gridpane.add(Pane0,1,0);
+        gridpane.add(Pane1,4,0);
+        gridpane.add(Pane2,1,1);
+        gridpane.add(Pane3,4,1);
 
         RowConstraints rowconstraints = new RowConstraints();
         rowconstraints.setVgrow(Priority.ALWAYS);
@@ -99,12 +114,34 @@ public class StatisticsPage {
         TabCreator.createSingularTab(gridpane, "Statistics", Airbnb.getImageView(Airbnb.Graphic.STATISTICSGRAPHIC), true);
     }
 
-
     public StatisticsPage() {
-        int avgRevNum; //average number of reviews
-        int availableProp; //number of available properties
-        String mostExpBur; //most expensive borough
-        int homeapt; //entire number of homes and apartments
+        //load the airbnb data in
+        dataloaded = new AirbnbDataLoader().load();
+    }
+
+    public Pane nextAvailableStat(StatsPane currpane){
+        shownArray.add(currpane.getCurrentPos(), false);
+        currpane.next();
+        while(!shownArray.get(currpane.getCurrentPos())){
+            currpane.next();
+        }
+
+        shownArray.add(currpane.getCurrentPos(), true);
+
+        return paneArray.get(currpane.getCurrentPos());
+    }
+
+
+    public Pane prevAvailableStat(StatsPane currpane){
+        shownArray.add(currpane.getCurrentPos(), false);
+        currpane.prev();
+        while(!shownArray.get(currpane.getCurrentPos())){
+            currpane.prev();
+        }
+
+        shownArray.add(currpane.getCurrentPos(), true);
+
+        return paneArray.get(currpane.getCurrentPos());
 
     }
 
@@ -131,10 +168,8 @@ public class StatisticsPage {
         //runs through all listings and returns number of Homes or Apts
         public int homeApt(){
             int homeApts = 0;
-
             for(AirbnbListing listing : dataloaded){
                 if (listing.getRoom_type().equals("Entire home/apt")){
-
                     homeApts += 1;
                 }
             }
@@ -155,7 +190,6 @@ public class StatisticsPage {
             //goes through all listings in AirbnbDataListings
 
             for (AirbnbListing listing : dataloaded){
-
                 //checks if borough is listed in map
                 if (neighMapCost.get(listing.getNeighbourhood()) == null && neighTotal.get(listing.getNeighbourhood()) == null){
 
@@ -191,7 +225,6 @@ public class StatisticsPage {
 
     //shows the borough with the highest availability
     public String mostLikelyNight(){
-
         //Initialize Map with all boroughs(keys) and total number of nights(values)
         Map<String, Integer> boroughNights = new HashMap<String, Integer>();
         //Initialize map with all boroughs(keys) and total number of properties(values)
@@ -220,16 +253,15 @@ public class StatisticsPage {
         }
 
         for (String neigh : boroughNights.keySet()){
-            neighAvg = boroughNights.get(neigh) / (365 * neighTotal.get(neigh));
-
+            neighAvg = boroughNights.get(neigh) / (365.0 * neighTotal.get(neigh));
+            System.out.println(neighAvg);
             if (highestAvg < neighAvg){
                 highestNights = neigh;
                 highestAvg = neighAvg;
 
             }
         }
-        System.out.println(highestNights + " with " + highestAvg + " chance of finding a night");
-        return highestNights + " with " + highestAvg + " chance of finding a night";
+        return highestNights + " with " + (int)(highestAvg * 100.0) + "% chance of finding a night";
     }
 
     public PieChart neighDistribution(){
@@ -257,16 +289,18 @@ public class StatisticsPage {
 
     //returns the average lat,long of the dataset
 
-    public String avgLatLong(){
-        int lat= 0;
-        int lon= 0;
+    public Pane avgLatLong(){
+        double lat= 0;
+        double lon= 0;
         int total = 0;
         for (AirbnbListing listing : dataloaded){
             lat += listing.getLatitude();
             lon += listing.getLongitude();
             total += 1;
         }
-        return "" + (lat/total) + ", " + (lon/total);
+
+        return new GetBingMaps().getMapPane("", (lat/total), (lon/total));
+
     }
 
     //return the borough with the most average reviews
@@ -298,6 +332,40 @@ public class StatisticsPage {
             }
         }
         return highestRev;
+    }
+
+    private class StatsPane extends Pane{
+        public int currentPos;
+        public StatsPane(int position){
+            currentPos = position;
+        }
+
+        public void next(){
+            if (currentPos + 1 == 8){
+                currentPos = 0;
+            }
+            else{
+                currentPos++;
+            }
+        }
+
+        public void prev(){
+            if (currentPos - 1 < 0){
+                currentPos = 7;
+            }
+            else{
+                currentPos--;
+            }
+        }
+
+        public int getCurrentPos(){
+            return currentPos;
+        }
+
+        public void setPost(int position){
+            currentPos = position;
+        }
+
     }
     public static List<AirbnbListing> getListings(){
         return dataloaded;
