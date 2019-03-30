@@ -1,10 +1,7 @@
-import javafx.application.Application;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
@@ -20,7 +17,7 @@ public class StatisticsPage extends Application {
     public ArrayList<Pane> paneArray = new ArrayList<>(8);
     public ArrayList<Boolean> shownArray = new ArrayList<>(8);
 
-    public void start (Stage stage){
+    public void showStats(){
 
         GridPane gridpane = new GridPane();
 
@@ -105,11 +102,6 @@ public class StatisticsPage extends Application {
         gridpane.add(Pane2,1,1);
         gridpane.add(Pane3,4,1);
 
-        Scene scene = new Scene(gridpane, 700,500);
-        gridpane.minHeightProperty().bind(scene.heightProperty());
-        gridpane.minWidthProperty().bind(scene.widthProperty());
-        gridpane.setGridLinesVisible(true);
-
         RowConstraints rowconstraints = new RowConstraints();
         rowconstraints.setVgrow(Priority.ALWAYS);
 
@@ -119,10 +111,8 @@ public class StatisticsPage extends Application {
         gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
         gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
 
-        stage.setScene(scene);
-        stage.show();
+        TabCreator.createSingularTab(gridpane, "Statistics", Airbnb.getImageView(Airbnb.Graphic.STATISTICSGRAPHIC), true);
     }
-
 
     public StatisticsPage() {
         //load the airbnb data in
@@ -141,6 +131,7 @@ public class StatisticsPage extends Application {
         return paneArray.get(currpane.getCurrentPos());
     }
 
+
     public Pane prevAvailableStat(StatsPane currpane){
         shownArray.add(currpane.getCurrentPos(), false);
         currpane.prev();
@@ -151,6 +142,7 @@ public class StatisticsPage extends Application {
         shownArray.add(currpane.getCurrentPos(), true);
 
         return paneArray.get(currpane.getCurrentPos());
+
     }
 
         //calculates average number of reviews over the whole data set
@@ -254,10 +246,9 @@ public class StatisticsPage extends Application {
             }
             // if borough present in neighborhood, add availability365 of current listing to that of the previous available listings
             else{
-                boroughNights.put(listing.getNeighbourhood(),boroughNights.get(listing.getNeighbourhood()) + listing.getAvailability365());
-
+                boroughNights.put(listing.getNeighbourhood(),(boroughNights.get(listing.getNeighbourhood()) + listing.getAvailability365()));
                 //increment neighborhood list
-                neighTotal.put(listing.getNeighbourhood(),neighTotal.get(listing.getNeighbourhood()) + 1);
+                neighTotal.put(listing.getNeighbourhood(),(neighTotal.get(listing.getNeighbourhood()) + 1));
             }
         }
 
@@ -374,10 +365,9 @@ public class StatisticsPage extends Application {
         public void setPost(int position){
             currentPos = position;
         }
-    }
 
-    public static void main(String[] args){
-        StatisticsPage stats = new StatisticsPage();
-        launch(args);
+    }
+    public static List<AirbnbListing> getListings(){
+        return dataloaded;
     }
 }

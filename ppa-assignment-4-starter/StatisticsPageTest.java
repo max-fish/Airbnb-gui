@@ -1,3 +1,4 @@
+
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +14,7 @@ import org.junit.Test;
  * mostAvgReviewed()
  * The test class tests that these methods return the statistic values that they are intended to return.
  *
- */
+ **/
 public class StatisticsPageTest {
 
     StatisticsPage statisticsPageTest;
@@ -100,9 +101,21 @@ public void testCalcAvgRevNum() {
      */
     @Test
     public void testMostAvgReviewed() {
-    assertEquals("Westminster", statisticsPageTest.mostAvgReviewed());
-    tearDown();
+        setUp();
+        assertEquals("Westminster", statisticsPageTest.mostAvgReviewed());
+        tearDown();
     }
 
+    /**
+     * A test method designed to test the method mostLikelyNight() located in the StatisticsPage class.
+     * The method being tested originally returns the borough with the highest availability.
+     * This method will check whether or not the correct value is returned.
+     */
+    @Test
+    public void testMostLikelyNight()
+    {
+        setUp();
+        assertEquals("Harrow", statisticsPageTest.mostLikelyNight());
+        tearDown();
+    }
 }
-

@@ -1,11 +1,8 @@
- 
-
 /**
  * Represents one listing of a property for rental on Airbnb.
  * This is essentially one row in the data table. Each column
  * has a corresponding field.
- */ 
-
+ */
 public class AirbnbListing {
     /**
      * The id and name of the individual property
@@ -164,5 +161,24 @@ public class AirbnbListing {
                 ", calculatedHostListingsCount=" + calculatedHostListingsCount +
                 ", availability365=" + availability365 +
                 '}';
+    }
+
+    /**
+     * This is a method designed to check whether one of the Airbnb listings equals another from the csv file. It
+     * returns a boolean to indicate whether this is true or false.
+     * @param other
+     * @return boolean Whether one AirbnbListing equals another.
+     */
+    public boolean equals(AirbnbListing other){
+        if(id == other.getId() && name.equals(other.getName()) && host_name.equals(other.host_name) &&
+                neighbourhood.equals(other.getNeighbourhood()) && latitude == other.getLatitude() &&
+        longitude == other.getLongitude() && room_type.equals(other.getRoom_type()) && minimumNights == other.getMinimumNights() &&
+        numberOfReviews == other.getNumberOfReviews() && lastReview.equals(other.getLastReview()) && reviewsPerMonth == other.getReviewsPerMonth() &&
+        calculatedHostListingsCount == other.getCalculatedHostListingsCount() && availability365 == other.getAvailability365()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
