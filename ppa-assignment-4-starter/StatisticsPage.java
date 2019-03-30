@@ -262,10 +262,9 @@ public class StatisticsPage {
             }
             // if borough present in neighborhood, add availability365 of current listing to that of the previous available listings
             else{
-                boroughNights.put(listing.getNeighbourhood(),boroughNights.get(listing.getNeighbourhood()) + listing.getAvailability365());
-
+                boroughNights.put(listing.getNeighbourhood(),(boroughNights.get(listing.getNeighbourhood()) + listing.getAvailability365()));
                 //increment neighborhood list
-                neighTotal.put(listing.getNeighbourhood(),neighTotal.get(listing.getNeighbourhood()) + 1);
+                neighTotal.put(listing.getNeighbourhood(),(neighTotal.get(listing.getNeighbourhood()) + 1));
             }
         }
 
@@ -278,6 +277,7 @@ public class StatisticsPage {
 
             }
         }
+        System.out.println(highestNights + " with " + highestAvg + " chance of finding a night");
         return highestNights + " with " + highestAvg + " chance of finding a night";
     }
 
@@ -347,6 +347,5 @@ public class StatisticsPage {
             }
         }
         return highestRev;
-
     }
 }
