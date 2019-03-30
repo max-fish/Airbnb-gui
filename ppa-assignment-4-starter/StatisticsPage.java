@@ -3,6 +3,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
@@ -13,6 +14,8 @@ public class StatisticsPage extends Application {
     public ArrayList<AirbnbListing> dataloaded;
     public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
     public ArrayList<Integer> currentShown = new ArrayList<>(4);
+
+    public LinkedHashMap<Pane, Boolean> paneMap = new LinkedHashMap<>(8);
 
     public void start (Stage stage){
 
@@ -78,10 +81,24 @@ public class StatisticsPage extends Application {
         Pane container7 = new Pane();
         container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
 
-        gridpane.add(container0,1,0);
-        gridpane.add(container1,4,0);
-        gridpane.add(container2,1,1);
-        gridpane.add(container6,4,1);
+        StatsPane Pane0 = new StatsPane(0);
+        Pane0.getChildren().add(container0);
+
+        StatsPane Pane1 = new StatsPane(1);
+        Pane1.getChildren().add(container1);
+
+        StatsPane Pane2 = new StatsPane(2);
+        Pane2.getChildren().add(container2);
+
+        StatsPane Pane3 = new StatsPane(3);
+        Pane3.getChildren().add(container3);
+
+
+
+        gridpane.add(Pane0,1,0);
+        gridpane.add(Pane1,4,0);
+        gridpane.add(Pane2,1,1);
+        gridpane.add(Pane3,4,1);
 
 
 
@@ -230,15 +247,15 @@ public class StatisticsPage extends Application {
         }
 
         for (String neigh : boroughNights.keySet()){
-            neighAvg = boroughNights.get(neigh) / (365 * neighTotal.get(neigh));
-
+            neighAvg = boroughNights.get(neigh) / (365.0 * neighTotal.get(neigh));
+            System.out.println(neighAvg);
             if (highestAvg < neighAvg){
                 highestNights = neigh;
                 highestAvg = neighAvg;
 
             }
         }
-        return highestNights + " with " + highestAvg + " chance of finding a night";
+        return highestNights + " with " + (int)(highestAvg * 100.0) + "% chance of finding a night";
     }
 
     public PieChart neighDistribution(){
@@ -309,10 +326,26 @@ public class StatisticsPage extends Application {
                 highestRev = borough;
             }
         }
-
-        
-
         return highestRev;
+    }
+
+    private class StatsPane extends Pane{
+        public int currentPos;
+        public StatsPane(int position){
+            currentPos = position;
+        }
+
+        public void next(){
+            if (currentPos + 1 == 8){
+                currentPos = 0;
+            }
+            else{
+                currentPos++;
+            }
+        }
+        public int getCurrentPos(){
+            return currentPos;
+        }
     }
 
     public static void main(String[] args){
