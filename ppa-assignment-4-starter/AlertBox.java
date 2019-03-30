@@ -32,6 +32,7 @@ public class AlertBox {
         Text alertText = new Text();
         alertText.setText(message);
         alertText.setFont(Airbnb.INSTRUCTIONFONT);
+        alertText.setWrappingWidth(width);
         Button closeButton = new Button("   OK   ");
         closeButton.setStyle("-fx-base: #ff5a5f; -fx-text-fill: white; -fx-focus-color: #ffffff; -fx-faint-focus-color: #ffffff; -fx-background-radius: 10, 10, 10, 10");
         closeButton.setOnAction(e -> alertWindow.close());
