@@ -8,9 +8,9 @@
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AiCfbSVYBViqTpODO_7LvvYjZHpIbTFPOZWQpvduDFzWnFsu9LoMGup8GyeprqlH '></script>
     <script type='text/javascript'>
                 var map;
-                document.loadFile = function(text, lat, long) {
+                document.loadMap = function(){
                     map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
-                        center: new Microsoft.Maps.Location(lat, long),
+                        center: new Microsoft.Maps.Location(51.5001524, 0.1262362),
                         zoom: 17,
                         mapTypeId: Microsoft.Maps.MapTypeId.canvasLight,
                         disablePanning: false,
@@ -19,7 +19,10 @@
                         showZoomButtons: false,
                         showScalebar: false
                     });
-                    var pushpin = new Microsoft.Maps.Pushpin(map.getCenter(), { title: text });
+                }
+
+                document.addPin = function(text, lat, long) {
+                    var pushpin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(lat, long), { title: text });
                     map.entities.push(pushpin);
                 }
         </script>

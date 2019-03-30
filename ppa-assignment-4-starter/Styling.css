@@ -40,11 +40,41 @@
     -fx-text-fill: #FD5C63;
 }
 
+.combo-box-popup .list-view{
+    -fx-border-color: #FD5C63;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian , rgba(72,72,72,0.3), 0,0,4,4);
+}
+
+.combo-box-popup .list-view .list-cell:focused{
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box-popup .list-view .scroll-bar .track{
+    -fx-background-color: #E0E0E0;
+}
+
+.combo-box-popup .list-view .scroll-bar .thumb{
+    -fx-background-color: #FD5C63;
+}
+
+.combo-box-popup .list-view .scroll-bar .thumb:hover{
+    -fx-background-color: #FD4747;
+}
+
+.combo-box-popup .list-view .scroll-bar .thumb:pressed{
+    -fx-background-color: #FD353F;
+}
+
 .non-editable-combo-box{
     -fx-background-color: #FFFFFF;
     -fx-border-color: #FD5C63;
     -fx-border-style: solid hidden solid solid;
     -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-radius: 5px;
 }
 
 
@@ -71,8 +101,8 @@
     -fx-background-color: #FD4747;
 }
 
-.scroll-pane .thumb:active {
-    -fx-background-color: #000000;
+.scroll-pane .thumb:pressed{
+    -fx-background-color: #FD353F;
 }
 
 .scroll-pane .track{
@@ -117,19 +147,19 @@
 }
 
 .lowBuildings{
-    -fx-background-color: #FEB3B7;
+    -fx-background-color: #F08080;
 }
 
 .midBuildings{
-    -fx-background-color: #FE8187;
+    -fx-background-color: #FFA07A;
 }
 
 .highBuildings{
-    -fx-background-color: #FD5C63;
+    -fx-background-color: #800000;
 }
 
 .maxBuildings{
-    -fx-background-color: #FD353F;
+    -fx-background-color: #800080;
 }
 
 #boroughButton{
@@ -145,3 +175,5 @@
     -fx-background-color: #000000;
     -fx-text-fill: #FD5C63;
 }
+
+

@@ -26,6 +26,8 @@ public class PropertyDescription {
         GridPane descriptionGrid = new GridPane();
         descriptionGrid.setVgap(20);
         descriptionGrid.setAlignment(Pos.CENTER);
+
+
         TextFlow id = new TextFlow(new Text("ID: " + property.getId()));
         TextFlow hostID = new TextFlow(new Text("Host ID: " + property.getHost_id()));
         TextFlow neighbourhood = new TextFlow(new Text("Neighbourhood: " + property.getNeighbourhood()));
@@ -33,16 +35,24 @@ public class PropertyDescription {
         TextFlow reviewsPerMonth = new TextFlow(new Text("Reviews per month: " + property.getReviewsPerMonth()));
         TextFlow totalHostListings = new TextFlow(new Text("Total host listings: " + property.getCalculatedHostListingsCount()));
         TextFlow availability = new TextFlow(new Text("Availability: " + property.getAvailability365()));
-        descriptionGrid.addRow(0, id);
-        descriptionGrid.addRow(1, hostID);
-        descriptionGrid.addRow(2, neighbourhood);
-        descriptionGrid.addRow(3, lastReview);
-        descriptionGrid.addRow(4, reviewsPerMonth);
-        descriptionGrid.addRow(5, totalHostListings);
-        descriptionGrid.addRow(6, availability);
+
+        Pane map = new GetBingMaps().getBirdsEye(property.getName(), property.getLatitude(), property.getLongitude());
+        map.setPrefHeight(300);
+        map.setPrefWidth(500);
+        descriptionGrid.addRow(0, map);
+
+        GridPane descriptionSubGrid = new GridPane();
+        descriptionSubGrid.setHgap(10);
+        descriptionSubGrid.add(id,0,0);
+        descriptionSubGrid.add(hostID, 1,0);
+        descriptionSubGrid.add(neighbourhood, 2,0);
+        descriptionSubGrid.add(lastReview, 0,1);
+        descriptionSubGrid.add(reviewsPerMonth, 1, 1);
+        descriptionSubGrid.add(totalHostListings, 2,1);
+        descriptionSubGrid.add(availability,3,1);
 
 
-        for(Node node : descriptionGrid.getChildren()){
+        for(Node node : descriptionSubGrid.getChildren()){
             if(node instanceof TextFlow) {
                 TextFlow container = (TextFlow) node;
                 Text text = (Text) container.getChildren().get(0);
@@ -50,6 +60,8 @@ public class PropertyDescription {
                 text.setFill(Color.rgb(72, 72, 72));
             }
         }
+
+        descriptionGrid.addRow(1, descriptionSubGrid);
 
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setPercentHeight(100);
@@ -62,6 +74,8 @@ public class PropertyDescription {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0,3,0,0))));
         GridPane.setValignment(icon, VPos.CENTER);
         iconContainer.setPadding(new Insets(0,10,0,10));
+
+
         fullGrid.addColumn(0, iconContainer);
         fullGrid.addColumn(1, descriptionGrid);
 

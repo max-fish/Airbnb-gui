@@ -2,18 +2,24 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * A class designed to create tabs.
+ */
 public class TabCreator {
 
     private static ArrayList<TabInfo> tabInfos = new ArrayList<>();
 
 
     public static void createSingularTab(Node content, String name, ImageView graphic, boolean closable){
+        for(Tab existingTab : MainViewer.getPanels().getTabs()){
+            if(existingTab.getText().equals(name)){
+                MainViewer.getPanels().getSelectionModel().select(existingTab);
+                return;
+            }
+        }
         Tab newTab = new Tab(name);
         newTab.setContent(content);
         newTab.setClosable(closable);
@@ -29,7 +35,7 @@ public class TabCreator {
                         slideIn.play();
                     }
                     else{
-                        slideIn.setToX(-100);
+                        slideIn.setToX(-150);
                         slideIn.setCycleCount(1);
                         slideIn.play();
                     }
@@ -49,8 +55,6 @@ public class TabCreator {
                 }
             }
         }
-
-        System.out.println("new");
         Tab newTab = new Tab(name);
         newTab.setContent(content);
         newTab.setClosable(closable);

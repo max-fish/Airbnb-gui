@@ -1,11 +1,11 @@
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -112,5 +112,38 @@ public class MainViewerFactory {
                     previousButtonFadeIn.play();
                 }
         );
+    }
+    public static StackPane makeNotificationBar(String text){
+        Rectangle bar = new Rectangle();
+        bar.setArcWidth(30);
+        bar.setArcHeight(30);
+        bar.setHeight(40);
+        bar.setFill(Airbnb.CORAL);
+
+        Text favouriteNotification = new Text(text);
+        favouriteNotification.setFont(Airbnb.FAVOURITEBARFONT);
+        favouriteNotification.setFill(Color.WHITE);
+
+        ImageView favouriteIcon = new ImageView(new Image(FavouriteProperties.class.getResourceAsStream("favourite_icon.png")));
+
+
+        HBox favouriteNotificationPanel = new HBox(favouriteNotification, favouriteIcon);
+        favouriteNotificationPanel.setMaxHeight(Airbnb.FAVOURITEBARFONT.getSize());
+        favouriteNotificationPanel.setMaxWidth(Airbnb.FAVOURITEBARFONT.getSize());
+        favouriteNotificationPanel.setSpacing(20);
+        favouriteNotificationPanel.setAlignment(Pos.CENTER);
+        bar.setWidth(500);
+
+        StackPane favouriteNotificationSign = new StackPane();
+
+        favouriteNotificationSign.setAlignment(Pos.CENTER);
+        StackPane.setAlignment(bar, Pos.CENTER);
+        StackPane.setAlignment(favouriteNotificationPanel, Pos.CENTER);
+        favouriteNotificationSign.prefHeightProperty().bind(bar.heightProperty());
+        favouriteNotificationSign.prefWidthProperty().bind(bar.widthProperty());
+        favouriteNotificationSign.getChildren().addAll(bar, favouriteNotificationPanel);
+        favouriteNotificationSign.setAlignment(Pos.CENTER);
+
+        return favouriteNotificationSign;
     }
 }
