@@ -12,26 +12,11 @@ import javafx.scene.control.Button;
 
 public class StatisticsPage extends Application {
     public ArrayList<AirbnbListing> dataloaded;
-    public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
-    public ArrayList<Integer> currentShown = new ArrayList<>(4);
 
-    public LinkedHashMap<Pane, Boolean> paneMap = new LinkedHashMap<>(8);
+    public ArrayList<Pane> paneArray = new ArrayList<>(8);
+    public ArrayList<Boolean> shownArray = new ArrayList<>(8);
 
     public void start (Stage stage){
-
-        displayedMethods.add(0, true);
-        displayedMethods.add(1, true);
-        displayedMethods.add(2, true);
-        displayedMethods.add(3, true);
-        displayedMethods.add(4, false);
-        displayedMethods.add(5, false);
-        displayedMethods.add(6, false);
-        displayedMethods.add(7, false);
-
-        currentShown.add(0,0);
-        currentShown.add(1,1);
-        currentShown.add(2,2);
-        currentShown.add(3,3);
 
         GridPane gridpane = new GridPane();
 
@@ -81,6 +66,24 @@ public class StatisticsPage extends Application {
         Pane container7 = new Pane();
         container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
 
+        paneArray.add(container0);
+        paneArray.add(container1);
+        paneArray.add(container2);
+        paneArray.add(container3);
+        paneArray.add(container4);
+        paneArray.add(container5);
+        paneArray.add(container6);
+        paneArray.add(container7);
+
+        shownArray.add(true);
+        shownArray.add(true);
+        shownArray.add(true);
+        shownArray.add(true);
+        shownArray.add(false);
+        shownArray.add(false);
+        shownArray.add(false);
+        shownArray.add(false);
+
         StatsPane Pane0 = new StatsPane(0);
         Pane0.getChildren().add(container0);
 
@@ -93,15 +96,10 @@ public class StatisticsPage extends Application {
         StatsPane Pane3 = new StatsPane(3);
         Pane3.getChildren().add(container3);
 
-
-
         gridpane.add(Pane0,1,0);
         gridpane.add(Pane1,4,0);
         gridpane.add(Pane2,1,1);
         gridpane.add(Pane3,4,1);
-
-
-
 
 
 
@@ -127,13 +125,32 @@ public class StatisticsPage extends Application {
 
 
     public StatisticsPage() {
-        int avgRevNum; //average number of reviews
-        int availableProp; //number of available properties
-        String mostExpBur; //most expensive borough
-        int homeapt; //entire number of homes and apartments
-
         //load the airbnb data in
         dataloaded = new AirbnbDataLoader().load();
+    }
+
+    public Pane nextAvailableStat(StatsPane currpane){
+        shownArray.add(currpane.getCurrentPos(), false);
+        currpane.next();
+        while(!shownArray.get(currpane.getCurrentPos())){
+            currpane.next();
+        }
+
+        shownArray.add(currpane.getCurrentPos(), true);
+
+        return paneArray.get(currpane.getCurrentPos());
+    }
+
+    public Pane prevAvailableStat(StatsPane currpane){
+        shownArray.add(currpane.getCurrentPos(), false);
+        currpane.prev();
+        while(!shownArray.get(currpane.getCurrentPos())){
+            currpane.prev();
+        }
+
+        shownArray.add(currpane.getCurrentPos(), true);
+
+        return paneArray.get(currpane.getCurrentPos());
     }
 
         //calculates average number of reviews over the whole data set
@@ -343,8 +360,22 @@ public class StatisticsPage extends Application {
                 currentPos++;
             }
         }
+
+        public void prev(){
+            if (currentPos - 1 < 0){
+                currentPos = 7;
+            }
+            else{
+                currentPos--;
+            }
+        }
+
         public int getCurrentPos(){
             return currentPos;
+        }
+
+        public void setPost(int position){
+            currentPos = position;
         }
     }
 
