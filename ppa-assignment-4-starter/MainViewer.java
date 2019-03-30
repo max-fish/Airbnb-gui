@@ -331,7 +331,7 @@ This is a method that searches for properties that match the given inputted user
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood), userCriteria);
                             TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.getImageView(Airbnb.Graphic.PROPERTYGRAPHIC), true, userCriteria);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 500);
                         }
                     }
                     else {
@@ -339,17 +339,17 @@ This is a method that searches for properties that match the given inputted user
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood), userCriteria);
                             TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.getImageView(Airbnb.Graphic.PROPERTYGRAPHIC), true, userCriteria);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 500);
                         }
                     }
                 }
             }
             else {
-                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.");
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.", 200, 500);
             }
         }
         else {
-            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!");
+            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!", 200, 500);
         }
     }
 }

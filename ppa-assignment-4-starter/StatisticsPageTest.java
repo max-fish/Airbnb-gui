@@ -101,8 +101,21 @@ public void testCalcAvgRevNum() {
      */
     @Test
     public void testMostAvgReviewed() {
-    assertEquals("Westminster", statisticsPageTest.mostAvgReviewed());
-    tearDown();
+        setUp();
+        assertEquals("Westminster", statisticsPageTest.mostAvgReviewed());
+        tearDown();
     }
 
+    /**
+     * A test method designed to test the method mostLikelyNight() located in the StatisticsPage class.
+     * The method being tested originally returns the borough with the highest availability.
+     * This method will check whether or not the correct value is returned.
+     */
+    @Test
+    public void testMostLikelyNight()
+    {
+        setUp();
+        assertEquals("Harrow", statisticsPageTest.mostLikelyNight());
+        tearDown();
+    }
 }
