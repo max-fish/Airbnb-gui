@@ -23,6 +23,11 @@ public class Icon {
         this.favourite = favourite;
         this.criteria = criteria;
     }
+
+    /**
+     * Makes an icon visual
+     * @return An icon visual as a StackPane
+     */
     public StackPane makeIcon(){
         StackPane icon = new StackPane();
 
@@ -194,23 +199,44 @@ public class Icon {
 
         return icon;
     }
+
+    /**
+     * Adds items to a gridpane
+     * @param toBeAddedTo
+     * @param panes
+     */
     private void addRowsToGridpane(GridPane toBeAddedTo, Pane[] panes){
         for(int x = 0; x < panes.length; x++){
             toBeAddedTo.addRow(x, panes[x]);
         }
     }
 
+    /**
+     * clones an Icon
+     * @param favourite
+     * @return
+     */
     public Icon clone(boolean favourite){
         return new Icon(property, favourite, criteria);
     }
 
+    /**
+     * @return the property its displaying
+     */
     public AirbnbListing getAirbnbListing(){
         return property;
     }
 
+    /**
+     * @return favourite whether the property that the icon is displayed is favoured by the user
+     */
     public boolean isFavourite(){
         return favourite;
     }
+
+    /**
+     * unfavor the property
+     */
     public void unfavourite(){
         favourite = false;
     }

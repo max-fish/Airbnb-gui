@@ -107,10 +107,4 @@ public class PropertyViewer extends Application {
     private int getNumberOfProperties() {
         return properties.size();
     }
-
-
-    private Pane getImage() {
-        FlowPane tbr = new FlowPane();
-        return tbr;
-    }
 }

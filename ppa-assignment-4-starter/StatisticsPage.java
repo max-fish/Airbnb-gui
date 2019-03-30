@@ -22,6 +22,8 @@ public class StatisticsPage {
 
         GridPane gridpane = new GridPane();
 
+        //adds containers and Panes to hold them
+
         Pane container0 = new Pane();
         container0.getChildren().add(new TextFlow(new Text("Average Number of Reviews \n" + calcAvgRevNum())));
 
@@ -57,6 +59,8 @@ public class StatisticsPage {
         StatsPane Pane3 = new StatsPane(3);
         Pane3.getChildren().add(container3);
 
+        //initializes essential arrays for pane transition calculations
+
         paneArray.add(container0);
         paneArray.add(container1);
         paneArray.add(container2);
@@ -88,11 +92,12 @@ public class StatisticsPage {
         Button button30 = new Button("<");
         Button button31 = new Button(">");
 
+        //button action events call prev available stat or next available stat and set the new container to be placed in the pane
+
         button00.setOnAction(
                 (event) -> {
                     Pane0.getChildren().remove(0);
                     Pane0.getChildren().add(prevAvailableStat(Pane0));
-                    System.out.println(shownArray.toString());
                 }
         );
 
@@ -145,6 +150,8 @@ public class StatisticsPage {
         );
 
 
+        //adds buttons to gridpane
+
         gridpane.add(button00,0,0);
         gridpane.add(button01,2,0);
         gridpane.add(button10,3,0);
@@ -178,6 +185,12 @@ public class StatisticsPage {
         dataloaded = new AirbnbDataLoader().load();
     }
 
+    /**
+     * this finds the next available Pane to show. loops around if cannot find next array index
+     * @param currpane the current pane template and its fields, so that the method can tell which pane to transition to
+     * @return the pane to show
+     */
+
     public Pane nextAvailableStat(StatsPane currpane){
         shownArray.remove(currpane.getCurrentPos());
         shownArray.add(currpane.getCurrentPos(), false);
@@ -188,6 +201,12 @@ public class StatisticsPage {
 
         return paneArray.get(currpane.getCurrentPos());
     }
+
+    /**
+     * This finds the previous available (not shown) Pane to show. loops around if goes to array index below 0
+     * @param currpane the current pane template and its fields, so that the method can tell which pane to transition to
+     * @return the pane to show
+     */
 
 
     public Pane prevAvailableStat(StatsPane currpane){
@@ -320,6 +339,7 @@ public class StatisticsPage {
         return highestNights + " with " + (int)(highestAvg * 100.0) + "% chance of finding a night";
     }
 
+    //returns a piechart with the distribution of neighborhoods
     public PieChart neighDistribution(){
 
         //Initialize map with all boroughs(keys) and total number of properties(values)
@@ -390,6 +410,7 @@ public class StatisticsPage {
         return highestRev;
     }
 
+    //extended Pane class to include a new field, currentpos so that methods can tell which next pane to show
     private class StatsPane extends Pane{
         public int currentPos;
         public StatsPane(int position){
