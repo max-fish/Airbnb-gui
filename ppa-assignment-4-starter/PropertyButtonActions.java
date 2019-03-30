@@ -1,7 +1,5 @@
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tab;
 import javafx.util.Duration;
 import java.util.Iterator;
 

@@ -15,7 +15,13 @@ public class MapFactory {
     // Stores the offset of each row of buttons, define where the row starts
     private static int[] offset = {7, 4, 1, 0, 1, 2, 3};
 
-
+    /**
+     * A method designed to return a new map window.
+     * @param lower The low price inputted by the user in their search criteria.
+     * @param upper The high price inputted by the user in their search criteria.
+     * @param criteria The criteria inputted by the user in their search criteria.
+     * @return
+     */
     public static MapWindow getMapWindow(int lower, int upper, Criteria criteria){
         // creates a new mapwindow and creates all the buttons
         MapWindow mapWin = new MapWindow(lower, upper, criteria);

@@ -2,12 +2,12 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * A class designed to create tabs.
+ */
 public class TabCreator {
 
     private static ArrayList<TabInfo> tabInfos = new ArrayList<>();

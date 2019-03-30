@@ -168,9 +168,9 @@ public class MainViewer extends Application
         highPricePanel.getChildren().addAll(highPriceLabel, highPrice);
 
         
-        lowPrice.setPromptText("Minimum amount per night");
+        lowPrice.setPromptText("Minimum per night");
 
-        highPrice.setPromptText("Maximum amount per night");
+        highPrice.setPromptText("Maximum per night");
 
         Button search = new Button("Search");
         search.setFont(Airbnb.BUTTONFONT);
@@ -181,7 +181,7 @@ public class MainViewer extends Application
         
         selection.getChildren().addAll(neighborhoodPanel, roomTypePanel, lowPricePanel, highPricePanel, search);
 
-        selection.prefWidthProperty().bind(root.widthProperty());
+        //selection.prefWidthProperty().bind(root.widthProperty());
 
         selection.setAlignment(Pos.CENTER);
 

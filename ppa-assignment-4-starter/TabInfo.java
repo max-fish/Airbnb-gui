@@ -1,6 +1,4 @@
-import javafx.scene.Node;
 import javafx.scene.control.Tab;
-import javafx.scene.image.ImageView;
 
 public class TabInfo {
     private Object contentCreator;
