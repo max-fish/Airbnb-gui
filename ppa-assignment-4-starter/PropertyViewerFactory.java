@@ -97,31 +97,6 @@ public class PropertyViewerFactory {
         favouriteIcon.setTranslateX(-5);
         favouriteIcon.setTranslateY(5);
 
-
-        favouriteIcon.setOnMouseEntered(
-                (event) -> {
-                    rect.setDisable(true);
-                    infoLayout.setDisable(true);
-                    Lighting lighting = new Lighting();
-                    lighting.setDiffuseConstant(1.6);
-                    lighting.setSpecularConstant(0.0);
-                    lighting.setSpecularExponent(0.0);
-                    lighting.setSurfaceScale(0.0);
-                    lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
-                    favouriteIcon.setEffect(lighting);
-                }
-        );
-
-
-        favouriteIcon.setOnMouseExited(
-                (event) -> {
-                    rect.setDisable(false);
-                    infoLayout.setDisable(false);
-                    favouriteIcon.setEffect(null);
-                }
-
-        );
-
         StackPane.setAlignment(favouriteIcon, Pos.TOP_RIGHT);
     }
 }

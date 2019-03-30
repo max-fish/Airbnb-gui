@@ -1,17 +1,29 @@
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
+
 import java.util.HashMap;
 
 public class FavouriteProperties {
+
+    private static BorderPane favouriteWindow = new BorderPane();
 
     private static TilePane favouritePropertiesContainer = new TilePane();
 
     private static HashMap<Icon, StackPane> favouriteIconToView = new HashMap<>();
 
     private static HashMap<Icon, Icon> copyToOrigIcon = new HashMap<>();
+
+    public static void setUp(){
+        Text favouritesText = new Text("Your favourite properties will show up here");
+        favouritesText.wrappingWidthProperty().bind(favouriteWindow.widthProperty());
+        favouritesText.setFont(Airbnb.HEADERFONT);
+        favouritesText.setFill(Color.BLACK);
+        favouritePropertiesContainer.setHgap(20);
+        favouritePropertiesContainer.setVgap(20);
+        favouriteWindow.setTop(favouritesText);
+        favouriteWindow.setCenter(favouritePropertiesContainer);
+    }
 
 
     public static void addFavouriteProperty(Icon favouriteProperty){
@@ -25,7 +37,7 @@ public class FavouriteProperties {
     public static void removeFavouriteProperty(Icon favouriteProperty){
         for(Icon favouriteIcon : favouriteIconToView.keySet()){
             if(favouriteIcon.getAirbnbListing().equals(favouriteProperty.getAirbnbListing())){
-                copyToOrigIcon.remove(favouriteIcon).setFavourite(false);
+                copyToOrigIcon.remove(favouriteIcon).unfavourite();
                 favouritePropertiesContainer.getChildren().remove(favouriteIconToView.get(favouriteIcon));
                 favouriteIconToView.remove(favouriteIcon);
             }
@@ -34,21 +46,7 @@ public class FavouriteProperties {
     }
 
     public static void showFavoriteProperties(){
-        if(favouritePropertiesContainer.getChildren().isEmpty()){
-            TabCreator.createSingularTab(makeEmptyScreen(), "Favourites", null, true);
-        }
-        else{
-            TabCreator.createSingularTab(favouritePropertiesContainer, "Favourites", null, true);
-        }
-    }
-
-    private static TextFlow makeEmptyScreen(){
-        Text noFavourites = new Text("You have not selected any properties as one of your favorites yet");
-        noFavourites.setFont(Airbnb.HEADERFONT);
-        noFavourites.setFill(Color.BLACK);
-        noFavourites.setTextAlignment(TextAlignment.CENTER);
-        TextFlow noFavouritesContainer = new TextFlow(noFavourites);
-        return noFavouritesContainer;
+            TabCreator.createSingularTab(favouriteWindow, "Favourites", null, true);
     }
 
 }

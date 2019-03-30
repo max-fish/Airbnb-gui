@@ -1,7 +1,5 @@
-import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
-import javafx.scene.control.Tab;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
@@ -80,69 +78,84 @@ public class Icon {
 
         PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
 
+        Lighting lighting = new Lighting();
+        lighting.setSpecularConstant(0.0);
+        lighting.setSpecularExponent(0.0);
+        lighting.setSurfaceScale(0.0);
+
+        favouriteIcon.setOnMouseEntered(
+                (event) -> {
+                    lighting.setDiffuseConstant(1.6);
+                    lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
+                    favouriteIcon.setEffect(lighting);
+                }
+        );
+
+
+        favouriteIcon.setOnMouseExited(
+                (event) -> {
+                    lighting.setLight(null);
+                    favouriteIcon.setEffect(lighting);
+                }
+
+        );
+
+
         favouriteIcon.setOnMouseClicked(
                 (event) -> {
+                    Lighting pressedLighting = new Lighting();
+                    pressedLighting.setDiffuseConstant(1.6);
+                    pressedLighting.setSpecularConstant(0.0);
+                    pressedLighting.setSpecularExponent(0.0);
+                    pressedLighting.setSurfaceScale(0.0);
+                    pressedLighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
                     if(favourite){
                         favourite = false;
-                        Lighting lighting = new Lighting();
-                        lighting.setDiffuseConstant(1.8);
-                        lighting.setSpecularConstant(0.0);
-                        lighting.setSpecularExponent(0.0);
-                        lighting.setSurfaceScale(0.0);
-                        lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
-                        favouriteIcon.setEffect(lighting);
+                        favouriteIcon.setOnMouseEntered(
+                                (subEvent) -> {
+                                    lighting.setDiffuseConstant(1.6);
+                                    lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
+                                    favouriteIcon.setEffect(lighting);
+                                }
+                        );
+
+
+                        favouriteIcon.setOnMouseExited(
+                                (subEvent) -> {
+                                    lighting.setLight(null);
+                                    favouriteIcon.setEffect(lighting);
+                                }
+
+                        );
 
                         FavouriteProperties.removeFavouriteProperty(this);
+
                         TranslateTransition favouriteBarSlidIn = new TranslateTransition();
-                        favouriteBarSlidIn.setByY(100);
-                        favouriteBarSlidIn.setNode(MainViewer.getFavouriteBar());
-                        favouriteBarSlidIn.setCycleCount(1);
-
-                        PauseTransition pauseTransition = new PauseTransition();
-                        pauseTransition.setDuration(Duration.millis(500));
-                        pauseTransition.setCycleCount(1);
-
-                        TranslateTransition favouriteBarSlideOut = new TranslateTransition();
-                        favouriteBarSlideOut.setByY(-100);
-                        favouriteBarSlideOut.setNode(MainViewer.getFavouriteBar());
-                        favouriteBarSlideOut.setCycleCount(1);
-
+                        favouriteBarSlidIn.setByY(-100);
+                        favouriteBarSlidIn.setNode(MainViewer.getUnfavouriteBar());
+                        favouriteBarSlidIn.setDuration(Duration.millis(1000));
+                        favouriteBarSlidIn.setCycleCount(2);
+                        favouriteBarSlidIn.setAutoReverse(true);
                         favouriteBarSlidIn.play();
-                        pauseTransition.play();
-                        favouriteBarSlideOut.play();
                     }
                     else{
                         favourite = true;
-
-                        Lighting lighting = new Lighting();
-                        lighting.setDiffuseConstant(2.0);
-                        lighting.setSpecularConstant(0.0);
-                        lighting.setSpecularExponent(0.0);
-                        lighting.setSurfaceScale(0.0);
+                        lighting.setDiffuseConstant(1.6);
                         lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
-                        favouriteIcon.setEffect(lighting);
+                        favouriteIcon.setEffect(pressedLighting);
+                        favouriteIcon.setOnMouseEntered(null);
+                        favouriteIcon.setOnMouseExited(null);
+
 
                         FavouriteProperties.addFavouriteProperty(this);
-                        rect.setDisable(true);
-                        infoLayout.setDisable(true);
 
                         TranslateTransition favouriteBarSlidIn = new TranslateTransition();
-                        favouriteBarSlidIn.setByY(100);
+                        favouriteBarSlidIn.setByY(-100);
                         favouriteBarSlidIn.setNode(MainViewer.getFavouriteBar());
-                        favouriteBarSlidIn.setCycleCount(1);
-
-                        PauseTransition pauseTransition = new PauseTransition();
-                        pauseTransition.setDuration(Duration.millis(500));
-                        pauseTransition.setCycleCount(1);
-
-                        TranslateTransition favouriteBarSlideOut = new TranslateTransition();
-                        favouriteBarSlideOut.setByY(-100);
-                        favouriteBarSlideOut.setNode(MainViewer.getFavouriteBar());
-                        favouriteBarSlideOut.setCycleCount(1);
-
+                        favouriteBarSlidIn.setCycleCount(2);
+                        favouriteBarSlidIn.setDuration(Duration.millis(1000));
+                        favouriteBarSlidIn.setAutoReverse(true);
                         favouriteBarSlidIn.play();
-                        pauseTransition.play();
-                        favouriteBarSlideOut.play();
                     }
                 }
         );
@@ -198,7 +211,9 @@ public class Icon {
     public boolean isFavourite(){
         return favourite;
     }
-    public void setFavourite(boolean favourite){
-        this.favourite = favourite;
+    public void unfavourite(){
+        favourite = false;
     }
-}
+
+
+    }

@@ -39,7 +39,9 @@ public class MainViewer extends Application
 
     private static ToolBar myAirbnb = new ToolBar();
 
-    private static StackPane favouriteBar = MainViewerFactory.makeFavouriteBar();
+    private static StackPane favouriteBar = MainViewerFactory.makeNotificationBar("Added as favourite");
+
+    private static StackPane unfavouriteBar = MainViewerFactory.makeNotificationBar("Removed as favourite");
 
    private ComboBox<String> lowPrice;
 
@@ -63,6 +65,8 @@ public class MainViewer extends Application
     {
 
         Airbnb.styleGraphics();
+
+        FavouriteProperties.setUp();
 
         root = new BorderPane();
 
@@ -211,7 +215,7 @@ public class MainViewer extends Application
 
         traverse.setPadding(new Insets(0,10,10,10));
 
-        bottom.getChildren().addAll(favouriteBar, traverse);
+        bottom.getChildren().addAll(favouriteBar, unfavouriteBar, traverse);
 
         previous.setOnAction(
                 (event) -> {
@@ -315,6 +319,8 @@ public class MainViewer extends Application
     }
 
     public static StackPane getFavouriteBar(){return favouriteBar;}
+
+    public static StackPane getUnfavouriteBar(){return unfavouriteBar;}
 
     private void selectedNeighborhood(ActionEvent event){userNeighborhood = neighborhood.getValue();}
 

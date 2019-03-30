@@ -113,14 +113,14 @@ public class MainViewerFactory {
                 }
         );
     }
-    public static StackPane makeFavouriteBar(){
+    public static StackPane makeNotificationBar(String text){
         Rectangle bar = new Rectangle();
         bar.setArcWidth(30);
         bar.setArcHeight(30);
         bar.setHeight(40);
         bar.setFill(Airbnb.CORAL);
 
-        Text favouriteNotification = new Text("Added as favourite");
+        Text favouriteNotification = new Text(text);
         favouriteNotification.setFont(Airbnb.FAVOURITEBARFONT);
         favouriteNotification.setFill(Color.WHITE);
 
