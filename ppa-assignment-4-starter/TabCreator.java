@@ -70,7 +70,7 @@ public class TabCreator {
                         slideIn.play();
                     }
                     else{
-                        slideIn.setToX(-100);
+                        slideIn.setToX(-200);
                         slideIn.setCycleCount(1);
                         slideIn.play();
                     }
