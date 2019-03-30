@@ -34,7 +34,7 @@ public class Icon {
         Text reviewsText = new Text("# of Reviews: " + property.getNumberOfReviews());
         Text nightsText = new Text("Minimum nights: " + property.getMinimumNights());
 
-        Pane internetMapDiaplay = new GetGoogleMaps().getMapPaneLightCanvas(property.getName(), property.getLatitude(), property.getLongitude());
+        Pane internetMapDiaplay = new GetBingMaps().getLightCanvas(property.getName(), property.getLatitude(), property.getLongitude());
 
 
 

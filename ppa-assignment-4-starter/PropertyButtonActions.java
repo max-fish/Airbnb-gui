@@ -14,7 +14,7 @@ public class PropertyButtonActions {
             Criteria newCriteria = new Criteria(criteria.getNeighborhood(), criteria.getRoomType(), criteria.getLowPrice(), criteria.getHighPrice(), button);
             button.setOnAction(
                     (event) -> {
-                        PropertyViewer propertyViewer = new PropertyViewer(MapWindow.buttonToProperties.get(button), newCriteria);
+                        PropertyViewer propertyViewer = new PropertyViewer(MapWindow.getButtonToProperties().get(button), newCriteria);
                         TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(button.getText()), "Properties", Airbnb.PROPERTYGRAPHIC, true, newCriteria);
                         });
 

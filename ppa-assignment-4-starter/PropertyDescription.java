@@ -36,7 +36,7 @@ public class PropertyDescription {
         TextFlow totalHostListings = new TextFlow(new Text("Total host listings: " + property.getCalculatedHostListingsCount()));
         TextFlow availability = new TextFlow(new Text("Availability: " + property.getAvailability365()));
 
-        Pane map = new GetGoogleMaps().getMapPaneBirdsEye(property.getName(), property.getLatitude(), property.getLongitude());
+        Pane map = new GetBingMaps().getBirdsEye(property.getName(), property.getLatitude(), property.getLongitude());
         map.setPrefHeight(300);
         map.setPrefWidth(500);
         descriptionGrid.addRow(0, map);
