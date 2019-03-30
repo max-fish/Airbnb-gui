@@ -53,13 +53,6 @@ public class MainViewer extends Application
 
     private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire home/apt", "Shared room");
 
-    private static ObservableList<String> neighborhoods = FXCollections.observableArrayList("All", "Barking and Dagenham",
-            "Barnet", "Bexley", "Brent", "Bromley", "Camden", "City of London", "Croydon",
-            "Ealing", "Enfield", "Greenwich", "Hackney", "Hammersmith and Fulham", "Haringey", "Harrow",
-            "Havering", "Hillingdon", "Hounslow", "Islington", "Kensington and Chelsea", "Kingston upon Thames", "Lambeth",
-            "Lewisham", "Merton", "Newham", "Redbridge", "Richmond upon Thames", "Southwark", "Sutton",
-            "Tower Hamlets", "Waltham Forest", "Wandsworth", "Westminster");
-
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -278,16 +271,25 @@ public class MainViewer extends Application
         showFavourites.setStyle("-fx-background-color: #FD5C63");
         showFavourites.setFont(Airbnb.BUTTONFONT);
         showFavourites.setTextFill(Color.WHITE);
-        Button showHelp = new Button("Help");
+        showFavourites.setStyle("-fx-background-color: #FD5C63");
+        showFavourites.setFont(Airbnb.BUTTONFONT);
+        showFavourites.setTextFill(Color.WHITE);
         showFavourites.setOnAction(
                 (event) -> {FavouriteProperties.showFavoriteProperties();}
         );
+
+        Button statistics = new Button("Statistics");
+        statistics.setOnAction(
+                (event) -> {new StatisticsPage().showStats();}
+        );
+        Button showHelp = new Button("Help");
+
         showHelp.setOnAction(e -> AlertBox.display("User Guidelines", "Welcome to Airbnb HomeFinder. This is an application that allows you to search\n for Airbnb listings in London. The first thing you should know about this\n application is that " +
                 "you can use the next and previous buttons at the\n bottom of the window, as well as the tabs at the top of the window to traverse\n through the different panels. The top panel in the welcome page\n is made up of different criteria that allows " +
                 "a user to personalize\n their home-finding process. Once a user presses search this will bring up \na map of all the boroughs in London. It is designed as a heat map, so darker colours\n indicate more homes found, given the search criteria" +
                 ", while lighter\n colours indicate fewer homes found. You can then press on the borough buttons to\n show all the properties in that borough. As always have fun finding your next unique home or experience.\n Happy HomeFinding - Airbnb"));
 
-        myAirbnb.getItems().addAll(myAribnbText, showFavourites, showHelp);
+        myAirbnb.getItems().addAll(myAribnbText, showFavourites, statistics, showHelp);
 
         myAirbnb.setTranslateX(-150);
 
