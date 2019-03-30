@@ -72,7 +72,7 @@ public class Toolbar {
                 makeSeparator(), statistics, makeSeparator(), fullMap,
             makeSeparator(), showHelp);
 
-        myAirbnb.setTranslateX(-150);
+        myAirbnb.setTranslateX(-200);
 
         return myAirbnb;
     }
