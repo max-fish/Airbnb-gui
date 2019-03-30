@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import javafx.scene.chart.PieChart;
  */
 
 
-public class StatisticsPage extends Application {
-    public ArrayList<AirbnbListing> dataloaded;
+public class StatisticsPage {
+    public static ArrayList<AirbnbListing> dataloaded;
 
     public ArrayList<Pane> paneArray = new ArrayList<>(8);
     public ArrayList<Boolean> shownArray = new ArrayList<>(8);
@@ -20,28 +21,6 @@ public class StatisticsPage extends Application {
     public void showStats(){
 
         GridPane gridpane = new GridPane();
-
-        //adding buttons
-        Button button00 = new Button("<");
-        Button button01 = new Button(">");
-
-        Button button10 = new Button("<");
-        Button button11 = new Button(">");
-
-        Button button20 = new Button("<");
-        Button button21 = new Button(">");
-
-        Button button30 = new Button("<");
-        Button button31 = new Button(">");
-
-        gridpane.add(button00,0,0);
-        gridpane.add(button01,2,0);
-        gridpane.add(button10,3,0);
-        gridpane.add(button11,5,0);
-        gridpane.add(button20,0,1);
-        gridpane.add(button21,2,1);
-        gridpane.add(button30,3,1);
-        gridpane.add(button31,5,1);
 
         Pane container0 = new Pane();
         container0.getChildren().add(new TextFlow(new Text("Average Number of Reviews \n" + calcAvgRevNum())));
@@ -58,7 +37,6 @@ public class StatisticsPage extends Application {
         Pane container4 = new Pane();
         container4.getChildren().add(new TextFlow(new Text("Neighborhood with highest probability night: \n" + mostLikelyNight())));
 
-
         Pane container5 = new Pane(neighDistribution());
 
         Pane container6 = new Pane();
@@ -66,6 +44,18 @@ public class StatisticsPage extends Application {
 
         Pane container7 = new Pane();
         container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
+
+        StatsPane Pane0 = new StatsPane(0);
+        Pane0.getChildren().add(container0);
+
+        StatsPane Pane1 = new StatsPane(1);
+        Pane1.getChildren().add(container1);
+
+        StatsPane Pane2 = new StatsPane(2);
+        Pane2.getChildren().add(container2);
+
+        StatsPane Pane3 = new StatsPane(3);
+        Pane3.getChildren().add(container3);
 
         paneArray.add(container0);
         paneArray.add(container1);
@@ -85,17 +75,84 @@ public class StatisticsPage extends Application {
         shownArray.add(false);
         shownArray.add(false);
 
-        StatsPane Pane0 = new StatsPane(0);
-        Pane0.getChildren().add(container0);
+        //adding buttons
+        Button button00 = new Button("<");
+        Button button01 = new Button(">");
 
-        StatsPane Pane1 = new StatsPane(1);
-        Pane1.getChildren().add(container1);
+        Button button10 = new Button("<");
+        Button button11 = new Button(">");
 
-        StatsPane Pane2 = new StatsPane(2);
-        Pane2.getChildren().add(container2);
+        Button button20 = new Button("<");
+        Button button21 = new Button(">");
 
-        StatsPane Pane3 = new StatsPane(3);
-        Pane3.getChildren().add(container3);
+        Button button30 = new Button("<");
+        Button button31 = new Button(">");
+
+        button00.setOnAction(
+                (event) -> {
+                    Pane0.getChildren().remove(0);
+                    Pane0.getChildren().add(prevAvailableStat(Pane0));
+                    System.out.println(shownArray.toString());
+                }
+        );
+
+        button10.setOnAction(
+                (event) -> {
+                    Pane1.getChildren().remove(0);
+                    Pane1.getChildren().add(prevAvailableStat(Pane1));
+                }
+        );
+
+        button20.setOnAction(
+                (event) -> {
+                    Pane2.getChildren().remove(0);
+                    Pane2.getChildren().add(prevAvailableStat(Pane2));
+                }
+        );
+
+        button30.setOnAction(
+                (event) -> {
+                    Pane3.getChildren().remove(0);
+                    Pane3.getChildren().add(prevAvailableStat(Pane3));
+                }
+        );
+
+        button01.setOnAction(
+                (event) -> {
+                    Pane0.getChildren().remove(0);
+                    Pane0.getChildren().add(nextAvailableStat(Pane0));
+                }
+        );
+
+        button11.setOnAction(
+                (event) -> {
+                    Pane1.getChildren().remove(0);
+                    Pane1.getChildren().add(nextAvailableStat(Pane1));
+                }
+        );
+
+        button21.setOnAction(
+                (event) -> {
+                    Pane2.getChildren().remove(0);
+                    Pane2.getChildren().add(nextAvailableStat(Pane2));
+                }
+        );
+        button31.setOnAction(
+                (event) -> {
+                    Pane3.getChildren().remove(0);
+                    Pane3.getChildren().add(nextAvailableStat(Pane3));
+                }
+        );
+
+
+        gridpane.add(button00,0,0);
+        gridpane.add(button01,2,0);
+        gridpane.add(button10,3,0);
+        gridpane.add(button11,5,0);
+        gridpane.add(button20,0,1);
+        gridpane.add(button21,2,1);
+        gridpane.add(button30,3,1);
+        gridpane.add(button31,5,1);
 
         gridpane.add(Pane0,1,0);
         gridpane.add(Pane1,4,0);
@@ -111,6 +168,8 @@ public class StatisticsPage extends Application {
         gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
         gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
 
+        gridpane.setPadding(new Insets(0,0,0,50));
+
         TabCreator.createSingularTab(gridpane, "Statistics", Airbnb.getImageView(Airbnb.Graphic.STATISTICSGRAPHIC), true);
     }
 
@@ -120,12 +179,11 @@ public class StatisticsPage extends Application {
     }
 
     public Pane nextAvailableStat(StatsPane currpane){
+        shownArray.remove(currpane.getCurrentPos());
         shownArray.add(currpane.getCurrentPos(), false);
-        currpane.next();
-        while(!shownArray.get(currpane.getCurrentPos())){
-            currpane.next();
-        }
-
+        do{currpane.next();}
+        while(shownArray.get(currpane.getCurrentPos()));
+        shownArray.remove(currpane.getCurrentPos());
         shownArray.add(currpane.getCurrentPos(), true);
 
         return paneArray.get(currpane.getCurrentPos());
@@ -133,12 +191,11 @@ public class StatisticsPage extends Application {
 
 
     public Pane prevAvailableStat(StatsPane currpane){
+        shownArray.remove(currpane.getCurrentPos());
         shownArray.add(currpane.getCurrentPos(), false);
-        currpane.prev();
-        while(!shownArray.get(currpane.getCurrentPos())){
-            currpane.prev();
-        }
-
+        do{currpane.prev();}
+        while(shownArray.get(currpane.getCurrentPos()));
+        shownArray.remove(currpane.getCurrentPos());
         shownArray.add(currpane.getCurrentPos(), true);
 
         return paneArray.get(currpane.getCurrentPos());
@@ -254,7 +311,6 @@ public class StatisticsPage extends Application {
 
         for (String neigh : boroughNights.keySet()){
             neighAvg = boroughNights.get(neigh) / (365.0 * neighTotal.get(neigh));
-            System.out.println(neighAvg);
             if (highestAvg < neighAvg){
                 highestNights = neigh;
                 highestAvg = neighAvg;
@@ -299,7 +355,7 @@ public class StatisticsPage extends Application {
             total += 1;
         }
 
-        return new GetBingMaps().getMapPane("", (lat/total), (lon/total));
+        return new GetBingMaps().getLightCanvas("", (lat/total), (lon/total));
 
     }
 
