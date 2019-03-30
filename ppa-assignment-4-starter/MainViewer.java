@@ -287,7 +287,7 @@ public class MainViewer extends Application
         showHelp.setOnAction(e -> AlertBox.display("User Guidelines", "Welcome to Airbnb HomeFinder. This is an application that allows you to search\n for Airbnb listings in London. The first thing you should know about this\n application is that " +
                 "you can use the next and previous buttons at the\n bottom of the window, as well as the tabs at the top of the window to traverse\n through the different panels. The top panel in the welcome page\n is made up of different criteria that allows " +
                 "a user to personalize\n their home-finding process. Once a user presses search this will bring up \na map of all the boroughs in London. It is designed as a heat map, so darker colours\n indicate more homes found, given the search criteria" +
-                ", while lighter\n colours indicate fewer homes found. You can then press on the borough buttons to\n show all the properties in that borough. As always have fun finding your next unique home or experience.\n Happy HomeFinding - Airbnb"));
+                ", while lighter\n colours indicate fewer homes found. You can then press on the borough buttons to\n show all the properties in that borough. As always have fun finding your next unique home or experience.\n Happy HomeFinding - Airbnb", 500, 1350));
 
         myAirbnb.getItems().addAll(myAribnbText, showFavourites, statistics, showHelp);
 
@@ -375,7 +375,7 @@ This is a method that searches for properties that match the given inputted user
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood), userCriteria);
                             TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 500);
                         }
                     }
                     else {
@@ -383,17 +383,17 @@ This is a method that searches for properties that match the given inputted user
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood), userCriteria);
                             TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.PROPERTYGRAPHIC, true, userCriteria);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.");
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 500);
                         }
                     }
                 }
             }
             else {
-                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.");
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.", 200, 500);
             }
         }
         else {
-            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!");
+            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!", 200, 500);
         }
     }
 }
