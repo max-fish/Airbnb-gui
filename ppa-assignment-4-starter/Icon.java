@@ -74,7 +74,7 @@ public class Icon {
 
         PropertyViewerFactory.styleStackPane(infoLayout, rect);
 
-        ImageView favouriteIcon = new ImageView(new Image(getClass().getResourceAsStream("favourite_icon.png")));
+        ImageView favouriteIcon = Airbnb.getImageView(Airbnb.Graphic.FAVOURITEGRAPHIC);
 
         PropertyViewerFactory.styleFavouriteIcon(favouriteIcon, rect, infoLayout);
 
@@ -173,7 +173,7 @@ public class Icon {
                     if(event.getButton().equals(MouseButton.PRIMARY)){
                         if(event.getClickCount() == 2) {
                             PropertyDescription propertyDescription = new PropertyDescription(property, clone(false).makeIcon());
-                            TabCreator.createTab(propertyDescription, propertyDescription.makeDescriptionWindow(), "Property", null, true, criteria);
+                            TabCreator.createTab(propertyDescription, propertyDescription.makeDescriptionWindow(), "Property", Airbnb.getImageView(Airbnb.Graphic.PROPERTYDESCRIPTIONGRAPHIC), true, criteria);
                         }
                     }
                 }
@@ -184,7 +184,7 @@ public class Icon {
                     if(event.getButton().equals(MouseButton.PRIMARY)) {
                         if(event.getClickCount() == 2) {
                             PropertyDescription propertyDescription = new PropertyDescription(property, clone(false).makeIcon());
-                            TabCreator.createTab(propertyDescription, propertyDescription.makeDescriptionWindow(), "Property", null, true, criteria);
+                            TabCreator.createTab(propertyDescription, propertyDescription.makeDescriptionWindow(), "Property", Airbnb.getImageView(Airbnb.Graphic.PROPERTYDESCRIPTIONGRAPHIC), true, criteria);
 
                         }
                     }

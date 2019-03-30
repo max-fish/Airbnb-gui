@@ -81,10 +81,12 @@ public class PropertyViewer extends Application {
         );
 
         headerText.setText(getNumberOfProperties() + " homes found in " + neighborhoodName);
+        headerText.setFont(Airbnb.HEADERFONT);
+        headerText.setTextFill(Color.rgb(72,72,72));
         header.getChildren().addAll(headerText, sortBy);
 
 
-        AnchorPane.setLeftAnchor(headerText, 0.0);
+        AnchorPane.setLeftAnchor(headerText, 20.0);
         AnchorPane.setRightAnchor(sortBy, 10.0);
 
         fullWindow.setTop(header);

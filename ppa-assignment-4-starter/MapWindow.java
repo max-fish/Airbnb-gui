@@ -1,4 +1,5 @@
 import javafx.animation.ScaleTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -71,7 +72,10 @@ public class MapWindow {
          GridPane titlePane = new GridPane();
          titlePane.addRow(0, headerText);
          Text totalPropertiesLoaded = new Text("Total properties loaded: " + totalPropertiesLoaded(lower, higher, homeType));
+         totalPropertiesLoaded.setFont(Airbnb.PROPERTYINFOFONT);
+         totalPropertiesLoaded.setFill(Color.rgb(72,72,72));
          titlePane.addRow(1, totalPropertiesLoaded);
+         titlePane.setPadding(new Insets(0,0,0,20));
          fullWindow.setTop(titlePane);
          fullWindow.setCenter(internal);
 

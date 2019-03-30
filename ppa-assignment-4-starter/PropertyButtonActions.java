@@ -13,7 +13,7 @@ public class PropertyButtonActions {
             button.setOnAction(
                     (event) -> {
                         PropertyViewer propertyViewer = new PropertyViewer(MapWindow.getButtonToProperties().get(button), newCriteria);
-                        TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(button.getText()), "Properties", Airbnb.PROPERTYGRAPHIC, true, newCriteria);
+                        TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(button.getText()), "Properties", Airbnb.getImageView(Airbnb.Graphic.PROPERTYGRAPHIC), true, newCriteria);
                         });
 
             ScaleTransition scaleTransition = new ScaleTransition();

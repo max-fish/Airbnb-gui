@@ -22,6 +22,7 @@ public class PropertyDescription {
         GridPane fullGrid = new GridPane();
         fullGrid.prefHeightProperty().bind(MainViewer.getPanels().heightProperty().subtract(5));
         fullGrid.setHgap(10);
+        fullGrid.setPadding(new Insets(0,0,0,20));
 
         GridPane descriptionGrid = new GridPane();
         descriptionGrid.setVgap(20);
