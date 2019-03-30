@@ -1,5 +1,6 @@
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.util.Duration;
 import java.util.Iterator;
@@ -13,7 +14,7 @@ public class PropertyButtonActions {
             Criteria newCriteria = new Criteria(criteria.getNeighborhood(), criteria.getRoomType(), criteria.getLowPrice(), criteria.getHighPrice(), button);
             button.setOnAction(
                     (event) -> {
-                        PropertyViewer propertyViewer = new PropertyViewer(MapWindow.getButtonToProperties().get(button));
+                        PropertyViewer propertyViewer = new PropertyViewer(MapWindow.buttonToProperties.get(button), newCriteria);
                         TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(button.getText()), "Properties", Airbnb.PROPERTYGRAPHIC, true, newCriteria);
                         });
 

@@ -1,5 +1,6 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -30,10 +31,9 @@ public class PropertyViewerFactory {
         RowConstraints otherRows = new RowConstraints();
         otherRows.setVgrow(Priority.ALWAYS);
 
-        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows, otherRows);
-
+        infoLayout.getRowConstraints().addAll(pictureRow, otherRows, otherRows, otherRows);
         infoLayout.setBorder(new Border(new BorderStroke(Airbnb.CORAL,
-                BorderStrokeStyle.SOLID, new CornerRadii(18,18,0,0,false), new BorderWidths(2,2,0,2))));
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2,2,0,2))));
         infoLayout.setStyle("-fx-background-color: #FFFFFF;");
     }
     public static void styleRectangle(Rectangle rect, GridPane infoLayout){
@@ -65,6 +65,7 @@ public class PropertyViewerFactory {
                 label.setWrappingWidth(infoLayout.getWidth()-3);
                 label.setFont(Airbnb.PROPERTYINFOFONT);
                 label.setFill(Airbnb.GREY);
+                GridPane.setValignment(container, VPos.CENTER);
             }
         }
     }
@@ -95,31 +96,6 @@ public class PropertyViewerFactory {
         favouriteIcon.setSmooth(true);
         favouriteIcon.setTranslateX(-5);
         favouriteIcon.setTranslateY(5);
-
-
-        favouriteIcon.setOnMouseEntered(
-                (event) -> {
-                    rect.setDisable(true);
-                    infoLayout.setDisable(true);
-                    Lighting lighting = new Lighting();
-                    lighting.setDiffuseConstant(1.6);
-                    lighting.setSpecularConstant(0.0);
-                    lighting.setSpecularExponent(0.0);
-                    lighting.setSurfaceScale(0.0);
-                    lighting.setLight(new Light.Distant(45, 45, Airbnb.CORAL));
-                    favouriteIcon.setEffect(lighting);
-                }
-        );
-
-
-        favouriteIcon.setOnMouseExited(
-                (event) -> {
-                    rect.setDisable(false);
-                    infoLayout.setDisable(false);
-                    favouriteIcon.setEffect(null);
-                }
-
-        );
 
         StackPane.setAlignment(favouriteIcon, Pos.TOP_RIGHT);
     }
