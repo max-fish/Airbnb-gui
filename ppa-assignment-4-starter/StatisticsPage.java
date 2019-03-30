@@ -73,7 +73,7 @@ public class StatisticsPage extends Application {
         Pane container5 = new Pane(neighDistribution());
 
         Pane container6 = new Pane();
-        container6.getChildren().add(new TextFlow(new Text("Neighborhood with highest probability night: \n" + avgLatLong())));
+        container6.getChildren().add(avgLatLong());
 
         Pane container7 = new Pane();
         container7.getChildren().add(new TextFlow(new Text("Borough with the highest average reviews per listing: \n" + mostAvgReviewed())));
@@ -81,7 +81,7 @@ public class StatisticsPage extends Application {
         gridpane.add(container0,1,0);
         gridpane.add(container1,4,0);
         gridpane.add(container2,1,1);
-        gridpane.add(container5,4,1);
+        gridpane.add(container6,4,1);
 
 
 
@@ -267,16 +267,18 @@ public class StatisticsPage extends Application {
 
     //returns the average lat,long of the dataset
 
-    public String avgLatLong(){
-        int lat= 0;
-        int lon= 0;
+    public Pane avgLatLong(){
+        double lat= 0;
+        double lon= 0;
         int total = 0;
         for (AirbnbListing listing : dataloaded){
             lat += listing.getLatitude();
             lon += listing.getLongitude();
             total += 1;
         }
-        return "" + (lat/total) + ", " + (lon/total);
+
+        return new GetGoogleMaps().getMapPane("", (lat/total), (lon/total));
+
     }
 
     //return the borough with the most average reviews
@@ -307,6 +309,9 @@ public class StatisticsPage extends Application {
                 highestRev = borough;
             }
         }
+
+        
+
         return highestRev;
     }
 
