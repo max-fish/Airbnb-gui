@@ -1,3 +1,4 @@
+
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +14,7 @@ import org.junit.Test;
  * mostAvgReviewed()
  * The test class tests that these methods return the statistic values that they are intended to return.
  *
- */
+ **/
 public class StatisticsPageTest {
 
     StatisticsPage statisticsPageTest;
@@ -105,4 +106,3 @@ public void testCalcAvgRevNum() {
     }
 
 }
-

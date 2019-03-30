@@ -20,7 +20,7 @@ public class GetBingMaps {
      * @param longitude the longitude of the map
      * @return a panel with a Bing maps instance inside it
      */
-    public Pane getMapPane(String name, double latitude, double longitude){
+    public Pane getLightCanvas(String name, double latitude, double longitude){
         StackPane tbr = new StackPane();
 
         // create a WebView (for displaying) and it's WebEngine (for rendering and passing though data)
@@ -48,6 +48,48 @@ public class GetBingMaps {
                     }
                 }
             }
+        );
+        tbr.getChildren().add(main);
+
+        return tbr;
+    }
+
+    /**
+     * Creates the same map pane but uses a birds eye view instead of a light canvas view
+     * @param name
+     * @param latitude
+     * @param longitude
+     * @return a panel with a Bing maps instance inside it
+     */
+
+    public Pane getBirdsEye(String name, double latitude, double longitude){
+        StackPane tbr = new StackPane();
+
+        // create a WebView (for displaying) and it's WebEngine (for rendering and passing though data)
+        WebView main = new WebView();
+        WebEngine webEngine = main.getEngine();
+
+        // Load the html page into the webengine and start it loading
+        webEngine.load(getClass().getResource("MapsBirdsEye.html").toExternalForm());
+
+        // Once the page state changes trigger an action
+        webEngine.getLoadWorker().stateProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    // When the page has loaded there is an attempt to call a javascript method inside the webEngine
+                    if (newValue == Worker.State.SUCCEEDED){
+                        // If the script cannot be reloaded the program then reloads the page until it can load successfully
+                        try {
+                            webEngine.executeScript(
+                                    "document.loadFile('" + name.replace("'", "") +
+                                            "', " + latitude +
+                                            ", " + longitude + ");");
+                        }
+                        catch (netscape.javascript.JSException exc){
+                            webEngine.reload();
+                            System.out.println("Error: " + exc);
+                        }
+                    }
+                }
         );
         tbr.getChildren().add(main);
 
