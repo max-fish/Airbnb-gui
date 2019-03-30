@@ -107,8 +107,7 @@ public void testCalcAvgRevNum() {
 
     /**
      * A test method designed to test the method mostLikelyNight() located in the StatisticsPage class.
-     * The method being tested originally returns the borough with the highest availability when considering
-     * the minimum amount of nights a property is available for.
+     * The method being tested originally returns the borough with the highest availability.
      * This method will check whether or not the correct value is returned.
      */
     @Test
