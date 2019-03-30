@@ -53,7 +53,7 @@ public class Toolbar {
         fullMap.setGraphic(Airbnb.getImageView(Airbnb.Graphic.MAPGRAPHIC));
 
         fullMap.setOnAction(
-                (event) -> {TabCreator.createSingularTab(new GetBingMaps().getFullMap(StatisticsPage.getListings()), "Full Map", null, true);}
+                (event) -> {TabCreator.createSingularTab(new GetBingMaps().getFullMap(StatisticsPage.getListings().subList(0,100)), "Full Map", Airbnb.getImageView(Airbnb.Graphic.MAPGRAPHIC), true);}
         );
 
         Button showHelp = new Button("Help");
@@ -65,7 +65,7 @@ public class Toolbar {
         showHelp.setOnAction(e -> AlertBox.display("User Guidelines", "Welcome to Airbnb HomeFinder. This is an application that allows you to search\n for Airbnb listings in London. The first thing you should know about this\n application is that " +
                 "you can use the next and previous buttons at the\n bottom of the window, as well as the tabs at the top of the window to traverse\n through the different panels. The top panel in the welcome page\n is made up of different criteria that allows " +
                 "a user to personalize\n their home-finding process. Once a user presses search this will bring up \na map of all the boroughs in London. It is designed as a heat map, so darker colours\n indicate more homes found, given the search criteria" +
-                ", while lighter\n colours indicate fewer homes found. You can then press on the borough buttons to\n show all the properties in that borough. As always have fun finding your next unique home or experience.\n Happy HomeFinding - Airbnb"));
+                ", while lighter\n colours indicate fewer homes found. You can then press on the borough buttons to\n show all the properties in that borough. As always have fun finding your next unique home or experience.\n Happy HomeFinding - Airbnb", 500, 1400));
 
 
         myAirbnb.getItems().addAll(myAribnbText, makeSeparator(), showFavourites,

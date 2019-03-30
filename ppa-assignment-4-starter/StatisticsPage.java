@@ -86,7 +86,6 @@ public class StatisticsPage {
         gridpane.add(container1,4,0);
         gridpane.add(container2,1,1);
         gridpane.add(container5,4,1);
-        gridpane.setGridLinesVisible(true);
 
         RowConstraints rowconstraints = new RowConstraints();
         rowconstraints.setVgrow(Priority.ALWAYS);
@@ -97,55 +96,9 @@ public class StatisticsPage {
         gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
         gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
 
-        TabCreator.createSingularTab(gridpane, "Statistics", null, true);
+        TabCreator.createSingularTab(gridpane, "Statistics", Airbnb.getImageView(Airbnb.Graphic.STATISTICSGRAPHIC), true);
     }
 
-/*
-    public void showSelectedPane(int whichButton){
-        //when button pressed
-
-        while(currentShown.get(whichButton) < displayedMethods.size() - 1){
-            if current
-        }
-    }
-*/
-
-    /*
-    public String methodSelector(int whichmethod){
-        if (!displayedMethods.get(whichmethod)){
-            displayedMethods.set(whichmethod, true);
-            if (whichmethod == 0){
-                return "average number of reviews \n" + calcAvgRevNum();
-            }
-            else if (whichmethod == 1){
-                return "total available properties \n" + availableProp();
-            }
-            else if (whichmethod == 2){
-                return "Available homes/apts \n" + homeApt();
-            }
-            else if (whichmethod == 3){
-                //return "most expensive neighborhood \n" + expNeigh();
-                return neighDistribution();
-            }
-            else if (whichmethod == 4){
-                return "4";
-            }
-            else if (whichmethod == 5){
-                return "5";
-            }
-            else if (whichmethod == 6){
-                return "6";
-            }
-            else if (whichmethod == 7){
-                return "7";
-            }
-        }
-        else{
-            methodSelector(whichmethod + 1);
-        }
-        return "not working";
-    }
-*/
 
     public StatisticsPage() {
         int avgRevNum; //average number of reviews

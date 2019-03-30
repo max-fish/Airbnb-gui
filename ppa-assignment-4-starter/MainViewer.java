@@ -290,7 +290,13 @@ public class MainViewer extends Application
      * @param event
      */
     private void selectedLowPrice(ActionEvent event){
-         userLowPrice = Integer.parseInt(lowPrice.getValue());
+        if(lowPrice.getValue() != null) {
+            try {
+                userLowPrice = Integer.parseInt(lowPrice.getValue());
+            } catch (java.lang.NumberFormatException e) {
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.", 200, 550);
+            }
+        }
     }
 
     /**
@@ -298,8 +304,14 @@ public class MainViewer extends Application
      * when a user clicks on the highPrice combo-box.
      * @param event
      */
-    private void selectedHighPrice(ActionEvent event){
-        userHighPrice = Integer.parseInt(highPrice.getValue());
+    private void selectedHighPrice(ActionEvent event) {
+        if (highPrice.getValue() != null) {
+            try {
+                userHighPrice = Integer.parseInt(highPrice.getValue());
+            } catch (java.lang.NumberFormatException e) {
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.", 200, 550);
+            }
+        }
     }
 
 
@@ -331,7 +343,7 @@ This is a method that searches for properties that match the given inputted user
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice).get(userNeighborhood), userCriteria);
                             TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.getImageView(Airbnb.Graphic.PROPERTYGRAPHIC), true, userCriteria);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 500);
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 550);
                         }
                     }
                     else {
@@ -339,17 +351,17 @@ This is a method that searches for properties that match the given inputted user
                             PropertyViewer propertyViewer = new PropertyViewer(LondonCSVUtilities.filteredResults(userLowPrice, userHighPrice, userRoomType).get(userNeighborhood), userCriteria);
                             TabCreator.createTab(propertyViewer, propertyViewer.makeFullPropertyWindow(userNeighborhood), "Properties", Airbnb.getImageView(Airbnb.Graphic.PROPERTYGRAPHIC), true, userCriteria);
                         } else {
-                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 500);
+                            AlertBox.display("Oh no!", "There are no properties in this area\n" + "for the price range you selected.", 200, 550);
                         }
                     }
                 }
             }
             else {
-                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.", 200, 500);
+                AlertBox.display("Oh no!", "You seem to have selected an incorrect\n" + "price range.", 200, 550);
             }
         }
         else {
-            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!", 200, 500);
+            AlertBox.display("Oh no!", "You have not selected all criteria in the\n" + "in the top panel above. Please fix this!", 200, 550);
         }
     }
 }
