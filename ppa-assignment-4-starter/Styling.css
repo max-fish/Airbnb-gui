@@ -117,19 +117,19 @@
 }
 
 .lowBuildings{
-    -fx-background-color: #FEB3B7;
+    -fx-background-color: #F08080;
 }
 
 .midBuildings{
-    -fx-background-color: #FE8187;
+    -fx-background-color: #FFA07A;
 }
 
 .highBuildings{
-    -fx-background-color: #FD5C63;
+    -fx-background-color: #800000;
 }
 
 .maxBuildings{
-    -fx-background-color: #FD353F;
+    -fx-background-color: #800080;
 }
 
 #boroughButton{

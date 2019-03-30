@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -8,7 +9,10 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
+/**
+ * @version 0.0.1
+ */
+
 
 public class StatisticsPage extends Application {
     public ArrayList<AirbnbListing> dataloaded;
@@ -101,8 +105,6 @@ public class StatisticsPage extends Application {
         gridpane.add(Pane2,1,1);
         gridpane.add(Pane3,4,1);
 
-
-
         Scene scene = new Scene(gridpane, 700,500);
         gridpane.minHeightProperty().bind(scene.heightProperty());
         gridpane.minWidthProperty().bind(scene.widthProperty());
@@ -116,8 +118,6 @@ public class StatisticsPage extends Application {
 
         gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
         gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
-
-
 
         stage.setScene(scene);
         stage.show();
@@ -161,7 +161,6 @@ public class StatisticsPage extends Application {
                 totalReviews += listing.getNumberOfReviews();
                 totalListings += 1;
             }
-
             return (totalReviews/totalListings);
         }
 
@@ -182,7 +181,6 @@ public class StatisticsPage extends Application {
                     homeApts += 1;
                 }
             }
-
             return homeApts;
         }
 
@@ -295,7 +293,6 @@ public class StatisticsPage extends Application {
             PieChart.Data slice = new PieChart.Data(name, neighTotal.get(name));
             piechart.getData().add(slice);
         }
-
         return piechart;
     }
 
@@ -311,7 +308,7 @@ public class StatisticsPage extends Application {
             total += 1;
         }
 
-        return new GetGoogleMaps().getMapPane("", (lat/total), (lon/total));
+        return new GetBingMaps().getMapPane("", (lat/total), (lon/total));
 
     }
 

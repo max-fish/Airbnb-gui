@@ -8,6 +8,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Produces an alert box when called that states an error made, normally when the user has made an error in inputting
+ *
+ * @version 0.1.0
+ */
 public class AlertBox {
 
     public static void display(String title, String message) {
