@@ -1,7 +1,4 @@
-import javafx.application.Application;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,13 +11,13 @@ import javafx.scene.chart.PieChart;
  * @version 0.0.1
  */
 
-public class StatisticsPage extends Application {
+public class StatisticsPage {
     public ArrayList<AirbnbListing> dataloaded;
     public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
     public ArrayList<Integer> currentShown = new ArrayList<>(4);
 
 
-    public void start (Stage stage){
+    public void showStats(){
 
         displayedMethods.add(0, true);
         displayedMethods.add(1, true);
@@ -88,10 +85,6 @@ public class StatisticsPage extends Application {
         gridpane.add(container1,4,0);
         gridpane.add(container2,1,1);
         gridpane.add(container5,4,1);
-
-        Scene scene = new Scene(gridpane, 700,500);
-        gridpane.minHeightProperty().bind(scene.heightProperty());
-        gridpane.minWidthProperty().bind(scene.widthProperty());
         gridpane.setGridLinesVisible(true);
 
         RowConstraints rowconstraints = new RowConstraints();
@@ -103,8 +96,7 @@ public class StatisticsPage extends Application {
         gridpane.getRowConstraints().addAll(rowconstraints, rowconstraints);
         gridpane.getColumnConstraints().addAll(columnconstraints, columnconstraints, columnconstraints, columnconstraints);
 
-        stage.setScene(scene);
-        stage.show();
+        TabCreator.createSingularTab(gridpane, "Statistics", null, true);
     }
 
 /*
@@ -356,10 +348,5 @@ public class StatisticsPage extends Application {
         }
         return highestRev;
 
-    }
-
-    public static void main(String[] args){
-        StatisticsPage stats = new StatisticsPage();
-        launch(args);
     }
 }
