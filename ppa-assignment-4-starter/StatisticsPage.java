@@ -1,6 +1,7 @@
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.text.*;
@@ -12,7 +13,7 @@ import javafx.scene.chart.PieChart;
  */
 
 public class StatisticsPage {
-    public ArrayList<AirbnbListing> dataloaded;
+    private static ArrayList<AirbnbListing> dataloaded = new AirbnbDataLoader().load();;
     public ArrayList<Boolean> displayedMethods = new ArrayList<>(8);
     public ArrayList<Integer> currentShown = new ArrayList<>(4);
 
@@ -151,9 +152,6 @@ public class StatisticsPage {
         int availableProp; //number of available properties
         String mostExpBur; //most expensive borough
         int homeapt; //entire number of homes and apartments
-
-        //load the airbnb data in
-        dataloaded = new AirbnbDataLoader().load();
 
     }
 
@@ -348,5 +346,8 @@ public class StatisticsPage {
         }
         return highestRev;
 
+    }
+    public static List<AirbnbListing> getListings(){
+        return dataloaded;
     }
 }

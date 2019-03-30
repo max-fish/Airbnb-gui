@@ -53,6 +53,11 @@
     -fx-background-color: #FD5C63;
 }
 
+.combo-box-popup .list-view .list-cell:pressed{
+    -fx-background-color: #000000;
+    -fx-text-fill: FD5C63;
+}
+
 .combo-box-popup .list-view .scroll-bar .track{
     -fx-background-color: #E0E0E0;
 }
