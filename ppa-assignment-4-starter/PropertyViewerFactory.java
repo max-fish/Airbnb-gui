@@ -90,6 +90,13 @@ public class PropertyViewerFactory {
         headerText.setFont(Airbnb.HEADERFONT);
         headerText.setTextFill(Airbnb.GREY);
     }
+
+    /**
+     * This is a method that styles the favourite icon.
+     * @param favouriteIcon The favourite icon to be styled.
+     * @param rect
+     * @param infoLayout
+     */
     public static void styleFavouriteIcon(ImageView favouriteIcon, Rectangle rect, GridPane infoLayout){
         favouriteIcon.setFitHeight(40);
         favouriteIcon.setPreserveRatio(true);

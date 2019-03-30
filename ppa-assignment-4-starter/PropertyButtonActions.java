@@ -3,6 +3,10 @@ import javafx.scene.control.Button;
 import javafx.util.Duration;
 import java.util.Iterator;
 
+/**
+ * A class that sets the buttons in the map window to be interactive, and hence allows them to open up a PropertyViewer
+ * tab. Where a user can view all the properties in the borough that they have selected.
+ */
 public class PropertyButtonActions {
 
     public static void setPropertyButtonActions(Criteria criteria){

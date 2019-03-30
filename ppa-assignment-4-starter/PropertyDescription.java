@@ -8,15 +8,29 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * A class designed to create a property description based on the Airbnb listing provided in the CSV file.
+ */
 public class PropertyDescription {
 
     AirbnbListing property;
     StackPane icon;
+
+    /**
+     * The constructor for the PropertyDescription class.
+     * @param property The property referenced in the CSV file.
+     * @param icon The icon associated with the property that is referenced.
+     */
     PropertyDescription(AirbnbListing property, StackPane icon){
         this.property = property;
         this.icon = icon;
         this.icon.setDisable(true);
     }
+
+    /**
+     * A method designed to make a window that contains the property's description.
+     * @return GridPane The pane that is set in the center of the window.
+     */
     public GridPane makeDescriptionWindow(){
         Font infoFont = Font.loadFont(getClass().getResourceAsStream("Montserrat/MontserratAlternates-Medium.otf"), 18);
         GridPane fullGrid = new GridPane();
