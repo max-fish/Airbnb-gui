@@ -53,13 +53,6 @@ public class MainViewer extends Application
 
     private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire home/apt", "Shared room");
 
-    private static ObservableList<String> neighborhoods = FXCollections.observableArrayList("All", "Barking and Dagenham",
-            "Barnet", "Bexley", "Brent", "Bromley", "Camden", "City of London", "Croydon",
-            "Ealing", "Enfield", "Greenwich", "Hackney", "Hammersmith and Fulham", "Haringey", "Harrow",
-            "Havering", "Hillingdon", "Hounslow", "Islington", "Kensington and Chelsea", "Kingston upon Thames", "Lambeth",
-            "Lewisham", "Merton", "Newham", "Redbridge", "Richmond upon Thames", "Southwark", "Sutton",
-            "Tower Hamlets", "Waltham Forest", "Wandsworth", "Westminster");
-
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -175,9 +168,9 @@ public class MainViewer extends Application
         highPricePanel.getChildren().addAll(highPriceLabel, highPrice);
 
         
-        lowPrice.setPromptText("Minimum amount per night");
+        lowPrice.setPromptText("Minimum per night");
 
-        highPrice.setPromptText("Maximum amount per night");
+        highPrice.setPromptText("Maximum per night");
 
         Button search = new Button("Search");
         search.setFont(Airbnb.BUTTONFONT);
@@ -188,7 +181,7 @@ public class MainViewer extends Application
         
         selection.getChildren().addAll(neighborhoodPanel, roomTypePanel, lowPricePanel, highPricePanel, search);
 
-        selection.prefWidthProperty().bind(root.widthProperty());
+        //selection.prefWidthProperty().bind(root.widthProperty());
 
         selection.setAlignment(Pos.CENTER);
 

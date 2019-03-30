@@ -4,11 +4,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
 import java.util.*;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 
 /**
