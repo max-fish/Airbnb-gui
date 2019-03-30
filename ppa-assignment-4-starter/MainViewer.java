@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 
 /**
- *
+ * The main class of the application. This is what builds the main window of the application.
  * @version 0.1.0
  */
 public class MainViewer extends Application
@@ -52,6 +52,11 @@ public class MainViewer extends Application
 
     private static ObservableList<String> homeTypes = FXCollections.observableArrayList("All", "Private room", "Entire home/apt", "Shared room");
 
+    /**
+     * A method that starts the entire application.
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -268,20 +273,44 @@ public class MainViewer extends Application
 
     }
 
+    /**
+     * A method that gets the tabPane.
+     * @return panels The tabPane.
+     */
     public static TabPane getPanels(){
         return panels;
     }
 
+    /**
+     * A method that gets the tool bar.
+     * @return myAirbnb The tool bar.
+     */
     public static ToolBar getToolBar(){
         return myAirbnb;
     }
 
+    /**
+     * A method to get the favourite bar.
+     * @return favouriteBar
+     */
     public static StackPane getFavouriteBar(){return favouriteBar;}
 
+    /**
+     * A method to get the unfavourite bar.
+     * @return unfavouriteBar
+     */
     public static StackPane getUnfavouriteBar(){return unfavouriteBar;}
 
+    /**
+     * A method that sets the neighborhood to the value that the user selected in the combo box.
+     * @param event When the user clicks a value in the combo box.
+     */
     private void selectedNeighborhood(ActionEvent event){userNeighborhood = neighborhood.getValue();}
 
+    /**
+     * A method that sets the userRoomType to the value that the user selected in the combo box.
+     * @param event When the user clicks a value in the combo box.
+     */
     private void selectedRoomType(ActionEvent event){userRoomType = roomType.getValue();}
 
     /**

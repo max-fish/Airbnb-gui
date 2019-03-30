@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import com.opencsv.CSVReader;
 import java.net.URISyntaxException;
 
+/**
+ * A class designed to format the data stored in the CSV file into an arraylist storing rows of the CSV data.
+ */
 public class AirbnbDataLoader {
  
     /** 

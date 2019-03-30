@@ -3,7 +3,8 @@ import javafx.collections.ObservableList;
 import java.util.*;
 
 /**
- *
+ * A class designed to store information about how to sort Airbnb listings, and to store information
+ * about how to filer properties based on user input.
  * @version 0.1.2
  */
 public class LondonCSVUtilities {
@@ -26,16 +27,26 @@ public class LondonCSVUtilities {
             "Lewisham", "Merton", "Newham", "Redbridge", "Richmond upon Thames", "Southwark", "Sutton",
             "Tower Hamlets", "Waltham Forest", "Wandsworth", "Westminster");
 
+    /**
+     * A method that returns the name of a borough from its acronym name.
+     * @param acronym The shorthand acronym for the borough.
+     * @return String The full name of the borough.
+     */
     public static String getNameFromAcronym(String acronym){
         return acronymToName.get(acronym);
     }
 
+    /**
+     * A method that returns the all the boroughs/neighborhoods specified in the CSV file.
+     * @return ObservableList<String> All the neighborhoods in the CSV file.
+     */
     public static ObservableList<String> getNeighborhoods() {return neighborhoods;}
 
     /**
-     *
-     * @param low
-     * @param high
+     * A method designed to search through Airbnb listings by checking which listings are within the specified
+     * user criteria.
+     * @param low The low price inputted by the user.
+     * @param high The high price inputted by the user.
      * @return
      */
     public static Map<String, List<AirbnbListing>> filteredResults(int low, int high){
@@ -53,7 +64,14 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
-
+    /**
+     * A method designed to search through Airbnb listings by checking which listings are within the specified
+     * user criteria, and by checking whether the listings are of the room type that the user specified.
+     * @param low The low price selected by the user.
+     * @param high The high price selected by the user.
+     * @param typeOfRoom The type of room selected by the user.
+     * @return
+     */
     public static Map<String, List<AirbnbListing>> filteredResults(int low, int high, String typeOfRoom) {
         Map<String, List<AirbnbListing>> tbr = new HashMap<String, List<AirbnbListing>>();
         for(String value : acronymToName.values()) {
@@ -69,10 +87,18 @@ public class LondonCSVUtilities {
         return tbr;
     }
 
+    /**
+     * A method that declares all the enums that are used to sort the properties in the properties tab.
+     */
     public enum sortBy {
         PRICE_LOW_TO_HIGH, PRICE_HIGH_TO_LOW, REVIEWS, HOST_NAME;
     }
 
+    /**
+     * Sorts the properties by the given cases, whether it is sorting by price, reviews or host name.
+     * @param properties The properties to be sorted.
+     * @param sortType The type of sorting to be done.
+     */
     public static void sort(List<AirbnbListing> properties, sortBy sortType){
         switch(sortType)
         {
